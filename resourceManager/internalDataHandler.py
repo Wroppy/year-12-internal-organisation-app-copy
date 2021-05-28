@@ -5,7 +5,7 @@ The icons and images will be handled by a .qrc file
 """
 
 import pathlib
-from typing import *
+from typing import Dict
 import json
 
 
@@ -45,7 +45,7 @@ def createFile(path: str):
         json.dump({}, file)
 
 
-def loadJsonFile(fileName: str):
+def loadJsonFile(fileName: str) -> Dict[any]:
     """
     Returns a json file's data given the file's name
 
