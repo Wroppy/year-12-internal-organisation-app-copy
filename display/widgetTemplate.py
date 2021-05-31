@@ -12,11 +12,11 @@ import sys
 from typing import *
 
 
-class widgetTemplate(QWidget):
+class WidgetTemplate(QWidget):
     def __init__(self, layout: QBoxLayout):
-        super(QWidget, self).__init__()
+        super(WidgetTemplate, self).__init__()
 
-        self.layout = layout(self)
+        self.layout = layout(self) # The Grid, H, and V box layouts are all subclasses of QBoxLayout
 
         self.createWidgets()
 
@@ -34,4 +34,10 @@ class widgetTemplate(QWidget):
         :return: None
         """
 
-    def
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+
+    window = WidgetTemplate(QHBoxLayout)
+    window.show()
+    app.exec()
