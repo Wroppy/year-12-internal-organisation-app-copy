@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="buttonIcons">
+        <file alias="generic.png">icons/genericIcon.png</file>
+    </qresource>
+
+</RCC>
