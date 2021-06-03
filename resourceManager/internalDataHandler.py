@@ -22,6 +22,7 @@ def getJsonAbsolutePath() -> str:
         absolutePath = str(pathlib.Path().absolute())
         for i in range(0, len(absolutePath)):
             # folderName = year_12_organisation_app
+            # Slices the absolute path
             folderName = absolutePath[i: i + len(appFolderName)]
             if folderName == appFolderName:
                 # returns C:\Users\Weyman\PycharmProjects\year_12_organisation_app\
@@ -78,7 +79,6 @@ def loadJsonFile(fileName: str) -> Dict[any]:
         print("There was an error decoding the json file")
 
         createFile(path)
-
 
 
 print(loadJsonFile("assignments"))
