@@ -13,11 +13,12 @@ from typing import *
 
 
 class WidgetTemplate(QWidget):
-    def __init__(self, layout: QBoxLayout):
+    def __init__(self, layout: Union[QVBoxLayout, QHBoxLayout, QGridLayout]):
         super(WidgetTemplate, self).__init__()
 
-        self.layout = layout(self) # The Grid, H, and V box layouts are all subclasses of QBoxLayout
+        self.layout = layout(self)
 
+        self.setPresets()
         self.createWidgets()
 
     def setPresets(self):
