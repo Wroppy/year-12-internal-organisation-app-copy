@@ -13,7 +13,7 @@ def getJsonAbsolutePath() -> str:
     """
     Returns the absolute file path of the resources folder by looping
     through characters until the app folder is found.
-    This is done because the absolute path will be different from where the function is where from
+    This is done because the absolute path will be different depending on where the function is called from
 
     :return: str
     """
