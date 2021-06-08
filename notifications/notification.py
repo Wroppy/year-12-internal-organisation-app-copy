@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class Notification:
     def __init__(self, title: str, message: str, year: int, month: int, day: int, hour: int, minute: int):
         """
