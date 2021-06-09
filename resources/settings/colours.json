@@ -1,2 +1,5 @@
 {
+  "headerColour": [64, 64, 64],
+  "headerTextColour": [250, 250, 250],
+  "buttonColour": [128, 128, 128]
 }
