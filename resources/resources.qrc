@@ -2,6 +2,12 @@
 <RCC version="1.0">
     <qresource prefix="buttonIcons">
         <file alias="generic.png">icons/genericIcon.png</file>
+        <file alias="hamburger.png">icons/hamburger.png</file>
+        <file alias="link.png">icons/link.png</file>
+        <file alias="list.png">icons/list.png</file>
+        <file alias="settings.png">icons/settings.png</file>
+        <file alias="timetable.png">icons/timetable.png</file>
+        <file alias="task.png">icons/task.png</file>
     </qresource>
     <qresource prefix="appIcons">
         <file alias="appIcon.png">icons/appIcon.png</file>
