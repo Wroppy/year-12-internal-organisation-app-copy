@@ -55,7 +55,7 @@ def loadJsonFile(fileName: str) -> dict:
     """
 
     prefix = ".json"
-    projectPath = "resources\\data\\"
+    projectPath = "resources\\"
     path = getProjectDirPath() + projectPath + fileName + prefix
 
     try:
@@ -79,7 +79,6 @@ def loadJsonFile(fileName: str) -> dict:
         print("There was an error decoding the json file")
 
         createFile(path)
-
 
 if __name__ == '__main__':
     print(loadJsonFile("assignments"))
