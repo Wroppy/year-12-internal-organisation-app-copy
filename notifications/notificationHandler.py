@@ -2,6 +2,7 @@ from notifications.notification import *
 from datetime import datetime
 from plyer import notification as n
 from PySide6.QtCore import QRunnable, Slot, QThreadPool
+from resourceManager.internalDataHandler import *
 
 
 class NotificationHandler:
@@ -58,12 +59,16 @@ class NotificationHandler:
         """
         appName = "Organisation App"
         toast = False
-        appIcon = ""
 
         title = userNotification.title
         message = userNotification.message
 
-        n.notify(title=title, message=message, app_name=appName, app_icon=appIcon, toast=toast)
+        try:
+            appIcon = getProjectDirPath() + "resources\\icons\\appIcon.png"
+
+            n.notify(title=title, message=message, app_name=appName, app_icon=appIcon, toast=toast)
+        except Exception:
+            n.notify(title=title, message=message, app_name=appName, toast=toast)
 
 
 class NotificationWorker(QRunnable):
@@ -83,4 +88,8 @@ class NotificationWorker(QRunnable):
         self.notificationHandler.startLoop()
 
 
+if __name__ == '__main__':
+    appIcon = getProjectDirPath() + "resources\\icons\\appIcon.ico"
 
+    n.notify(title="This is the title", app_name="Organiser", message="This is a message",
+             app_icon=appIcon)
