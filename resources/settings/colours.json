@@ -1,5 +1,7 @@
 {
   "headerColour": [64, 64, 64],
-  "headerTextColour": [250, 250, 250],
-  "buttonColour": [128, 128, 128]
+  "navBarTextColour": [250, 250, 250],
+  "buttonColour": [128, 128, 128],
+  "buttonHoverColour": [120, 120, 120],
+  "navBarFrameColour": [43, 43, 43]
 }

@@ -68,7 +68,7 @@ class NavHeader(QWidget):
             
             QLabel#headerLabel{{
                 font-size: {font["headerSize"]}px;
-                color: rgb{tuple(colours["headerTextColour"])}
+                color: rgb{tuple(colours["navBarTextColour"])};
             }}
         """
 
