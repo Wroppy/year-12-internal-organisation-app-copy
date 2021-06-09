@@ -3,5 +3,8 @@
     <qresource prefix="buttonIcons">
         <file alias="generic.png">icons/genericIcon.png</file>
     </qresource>
+    <qresource prefix="appIcons">
+        <file alias="appIcon.png">icons/appIcon.png</file>
+    </qresource>
 
 </RCC>
