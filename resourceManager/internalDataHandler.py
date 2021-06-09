@@ -46,7 +46,7 @@ def createFile(path: str):
         json.dump({}, file)
 
 
-def loadJsonFile(fileName: str) -> Dict[any]:
+def loadJsonFile(fileName: str) -> dict:
     """
     Returns a json file's data given the file's name
 
@@ -81,4 +81,5 @@ def loadJsonFile(fileName: str) -> Dict[any]:
         createFile(path)
 
 
-print(loadJsonFile("assignments"))
+if __name__ == '__main__':
+    print(loadJsonFile("assignments"))
