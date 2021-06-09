@@ -9,7 +9,7 @@ from typing import Dict
 import json
 
 
-def getJsonAbsolutePath() -> str:
+def getProjectDirPath() -> str:
     """
     Returns the absolute file path of the resources folder by looping
     through characters until the app folder is found.
@@ -56,7 +56,7 @@ def loadJsonFile(fileName: str) -> Dict[any]:
 
     prefix = ".json"
     projectPath = "resources\\data\\"
-    path = getJsonAbsolutePath() + projectPath + fileName + prefix
+    path = getProjectDirPath() + projectPath + fileName + prefix
 
     try:
         with open(path, "r") as file:
