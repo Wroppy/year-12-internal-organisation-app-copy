@@ -80,5 +80,6 @@ def loadJsonFile(fileName: str) -> dict:
 
         createFile(path)
 
+
 if __name__ == '__main__':
     print(loadJsonFile("assignments"))
