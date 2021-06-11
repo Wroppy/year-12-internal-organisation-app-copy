@@ -43,14 +43,7 @@ class NavBar(QWidget):
         :return: None
 
         """
-        # Creates the frame for the buttons
-        # This is done so there is a different colour for the spacing between buttons
-        self.buttonFrame = QWidget()
-        buttonFrameLayout = QVBoxLayout(self.buttonFrame)
-        buttonFrameLayout.setSpacing(1)
-        buttonFrameLayout.setContentsMargins(0, 0, 0, 1)
 
-        self.layout.addWidget(self.buttonFrame)
 
         # Creates the buttons
         buttonNames = ["Timetable", "Assignments", "Events", "Quick Links", "Settings"]
@@ -59,7 +52,7 @@ class NavBar(QWidget):
 
         for i in range(len(buttonNames)):
             button = navButton.NavButton(buttonNames[i], buttonIcons[i])
-            buttonFrameLayout.addWidget(button)
+            self.layout.addWidget(button)
             button.setObjectName(buttonName)
 
             self.buttons[buttonNames[i]] = button
@@ -78,12 +71,14 @@ class NavBar(QWidget):
             QPushButton#navButtons{{
                 border: none;
                 background-color: rgb{tuple(colours["buttonColour"])};
-                color: rgb{tuple(colours["navBarTextColour"])}
-            }}
+                color: rgb{tuple(colours["navBarTextColour"])};
+                border-bottom: 1px solid rgb{tuple(colours["navBarFrameColour"])};
+            }}  
             
             QPushButton#navButtons::hover{{
                 background-color: rgb{tuple(colours["buttonHoverColour"])};
             }}
+            
         """
 
         self.setStyleSheet(style)
@@ -93,12 +88,6 @@ class NavBar(QWidget):
         palette = self.palette()
         palette.setColor(QPalette.Window, QColor(backgroundColour[0], backgroundColour[1], backgroundColour[2]))
         self.setPalette(palette)
-
-        self.buttonFrame.setAutoFillBackground(True)
-        backgroundColour = colours["navBarFrameColour"]
-        palette = self.buttonFrame.palette()
-        palette.setColor(QPalette.Window, QColor(backgroundColour[0], backgroundColour[1], backgroundColour[2]))
-        self.buttonFrame.setPalette(palette)
 
 
 if __name__ == '__main__':
