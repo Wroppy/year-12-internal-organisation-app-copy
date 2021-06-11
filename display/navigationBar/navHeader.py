@@ -15,7 +15,7 @@ class NavHeader(QWidget):
         super(NavHeader, self).__init__()
         self.layout = QHBoxLayout(self)
         width = 200
-        height = 70
+        height = 60
 
         self.setFixedSize(width, height)
         self.layout.setContentsMargins(0, 0, 0, 0)
@@ -50,7 +50,7 @@ class NavHeader(QWidget):
         labelName = "headerLabel"
         self.label.setObjectName(labelName)
 
-        self.label.move(90, 20)
+        self.label.move(70, 15)
 
     def styleWidgets(self):
         """
