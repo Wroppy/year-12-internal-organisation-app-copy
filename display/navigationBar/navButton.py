@@ -12,13 +12,13 @@ from PySide6 import QtCore
 import sys
 from typing import *
 import resourceManager.resources
+from resourceManager.internalDataHandler import *
 
 
 class NavButton(QPushButton):
     def __init__(self, heading: str, iconName: str):
         super(NavButton, self).__init__()
 
-        horizontalLayout = QHBoxLayout(self)
         name = "NavButton"
         self.setObjectName(name)
 
@@ -27,21 +27,32 @@ class NavButton(QPushButton):
 
         self.setFixedSize(width, height)
 
-        text = QLabel(heading)
-
-        icon = QLabel()
         pixmapPath = ":/buttonIcons/" + iconName + ".png"
-        pixmap = QPixmap()
-        pixmap.load(pixmapPath)
-        icon.setPixmap(pixmap.scaledToHeight(height - 20))
-
-        horizontalLayout.addWidget(text)
-
-        horizontalLayout.addStretch()
-
-        horizontalLayout.addWidget(icon)
 
 
+
+        self.setText(heading)
+
+        self.setIcon(QIcon(pixmapPath))
+        print(self.iconSize())
+        self.setIconSize(QSize(48, 32))
+
+        self.setLayoutDirection(Qt.RightToLeft)
+
+        self.styleButton()
+
+
+
+    def styleButton(self):
+        colours = loadJsonFile("settings\\colours")
+        style = f"""
+            QPushButton  {{
+                color: rgb{tuple(colours["navBarTextColour"])}
+            }}
+            
+        """
+
+        self.setStyleSheet(style)
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
