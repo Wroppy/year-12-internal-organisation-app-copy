@@ -5,37 +5,45 @@ from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
 from display.assignmentWidget.assignment import Assignment
+from resourceManager.internalDataHandler import *
+
+colour = loadJsonFile("settings\\colours")
 
 
-class CompletedAssignement(QWidget):
+
+class CompletedAssignment(QWidget):
     def __init__(self, assignment: Assignment):
-        super(CompletedAssignement, self).__init__()
+        super(CompletedAssignment, self).__init__()
+        self.setObjectName("AssignmentWidget")
         layout = QHBoxLayout(self)
 
-        label = QLabel(assignment.title)
-        label.setWordWrap(True)
-        layout.addWidget(label)
+        title = QLabel(assignment.title)
+        #title.setWordWrap(True)
+        layout.addWidget(title)
 
         layout.addStretch()
 
-        spacerLeft = QLabel("|")
-        spacerRight = QLabel("|")
         completeLabel = QLabel("Completed")
+        completeLabel.setObjectName("completedLabel")
 
         radioButton = QRadioButton()
         radioButton.setChecked(True)
         radioButton.setEnabled(False)
 
-        layout.addWidget(spacerLeft)
         layout.addWidget(completeLabel)
         layout.addWidget(radioButton)
-        layout.addWidget(spacerRight)
 
+        style = f"""
+        QWidget#assignmentWidget{{
+            border-bottom: solid 1px rgb{tuple(colour["buttonColour"])};
+        }}
 
+        """
+        self.setStyleSheet(style)
 
 if __name__ == '__main__':
     app = QApplication()
-    display = CompletedAssignement(Assignment("Nice", "nice", True))
+    display = CompletedAssignment(Assignment("Title", "Description", True))
     display.show()
     app.exec()
 

@@ -1,3 +1,8 @@
+"""
+This class holds the entire assignment page, which included the completed and uncompleted assignments
+
+"""
+
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets
@@ -9,6 +14,7 @@ from display.contentButtonWidget import ContentButtonWidget
 
 
 class AssignmentCapsule(QWidget):
+
     def __init__(self):
         super(AssignmentCapsule, self).__init__()
         self.layout = QVBoxLayout(self)
@@ -29,4 +35,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     display = AssignmentCapsule()
     display.show()
+
     app.exec()
