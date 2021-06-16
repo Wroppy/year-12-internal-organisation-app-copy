@@ -1,9 +1,15 @@
 from PySide6.QtWidgets import *
-from display.assignmentWidget.assignment import Assignment
+from PySide6.QtCore import *
+from PySide6 import QtWidgets
+from PySide6.QtGui import *
+from PySide6 import QtCore
+import sys
 from resourceManager.internalDataHandler import *
 
-colour = loadJsonFile("settings\\colours")
 
+
+colours = loadJsonFile("settings\\colours")
+fonts = loadJsonFile("settings\\fonts")
 
 
 class CompletedAssignment(QWidget):
@@ -35,14 +41,3 @@ class CompletedAssignment(QWidget):
 
         """
         self.setStyleSheet(style)
-
-if __name__ == '__main__':
-    app = QApplication()
-    display = CompletedAssignment(Assignment("Title", "Description", True))
-    display.show()
-    app.exec()
-
-
-
-
-
