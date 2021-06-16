@@ -10,13 +10,13 @@ from resourceManager.internalDataHandler import *
 
 
 class NavBar(QWidget):
-    def __init__(self):
-        super(NavBar, self).__init__()
+    def __init__(self, parent=None):
+        super(NavBar, self).__init__(parent=parent)
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
 
-        self.buttons = {}
+        self.buttons = []
 
         self.header = navHeader.NavHeader()
 
@@ -34,7 +34,7 @@ class NavBar(QWidget):
         :return: None
         """
 
-        self.setFixedWidth(self.header.width())
+        self.setFixedWidth(self.header.WIDTH)
 
     def createNavButtons(self):
         """
@@ -43,7 +43,6 @@ class NavBar(QWidget):
         :return: None
 
         """
-
 
         # Creates the buttons
         buttonNames = ["Timetable", "Assignments", "Events", "Quick Links", "Account"]
@@ -56,9 +55,12 @@ class NavBar(QWidget):
             self.layout.addWidget(button)
             button.setObjectName(buttonName)
 
-            self.buttons[buttonNames[i]] = button
-
+            self.buttons.append(button)
         self.layout.addStretch()
+
+        # Makes the minimum height of the nav bar the header height + all of the button's heights
+        MINIMUMHEIGHT = self.header.HEIGHT + navButton.NavButton.HEIGHT * len(self.buttons)
+        self.setMinimumHeight(MINIMUMHEIGHT)
 
     def styleWidgets(self):
         """

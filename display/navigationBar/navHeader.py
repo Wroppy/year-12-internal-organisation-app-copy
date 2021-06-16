@@ -11,13 +11,14 @@ from resourceManager.internalDataHandler import *
 
 
 class NavHeader(QWidget):
+    WIDTH = 200
+    HEIGHT = 60
+
     def __init__(self):
         super(NavHeader, self).__init__()
         self.layout = QHBoxLayout(self)
-        width = 200
-        height = 60
 
-        self.setFixedSize(width, height)
+        self.setFixedSize(self.WIDTH, self.HEIGHT)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
         self.createButton()
@@ -34,8 +35,8 @@ class NavHeader(QWidget):
         iconPath = ":/buttonIcons/hamburger.png"
         self.hamburgerButton = QPushButton(self)
         self.hamburgerButton.setIcon(QIcon(iconPath))
-        self.hamburgerButton.setFixedSize(self.height(), self.height())
-        self.hamburgerButton.setIconSize(QSize(self.height() - 20, self.height() - 20))
+        self.hamburgerButton.setFixedSize(self.HEIGHT, self.HEIGHT)
+        self.hamburgerButton.setIconSize(QSize(self.HEIGHT - 20, self.HEIGHT - 20))
         self.hamburgerButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.hamburgerButton.move(0, 0)
         buttonName = "headerButton"

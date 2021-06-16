@@ -15,6 +15,9 @@ import resourceManager.resources
 
 
 class NavButton(QToolButton):
+    HEIGHT = 60
+    WIDTH = 200
+
     def __init__(self, heading: str, iconName: str):
         super(NavButton, self).__init__()
         self.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
@@ -23,9 +26,7 @@ class NavButton(QToolButton):
         self.setObjectName(NAME)
 
         # Sets dimensions of widget
-        HEIGHT = 60
-        WIDTH = 200
-        self.setFixedSize(WIDTH, HEIGHT)
+        self.setFixedSize(self.WIDTH, self.HEIGHT)
 
         self.setText(heading)
 
