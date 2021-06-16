@@ -12,7 +12,6 @@ from PySide6 import QtCore
 import sys
 from typing import *
 import resourceManager.resources
-from resourceManager.internalDataHandler import *
 
 
 class NavButton(QToolButton):
@@ -20,37 +19,22 @@ class NavButton(QToolButton):
         super(NavButton, self).__init__()
         self.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
-        name = "NavButton"
-        self.setObjectName(name)
+        NAME = "NavButton"
+        self.setObjectName(NAME)
 
-        height = 60
-        width = 200
-
-        self.setFixedSize(width, height)
-
-        pixmapPath = ":/buttonIcons/" + iconName + ".png"
+        # Sets dimensions of widget
+        HEIGHT = 60
+        WIDTH = 200
+        self.setFixedSize(WIDTH, HEIGHT)
 
         self.setText(heading)
 
-        self.setIcon(QIcon(pixmapPath))
+        # Sets the icon for the button
+        PIXMAPPATH = ":/buttonIcons/" + iconName + ".png"
+        self.setIcon(QIcon(PIXMAPPATH))
         self.setIconSize(QSize(32, 32))
 
         self.setLayoutDirection(Qt.RightToLeft)
-
-        self.styleButton()
-
-    def styleButton(self):
-        colours = loadJsonFile("settings\\colours")
-        style = f"""
-            QToolButton {{
-                color: rgb{tuple(colours["navBarTextColour"])};
-                padding: 0px 12px;
-                font-size: 14px;
-            }}
-            
-        """
-
-        self.setStyleSheet(style)
 
 
 if __name__ == '__main__':

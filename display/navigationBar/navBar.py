@@ -50,6 +50,7 @@ class NavBar(QWidget):
         buttonIcons = ["timetable", "task", "list", "link", "user"]
         buttonName = "navButtons"
 
+        # Loops through and creates a button for each name in the list
         for i in range(len(buttonNames)):
             button = navButton.NavButton(buttonNames[i], buttonIcons[i])
             self.layout.addWidget(button)
@@ -73,6 +74,8 @@ class NavBar(QWidget):
                 background-color: rgb{tuple(colours["buttonColour"])};
                 color: rgb{tuple(colours["navBarTextColour"])};
                 border-bottom: 1px solid rgb{tuple(colours["navBarFrameColour"])};
+                padding: 0px 12px;
+                font-size: 14px;
             }}  
             
             QToolButton#navButtons::hover{{
