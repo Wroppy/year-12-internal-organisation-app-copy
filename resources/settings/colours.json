@@ -3,5 +3,6 @@
   "navBarTextColour": [250, 250, 250],
   "buttonColour": [128, 128, 128],
   "buttonHoverColour": [120, 120, 120],
-  "navBarFrameColour": [43, 43, 43]
+  "navBarFrameColour": [43, 43, 43],
+  "linkColour": [0, 38, 255]
 }
