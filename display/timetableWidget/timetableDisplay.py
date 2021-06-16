@@ -1,3 +1,8 @@
+"""
+This class only displays the timetables and its days
+
+"""
+
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets
@@ -22,6 +27,11 @@ class TimetableDisplay(QWidget):
         self.styleWidget()
 
     def createComboBox(self):
+        """
+        Creates the combobox displaying the days
+
+        :return: None
+        """
         self.days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
         self.daysSelection = QComboBox()
 
@@ -32,10 +42,21 @@ class TimetableDisplay(QWidget):
         self.daysSelection.currentIndexChanged.connect(self.changeTimetableDay)
 
     def changeTimetableDay(self):
+        """
+        Changes the timetable based on the day
+
+        :return: None
+        """
         day = self.daysSelection.currentIndex()
         self.timetablesWidget.setCurrentIndex(day)
 
     def createTimetableDays(self):
+        """
+        Adds a timetable for each day
+
+        :return:
+        """
+
         self.timetables = []
         self.timetablesWidget = QStackedWidget()
 
@@ -48,9 +69,23 @@ class TimetableDisplay(QWidget):
         self.layout.addWidget(self.timetablesWidget)
 
     def addClass(self, day: str, title: str, startingTime: int, endingTime: int):
+        """
+        Adds a class to the timetable given the day
+
+        :param day: str
+        :param title: str
+        :param startingTime: int
+        :param endingTime: int
+        :return:
+        """
         self.classes[day].append(Class(title, startingTime, endingTime))
 
     def styleWidget(self):
+        """
+        Styles the widgets
+
+        :return: None
+        """
         style = f"""
             QComboBox{{
                 font-size: 18px;

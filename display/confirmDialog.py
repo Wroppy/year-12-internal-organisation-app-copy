@@ -1,3 +1,9 @@
+"""
+This class creates a simple yes/no dialog window with a label
+
+"""
+
+
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets

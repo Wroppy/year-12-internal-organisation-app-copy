@@ -1,3 +1,9 @@
+"""
+Contains a list of class widgets
+
+"""
+
+
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets
@@ -34,6 +40,16 @@ class ClassHolder(QWidget):
         self.widgetLayout.addStretch()
 
     def addClass(self, classTitle: str, startingTime: int, endingTime: int):
+        """
+        Adds a class to the timetable by appending it and redisplaying the layout
+
+        :param classTitle: str
+        :param startingTime: int
+        :param endingTime: int
+        :return: None
+        """
+
+
         c = Class(classTitle, startingTime, endingTime)
         self.classes.append(c)
 
@@ -76,6 +92,11 @@ class ClassHolder(QWidget):
             pass
 
     def sortTimetable(self):
+        """
+        Sorts the timetable by the classes beginning time.
+
+        :return: None
+        """
         self.classes.sort(key=lambda t: t.beginningTime)
         print(self.classes)
 

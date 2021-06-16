@@ -1,3 +1,9 @@
+"""
+Created the button widget for the timetable page
+
+"""
+
+
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets
@@ -17,6 +23,7 @@ class ButtonWidget(QWidget):
         layout = QHBoxLayout(self)
         layout.setContentsMargins(20, 20, 20, 20)
 
+        # Adds 2 buttons to the page
         self.newButton = QPushButton("New Class")
         self.deleteButton = QPushButton("Delete Class")
 
@@ -27,6 +34,7 @@ class ButtonWidget(QWidget):
         layout.addWidget(self.newButton)
         layout.addWidget(self.deleteButton)
 
+        # Styles the buttons to its colours
         style = f"""
             QPushButton{{
                 border: none;

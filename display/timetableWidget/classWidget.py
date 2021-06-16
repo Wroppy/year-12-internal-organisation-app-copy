@@ -1,3 +1,9 @@
+"""
+This class is for a specific class in the timetable.
+It contains the title, start and end time, along with a radio button
+
+"""
+
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets

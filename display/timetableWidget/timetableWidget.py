@@ -1,3 +1,8 @@
+"""
+This class contains the entire timetable page, which includes the timetable display and the buttons
+
+"""
+
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets
@@ -14,6 +19,7 @@ class TimetablePageWidget(QWidget):
     def __init__(self):
         super(TimetablePageWidget, self).__init__()
 
+        # Sets a layout and adds widgets to the page
         layout = QVBoxLayout(self)
 
         self.timetableWidget = TimetableDisplay()
@@ -43,6 +49,7 @@ class TimetablePageWidget(QWidget):
                 startingTime = int(f"{dialog.startTimeHour.value()}{dialog.startTimeMinute.value()}")
                 endingTime = int(f"{dialog.endTimeHour.value()}{dialog.endTimeMinute.value()}")
 
+                # Adds the class to the page
                 self.addClass(classTitle, startingTime, endingTime)
 
     def addClass(self, classTitle: str, startingTime: int, endingTime: int):
@@ -61,9 +68,13 @@ class TimetablePageWidget(QWidget):
 
 
     def showDeleteDialog(self):
+        """
+        Checks if the user wants to delete the class in their timetable
+
+        :return: None
+        """
         currentDay = self.timetableWidget.daysSelection.currentIndex()
         timetables = self.timetableWidget.timetables
-        print(timetables)
 
         # Accesses the radiobutton inside the class holder, inside of the timetable
         # Timetable -> Specific Day of Timetable -> Each individual class -> radio button
@@ -77,6 +88,11 @@ class TimetablePageWidget(QWidget):
                 break
 
     def connectButtons(self):
+        """
+        Gives the buttons functionality
+
+        :return: None
+        """
         self.buttonWidget.newButton.clicked.connect(self.showNewClassDialog)
         self.buttonWidget.deleteButton.clicked.connect(self.showDeleteDialog)
 
