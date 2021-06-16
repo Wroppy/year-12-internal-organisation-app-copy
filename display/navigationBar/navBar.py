@@ -68,14 +68,14 @@ class NavBar(QWidget):
         colours = loadJsonFile("settings\\colours")
 
         style = f"""
-            QPushButton#navButtons{{
+            QToolButton#navButtons{{
                 border: none;
                 background-color: rgb{tuple(colours["buttonColour"])};
                 color: rgb{tuple(colours["navBarTextColour"])};
                 border-bottom: 1px solid rgb{tuple(colours["navBarFrameColour"])};
             }}  
             
-            QPushButton#navButtons::hover{{
+            QToolButton#navButtons::hover{{
                 background-color: rgb{tuple(colours["buttonHoverColour"])};
             }}
             

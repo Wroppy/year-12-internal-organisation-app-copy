@@ -35,7 +35,7 @@ class NavHeader(QWidget):
         self.hamburgerButton = QPushButton(self)
         self.hamburgerButton.setIcon(QIcon(iconPath))
         self.hamburgerButton.setFixedSize(self.height(), self.height())
-        self.hamburgerButton.setIconSize(QSize(self.height(), self.height()))
+        self.hamburgerButton.setIconSize(QSize(self.height() - 20, self.height() - 20))
         self.hamburgerButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.hamburgerButton.move(0, 0)
         buttonName = "headerButton"
