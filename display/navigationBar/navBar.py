@@ -46,8 +46,8 @@ class NavBar(QWidget):
 
 
         # Creates the buttons
-        buttonNames = ["Timetable", "Assignments", "Events", "Quick Links", "Settings"]
-        buttonIcons = ["timetable", "task", "list", "link", "settings"]
+        buttonNames = ["Timetable", "Assignments", "Events", "Quick Links", "Account"]
+        buttonIcons = ["timetable", "task", "list", "link", "user"]
         buttonName = "navButtons"
 
         for i in range(len(buttonNames)):
