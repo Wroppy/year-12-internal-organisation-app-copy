@@ -51,7 +51,7 @@ class NavHeader(QWidget):
         labelName = "headerLabel"
         self.label.setObjectName(labelName)
 
-        self.label.move(70, 15)
+        self.label.move(65, 15)
 
     def styleWidgets(self):
         """
@@ -80,6 +80,12 @@ class NavHeader(QWidget):
         palette = self.palette()
         palette.setColor(QPalette.Window, QColor(backgroundColour[0], backgroundColour[1], backgroundColour[2]))
         self.setPalette(palette)
+
+    def moveButtonCollapsed(self):
+        self.hamburgerButton.move(144, 0)
+
+    def moveButtonExtended(self):
+        self.hamburgerButton.move(0, 0)
 
 
 if __name__ == '__main__':

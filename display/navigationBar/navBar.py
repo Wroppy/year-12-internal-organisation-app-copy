@@ -27,6 +27,14 @@ class NavBar(QWidget):
 
         self.styleWidgets()
 
+        self.extended = True
+
+    def isExtended(self):
+        return self.extended
+
+    def changeExtended(self):
+        self.extended = not self.extended
+
     def setPresets(self):
         """
         Sets the presets for the widget
@@ -76,7 +84,7 @@ class NavBar(QWidget):
                 background-color: rgb{tuple(colours["buttonColour"])};
                 color: rgb{tuple(colours["navBarTextColour"])};
                 border-bottom: 1px solid rgb{tuple(colours["navBarFrameColour"])};
-                padding: 0px 12px;
+                padding: 0px 10px;
                 font-size: 14px;
             }}  
             

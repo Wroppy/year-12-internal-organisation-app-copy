@@ -46,13 +46,7 @@ class MainWindow(QMainWindow):
 
         self.addNavButtonFunction()
 
-    def addNavButtonFunction(self):
-        for i in range(len(self.navBar.buttons)):
-            print(i)
-            self.navBar.buttons[i].clicked.connect(lambda checked=False, index=i: self.switchPage(index))
-
     def switchPage(self, index: int):
-        print(index)
         self.windowPages.setCurrentIndex(index)
 
     def resizeEvent(self, event: QResizeEvent) -> None:
@@ -66,8 +60,58 @@ class MainWindow(QMainWindow):
         # Resizes the nav bar to the height of the window
         self.navBar.resize(self.navBar.width(), self.height())
 
+        if self.navBar.isExtended():
+            self.shrinkContentWidget()
+        else:
+            self.enlargeContentWidget()
+
+
+
+    def addNavButtonFunction(self):
+        for i in range(len(self.navBar.buttons)):
+            self.navBar.buttons[i].clicked.connect(lambda checked=False, index=i: self.switchPage(index))
+
+        self.navBar.header.hamburgerButton.clicked.connect(lambda: self.hamburgerButtonClicked())
+
+    def hamburgerButtonClicked(self):
+        """
+        Will collapse or extend the nav bar and resize the widgets
+
+        :return: None
+        """
+        if self.navBar.isExtended():
+            self.collapseNavBar()
+            self.enlargeContentWidget()
+
+        else:
+            self.extendNavBar()
+            self.shrinkContentWidget()
+
+
+        self.navBar.changeExtended()
+        print(self.navBar.isExtended())
+
+    def extendNavBar(self):
+        self.navBar.move(QPoint(0, 0))
+        self.navBar.header.moveButtonExtended()
+
+    def collapseNavBar(self):
+        self.navBar.move(QPoint(-144, 0))
+        self.navBar.header.moveButtonCollapsed()
+
+    def shrinkContentWidget(self):
         resizeWidth = self.width() - self.navBar.width()
-        self.windowPages.resize(resizeWidth, self.height())
+
+        self.windowPages.resize(QSize(resizeWidth, self.height()))
+        self.windowPages.move(QPoint(200, 0))
+
+    def enlargeContentWidget(self):
+        # Resizes the content widget and repositions it
+
+
+        resizeWidth = self.width() - 56
+        self.windowPages.resize(QSize(resizeWidth, self.height()))
+        self.windowPages.move(QPoint(56, 0))
 
 if __name__ == '__main__':
     app = QApplication()
