@@ -18,7 +18,7 @@ class NavButton(QToolButton):
     HEIGHT = 60
     WIDTH = 200
 
-    def     __init__(self, heading: str, iconName: str):
+    def __init__(self, heading: str, iconName: str):
         super(NavButton, self).__init__()
         self.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 

@@ -53,15 +53,15 @@ class NavBar(QWidget):
         """
 
         # Creates the buttons
-        buttonNames = ["Timetable", "Assignments", "Events", "Quick Links", "Account"]
-        buttonIcons = ["timetable", "task", "list", "link", "user"]
-        buttonName = "navButtons"
+        BUTTONNAMES = ["Timetable", "Assignments", "Events", "Quick Links", "Account"]
+        BUTTONICONS = ["timetable", "task", "list", "link", "user"]
+        BUTTONNAME = "navButtons"
 
         # Loops through and creates a button for each name in the list
-        for i in range(len(buttonNames)):
-            button = navButton.NavButton(buttonNames[i], buttonIcons[i])
+        for i in range(len(BUTTONNAMES)):
+            button = navButton.NavButton(BUTTONNAMES[i], BUTTONICONS[i])
             self.layout.addWidget(button)
-            button.setObjectName(buttonName)
+            button.setObjectName(BUTTONNAME)
 
             self.buttons.append(button)
         self.layout.addStretch()
@@ -76,30 +76,31 @@ class NavBar(QWidget):
 
         :return: None
         """
-        colours = loadJsonFile("settings\\colours")
+        COLOURS = loadJsonFile("settings\\colours")
 
-        style = f"""
+        STYLE = f"""
             QToolButton#navButtons{{
                 border: none;
-                background-color: rgb{tuple(colours["buttonColour"])};
-                color: rgb{tuple(colours["navBarTextColour"])};
-                border-bottom: 1px solid rgb{tuple(colours["navBarFrameColour"])};
+                background-color: rgb{tuple(COLOURS["buttonColour"])};
+                color: rgb{tuple(COLOURS["navBarTextColour"])};
+                border-bottom: 1px solid rgb{tuple(COLOURS["navBarFrameColour"])};
                 padding: 0px 10px;
                 font-size: 14px;
             }}  
             
             QToolButton#navButtons::hover{{
-                background-color: rgb{tuple(colours["buttonHoverColour"])};
+                background-color: rgb{tuple(COLOURS["buttonHoverColour"])};
             }}
             
         """
 
-        self.setStyleSheet(style)
+        self.setStyleSheet(STYLE)
 
+        # Sets the background colour to a grey
         self.setAutoFillBackground(True)
-        backgroundColour = colours["buttonColour"]
+        BACKGROUNDCOLOUR = COLOURS["buttonColour"]
         palette = self.palette()
-        palette.setColor(QPalette.Window, QColor(backgroundColour[0], backgroundColour[1], backgroundColour[2]))
+        palette.setColor(QPalette.Window, QColor(BACKGROUNDCOLOUR[0], BACKGROUNDCOLOUR[1], BACKGROUNDCOLOUR[2]))
         self.setPalette(palette)
 
 

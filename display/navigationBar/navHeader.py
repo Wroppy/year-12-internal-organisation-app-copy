@@ -32,15 +32,15 @@ class NavHeader(QWidget):
 
         :return: None
         """
-        iconPath = ":/buttonIcons/hamburger.png"
+        ICONPATH = ":/buttonIcons/hamburger.png"
         self.hamburgerButton = QPushButton(self)
-        self.hamburgerButton.setIcon(QIcon(iconPath))
+        self.hamburgerButton.setIcon(QIcon(ICONPATH))
         self.hamburgerButton.setFixedSize(self.HEIGHT, self.HEIGHT)
         self.hamburgerButton.setIconSize(QSize(self.HEIGHT - 20, self.HEIGHT - 20))
         self.hamburgerButton.setCursor(QCursor(Qt.PointingHandCursor))
         self.hamburgerButton.move(0, 0)
-        buttonName = "headerButton"
-        self.hamburgerButton.setObjectName(buttonName)
+        BUTTONNAME = "headerButton"
+        self.hamburgerButton.setObjectName(BUTTONNAME)
 
         # self.layout.addWidget(self.hamburgerButton)
 
@@ -48,8 +48,8 @@ class NavHeader(QWidget):
         self.label = QLabel(self)
         self.label.setText("Organiser")
 
-        labelName = "headerLabel"
-        self.label.setObjectName(labelName)
+        LABELNAME = "headerLabel"
+        self.label.setObjectName(LABELNAME)
 
         self.label.move(65, 15)
 
@@ -59,26 +59,27 @@ class NavHeader(QWidget):
 
         :return: None
         """
-        colours = loadJsonFile("settings\\colours")
-        font = loadJsonFile("settings\\fonts")
+        COLOURS = loadJsonFile("settings\\colours")
+        FONT = loadJsonFile("settings\\fonts")
 
-        style = f"""
+        STYLE = f"""
             QPushButton#headerButton{{
                 border: none;
             }}
             
             QLabel#headerLabel{{
-                font-size: {font["headerSize"]}px;
-                color: rgb{tuple(colours["navBarTextColour"])};
+                font-size: {FONT["headerSize"]}px;
+                color: rgb{tuple(COLOURS["navBarTextColour"])};
             }}
         """
 
-        self.setStyleSheet(style)
+        self.setStyleSheet(STYLE)
 
+        # Sets the background colour to a dark grey
         self.setAutoFillBackground(True)
-        backgroundColour = colours["headerColour"]
+        BACKGROUNDCOLOUR = COLOURS["headerColour"]
         palette = self.palette()
-        palette.setColor(QPalette.Window, QColor(backgroundColour[0], backgroundColour[1], backgroundColour[2]))
+        palette.setColor(QPalette.Window, QColor(BACKGROUNDCOLOUR[0], BACKGROUNDCOLOUR[1], BACKGROUNDCOLOUR[2]))
         self.setPalette(palette)
 
     def moveButtonCollapsed(self):
