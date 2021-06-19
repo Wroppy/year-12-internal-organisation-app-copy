@@ -6,20 +6,18 @@ from PySide6 import QtCore
 import sys
 from resourceManager.internalDataHandler import *
 
-
-
 colours = loadJsonFile("settings\\colours")
 fonts = loadJsonFile("settings\\fonts")
 
 
 class CompletedAssignment(QWidget):
-    def __init__(self, assignment: Assignment):
+    def __init__(self, assignment):
         super(CompletedAssignment, self).__init__()
         self.setObjectName("AssignmentWidget")
         layout = QHBoxLayout(self)
 
         title = QLabel(assignment.title)
-        #title.setWordWrap(True)
+        # title.setWordWrap(True)
         layout.addWidget(title)
 
         layout.addStretch()
@@ -36,7 +34,7 @@ class CompletedAssignment(QWidget):
 
         style = f"""
         QWidget#assignmentWidget{{
-            border-bottom: solid 1px rgb{tuple(colour["buttonColour"])};
+            border-bottom: solid 1px rgb{tuple(colours["buttonColour"])};
         }}
 
         """

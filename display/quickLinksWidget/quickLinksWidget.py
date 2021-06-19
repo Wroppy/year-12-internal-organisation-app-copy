@@ -8,6 +8,7 @@ from typing import *
 from resourceManager.internalDataHandler import loadJsonFile
 
 
+
 class QuickLinksPage(QWidget):
     def __init__(self):
         super(QuickLinksPage, self).__init__()

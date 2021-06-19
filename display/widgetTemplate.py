@@ -28,6 +28,8 @@ class WidgetTemplate(QWidget):
         :return: None
         """
 
+
+
     def createWidgets(self):
         """
         Creates the widgets for the widget

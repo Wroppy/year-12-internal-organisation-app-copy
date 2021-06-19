@@ -8,6 +8,7 @@ from typing import *
 from display.navigationBar import navBar
 from display.timetableWidget.timetableWidget import TimetablePageWidget
 from display.quickLinksWidget.quickLinksWidget import QuickLinksPage
+from display.account.accountWidget import AccountWidget
 
 
 class MainWindow(QMainWindow):
@@ -39,7 +40,7 @@ class MainWindow(QMainWindow):
             QLabel("Assignments"),
             QLabel("Events"),
             QuickLinksPage(),
-            QLabel("Account")
+            AccountWidget()
         ]
         for page in PAGES:
             self.windowPages.addWidget(page)
