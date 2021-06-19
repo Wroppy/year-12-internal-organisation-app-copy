@@ -13,7 +13,7 @@ class ActiveWidgetDisplay(QWidget):
         layout.setSpacing(0)
 
         # Creates the header
-        header = Header("Active Assignments")
+        header = Header("Assignments")
         layout.addWidget(header)
 
         # Creates the widget holder

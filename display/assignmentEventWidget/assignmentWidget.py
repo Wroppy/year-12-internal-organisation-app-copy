@@ -4,9 +4,9 @@ from PySide6.QtGui import *
 from display.assignmentEventWidget.assignment import Assignment
 
 
-class ActiveWidget(QWidget):
+class AssignmentWidget(QWidget):
     def __init__(self, assignment: Assignment):
-        super(ActiveWidget, self).__init__()
+        super(AssignmentWidget, self).__init__()
         layout = QHBoxLayout(self)
 
         # Creates a radio button for thw widget
@@ -20,7 +20,7 @@ class ActiveWidget(QWidget):
         layout.addStretch()
 
         # Creates a radio button for the right of the screen
-        self.completedButton = QRadioButton("Completed")
+        self.completedButton = QCheckBox("Completed")
 
         # Disables the button if the assignment/event has been com
         if assignment.completed:
@@ -33,7 +33,7 @@ class ActiveWidget(QWidget):
 
 if __name__ == '__main__':
     app = QApplication()
-    display = ActiveWidget(Assignment("Title", False))
+    display = AssignmentWidget(Assignment("Title", False))
     display.show()
     app.exec()
 

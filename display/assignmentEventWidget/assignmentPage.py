@@ -6,7 +6,6 @@ from PySide6 import QtCore
 import sys
 
 from display.assignmentEventWidget.activeWidgetDisplay import ActiveWidgetDisplay
-from display.assignmentEventWidget.completedWidgetDisplay import CompletedWidgetDisplay
 from display.assignmentEventWidget.contentButtonWidget import ContentButtonWidget
 
 
@@ -20,11 +19,12 @@ class AssignmentPage(QWidget):
         self.activeWidgets = ActiveWidgetDisplay()
         layout.addWidget(self.activeWidgets)
 
-        self.completedWidgets = CompletedWidgetDisplay()
-        layout.addWidget(self.completedWidgets)
 
         self.buttonWidget = ContentButtonWidget("Add Assignment", "Edit Assignment", "Delete Assignment")
         layout.addWidget(self.buttonWidget)
+
+    def addButtonFunction(self):
+        pass
 
 if __name__ == '__main__':
     app = QApplication()
