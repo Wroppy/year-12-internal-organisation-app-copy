@@ -11,21 +11,25 @@ class ContentButtonWidget(QWidget):
     def __init__(self, addButtonText: str, deleteButtonText: str):
         super(ContentButtonWidget, self).__init__(None)
 
-        height = 69
-        self.setFixedHeight(height)
+        # Sets a fixed height for the widget
+        HEIGHT = 69
+        self.setFixedHeight(HEIGHT)
 
+        # Creates the layout and adds a spacer to it
         layout = QHBoxLayout(self)
-
         layout.addStretch()
 
+        # Creates an add button
         self.addButton = QPushButton(addButtonText)
         layout.addWidget(self.addButton)
 
+        # Creates a delete button
         self.deleteButton = QPushButton(deleteButtonText)
         layout.addWidget(self.deleteButton)
         colours = loadJsonFile("settings\\colours")
 
-        style = f""" 
+        # Styles the widgets
+        STYLE = f""" 
             QPushButton{{
                 border: none;
                 font-size: 15px;
@@ -40,11 +44,11 @@ class ContentButtonWidget(QWidget):
             }}
                 """
 
-        self.setStyleSheet(style)
+        self.setStyleSheet(STYLE)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    display = ContentButtonWidget("add text", "edit text", "delete text")
+    display = ContentButtonWidget("add text", "delete text")
     display.show()
     app.exec()

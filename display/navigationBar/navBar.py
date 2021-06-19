@@ -29,10 +29,19 @@ class NavBar(QWidget):
 
         self.extended = True
 
-    def isExtended(self):
+    def isExtended(self) -> bool:
+        """
+        Returns whether the nav bar is extended or not
+
+        :return: boolean
+        """
         return self.extended
 
     def changeExtended(self):
+        """
+        Switches the extended state of the nav bar
+
+        """
         self.extended = not self.extended
 
     def setPresets(self):

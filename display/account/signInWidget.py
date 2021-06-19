@@ -68,6 +68,12 @@ class SignIn(QWidget):
         layout.addStretch()
 
     def createSignUpButton(self, layout: Union[QVBoxLayout, QHBoxLayout, QGridLayout]):
+        """
+        Creates the sign up button and adds it to the layout
+
+        :param layout: Union[QVBoxLayout, QHBoxLayout, QGridLayout]
+        """
+
         self.signUpButton = QPushButton("Dont have an account? Sign Up")
         layout.addWidget(self.signUpButton)
 

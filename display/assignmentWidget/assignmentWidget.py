@@ -22,10 +22,8 @@ class AssignmentWidget(QWidget):
         # Creates a radio button for the right of the screen
         self.completedButton = QCheckBox("Completed")
 
-        # Disables the button if the assignment/event has been com
-        if assignment.completed:
-            self.completedButton.setChecked(True)
-            self.completedButton.setDisabled(True)
+        # Sets the completed button to the assignments state
+        self.completedButton.setChecked(assignment.completed)
 
         self.completedButton.setLayoutDirection(Qt.RightToLeft)
         layout.addWidget(self.completedButton)

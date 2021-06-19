@@ -24,9 +24,17 @@ class AccountWidget(QStackedWidget):
         self.signUp.signUpButton.clicked.connect(self.changeToSignIn)
 
     def changeToSignUp(self):
+        """
+        Changes the page to the sign up page
+
+        """
         self.setCurrentIndex(1)
 
     def changeToSignIn(self):
+        """
+        Changes the page to the sign in page
+
+        """
         self.setCurrentIndex(0)
 
 

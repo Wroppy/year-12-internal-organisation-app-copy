@@ -9,6 +9,11 @@ from display.account.signInWidget import SignIn
 
 
 class SignUpWidget(SignIn):
+    """
+    Inherits from the Sign in widget, and just sets the text of the buttons differently
+
+
+    """
     def __init__(self):
         super(SignUpWidget, self).__init__()
         TEXT = "Sign Up"

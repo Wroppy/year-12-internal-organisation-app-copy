@@ -6,9 +6,9 @@ from display.assignmentWidget.widgetHolder import WidgetHolder
 from display.assignmentWidget.assignmentHeaders import Header
 
 
-class ActiveWidgetDisplay(QWidget):
+class AssignmentDisplay(QWidget):
     def __init__(self):
-        super(ActiveWidgetDisplay, self).__init__()
+        super(AssignmentDisplay, self).__init__()
         layout = QVBoxLayout(self)
         layout.setSpacing(0)
 
@@ -31,9 +31,22 @@ class ActiveWidgetDisplay(QWidget):
         self.styleWidgets()
 
     def addWidget(self, title: str, completed: bool):
-        pass
+        """
+        Adds an assignment given the title and its state
+
+        :param title: str
+        :param completed: boolean
+        """
+        assignment = Assignment(title, completed)
+        self.widgetHolder.appendAssignments(assignment)
+
+        self.widgetHolder.addAssignmentsToLayout()
 
     def styleWidgets(self):
+        """
+        Styles the widgets nested
+
+        """
         STYLE = f"""
             QScrollArea{{
                 border: none;
@@ -45,6 +58,6 @@ class ActiveWidgetDisplay(QWidget):
 
 if __name__ == '__main__':
     app = QApplication()
-    display = ActiveWidgetDisplay()
+    display = AssignmentDisplay()
     display.show()
     app.exec()
