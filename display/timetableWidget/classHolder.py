@@ -41,7 +41,7 @@ class ClassHolder(QWidget):
 
     def addClass(self, classTitle: str, startingTime: int, endingTime: int):
         """
-        Adds a class to the timetable by appending it and redisplaying the layout
+        Adds a class to the timetable by appending it and re-displaying the layout
 
         :param classTitle: str
         :param startingTime: int
@@ -68,7 +68,6 @@ class ClassHolder(QWidget):
         """
 
         self.classes.pop(index)
-        print(self.classes)
         self.deleteItemsInLayout()
         self.updateClasses()
 

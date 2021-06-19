@@ -5,7 +5,6 @@ from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
 from typing import *
-from display.widgetTemplate import WidgetTemplate
 import resourceManager.resources
 from resourceManager.internalDataHandler import *
 

@@ -48,11 +48,17 @@ class MainWindow(QMainWindow):
         self.addNavButtonFunction()
 
     def switchPage(self, index: int):
+        """
+        Switches the pages of the widget given the index
+
+        :param index: int
+
+        """
         self.windowPages.setCurrentIndex(index)
 
     def resizeEvent(self, event: QResizeEvent) -> None:
         """
-        Because there is no layout, the widgets be resized and moved in this function
+        Because there is no layout, the widgets are resized and moved in this function
 
         :param event: QResizeEvent
         :return: None
@@ -93,25 +99,41 @@ class MainWindow(QMainWindow):
         print(self.navBar.isExtended())
 
     def extendNavBar(self):
+        """
+        Moves the nav bar to fully extend
+
+        :return: None
+
+        """
         self.navBar.move(QPoint(0, 0))
         self.navBar.header.moveButtonExtended()
 
     def collapseNavBar(self):
+        """
+        Moves the nav bar through to a negative point to give the feeling of the nav bar closing
+
+        """
         self.navBar.move(QPoint(-144, 0))
         self.navBar.header.moveButtonCollapsed()
 
     def shrinkContentWidget(self):
-        resizeWidth = self.width() - self.navBar.width()
+        """
+        Shrinks the content of the display
 
-        self.windowPages.resize(QSize(resizeWidth, self.height()))
+        """
+        RESIZEWIDTH = self.width() - self.navBar.width()
+
+        self.windowPages.resize(QSize(RESIZEWIDTH, self.height()))
         self.windowPages.move(QPoint(200, 0))
 
     def enlargeContentWidget(self):
-        # Resizes the content widget and repositions it
+        """
+        Resizes the content widget and repositions it
 
+        """
 
-        resizeWidth = self.width() - 56
-        self.windowPages.resize(QSize(resizeWidth, self.height()))
+        RESIZEWIDTH = self.width() - 56
+        self.windowPages.resize(QSize(RESIZEWIDTH, self.height()))
         self.windowPages.move(QPoint(56, 0))
 
 if __name__ == '__main__':

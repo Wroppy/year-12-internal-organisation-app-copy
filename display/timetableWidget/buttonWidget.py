@@ -3,7 +3,6 @@ Created the button widget for the timetable page
 
 """
 
-
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets
@@ -12,8 +11,6 @@ from PySide6 import QtCore
 import sys
 from typing import *
 from resourceManager.internalDataHandler import loadJsonFile
-
-colours = loadJsonFile("settings\\colours")
 
 
 class ButtonWidget(QWidget):
@@ -34,23 +31,24 @@ class ButtonWidget(QWidget):
         layout.addWidget(self.newButton)
         layout.addWidget(self.deleteButton)
 
+        COLOURS = loadJsonFile("settings\\colours")
         # Styles the buttons to its colours
-        style = f""" 
+        STYLE = f""" 
             QPushButton{{
                 border: none;
                 font-size: 15px;
                 color: white;
-                background-color: rgb{tuple(colours["buttonColour"])};
+                background-color: rgb{tuple(COLOURS["buttonColour"])};
                 padding: 10px 15px;
 
             }}
 
             QPushButton::hover{{
-                background-color: rgb{tuple(colours["buttonHoverColour"])}
+                background-color: rgb{tuple(COLOURS["buttonHoverColour"])}
             }}
                 """
 
-        self.setStyleSheet(style)
+        self.setStyleSheet(STYLE)
 
 
 if __name__ == '__main__':

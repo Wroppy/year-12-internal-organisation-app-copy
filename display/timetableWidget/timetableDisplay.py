@@ -76,7 +76,7 @@ class TimetableDisplay(QWidget):
         :param title: str
         :param startingTime: int
         :param endingTime: int
-        :return:
+        :return: None
         """
         self.classes[day].append(Class(title, startingTime, endingTime))
 
@@ -86,14 +86,14 @@ class TimetableDisplay(QWidget):
 
         :return: None
         """
-        style = f"""
+        STYLE = f"""
             QComboBox{{
                 font-size: 18px;
                 border: none;
             }}
         """
 
-        self.setStyleSheet(style)
+        self.setStyleSheet(STYLE)
 
 
 if __name__ == '__main__':

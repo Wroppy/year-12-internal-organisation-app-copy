@@ -19,7 +19,7 @@ class CloudDataBase:
         """
         try:
             connection = pyodbc.connect(
-                'driver={SQL Server};  Serv er=3.25.137.79; Database=OrgApp; Trusted_Connection=no; UID=supermoon; PWD=Bluesky*99')
+                'driver={SQL Server};  Server=3.25.137.79; Database=OrgApp; Trusted_Connection=no; UID=supermoon; PWD=Bluesky*99')
 
             self.cursor = connection.cursor()
 

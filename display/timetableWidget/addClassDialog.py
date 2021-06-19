@@ -9,8 +9,8 @@ import sys
 class AddClassDialog(QDialog):
     def __init__(self, parent=None):
         super(AddClassDialog, self).__init__(parent=parent)
-        title = "Add Class"
-        self.setWindowTitle(title)
+        TITLE = "Add Class"
+        self.setWindowTitle(TITLE)
         layout = QVBoxLayout(self)
         layout.setSpacing(10)
 

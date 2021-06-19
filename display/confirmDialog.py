@@ -15,8 +15,8 @@ import sys
 class ConfirmDialog(QDialog):
     def __init__(self, text: str):
         super(ConfirmDialog, self).__init__()
-        title = "Confirm"
-        self.setWindowTitle(title)
+        TITLE = "Confirm"
+        self.setWindowTitle(TITLE)
         layout = QVBoxLayout(self)
 
         # Creates the label for the dialog window
