@@ -8,7 +8,7 @@ from resourceManager.internalDataHandler import *
 
 
 class ContentButtonWidget(QWidget):
-    def __init__(self, addButtonText: str, editButtonText: str, deleteButtonText: str):
+    def __init__(self, addButtonText: str, deleteButtonText: str):
         super(ContentButtonWidget, self).__init__(None)
 
         height = 69
@@ -20,9 +20,6 @@ class ContentButtonWidget(QWidget):
 
         self.addButton = QPushButton(addButtonText)
         layout.addWidget(self.addButton)
-
-        self.editButton = QPushButton(editButtonText)
-        layout.addWidget(self.editButton)
 
         self.deleteButton = QPushButton(deleteButtonText)
         layout.addWidget(self.deleteButton)

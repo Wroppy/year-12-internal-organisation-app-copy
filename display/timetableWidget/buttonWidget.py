@@ -35,19 +35,20 @@ class ButtonWidget(QWidget):
         layout.addWidget(self.deleteButton)
 
         # Styles the buttons to its colours
-        style = f"""
+        style = f""" 
             QPushButton{{
                 border: none;
+                font-size: 15px;
+                color: white;
                 background-color: rgb{tuple(colours["buttonColour"])};
-                color: rgb{tuple(colours["navBarTextColour"])};
-                border-bottom: 1px solid rgb{tuple(colours["navBarFrameColour"])};
-                padding: 12px 14px;
-            }}  
-            
-            QPushButton::hover{{
-                background-color: rgb{tuple(colours["buttonHoverColour"])};
+                padding: 10px 15px;
+
             }}
-        """
+
+            QPushButton::hover{{
+                background-color: rgb{tuple(colours["buttonHoverColour"])}
+            }}
+                """
 
         self.setStyleSheet(style)
 
