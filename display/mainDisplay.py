@@ -9,7 +9,7 @@ from display.navigationBar import navBar
 from display.timetableWidget.timetableWidget import TimetablePageWidget
 from display.quickLinksWidget.quickLinksWidget import QuickLinksPage
 from display.account.accountWidget import AccountWidget
-from display.assignmentEventWidget.assignmentPage import AssignmentPage
+from display.assignmentWidget.assignmentPage import AssignmentPage
 
 class MainWindow(QMainWindow):
     def __init__(self):

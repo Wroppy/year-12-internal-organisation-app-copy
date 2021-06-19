@@ -5,8 +5,8 @@ from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
 
-from display.assignmentEventWidget.activeWidgetDisplay import ActiveWidgetDisplay
-from display.assignmentEventWidget.contentButtonWidget import ContentButtonWidget
+from display.assignmentWidget.activeWidgetDisplay import ActiveWidgetDisplay
+from display.assignmentWidget.contentButtonWidget import ContentButtonWidget
 
 
 class AssignmentPage(QWidget):

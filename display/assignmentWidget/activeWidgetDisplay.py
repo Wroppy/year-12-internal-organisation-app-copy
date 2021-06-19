@@ -1,9 +1,9 @@
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6.QtGui import *
-from display.assignmentEventWidget.assignment import Assignment
-from display.assignmentEventWidget.widgetHolder import WidgetHolder
-from display.assignmentEventWidget.assignmentHeaders import Header
+from display.assignmentWidget.assignment import Assignment
+from display.assignmentWidget.widgetHolder import WidgetHolder
+from display.assignmentWidget.assignmentHeaders import Header
 
 
 class ActiveWidgetDisplay(QWidget):

@@ -4,8 +4,8 @@ from PySide6 import QtWidgets
 from PySide6.QtGui import *
 from PySide6 import QtCore
 from typing import *
-from display.assignmentEventWidget.assignmentWidget import AssignmentWidget
-from display.assignmentEventWidget.assignment import Assignment
+from display.assignmentWidget.assignmentWidget import AssignmentWidget
+from display.assignmentWidget.assignment import Assignment
 import sys
 
 
