@@ -52,10 +52,94 @@ class CloudDataBase:
         self.cursor.execute(command)
         self.cursor.execute("COMMIT")
 
+    def editAssignmentName(self, userKeyCode: int, assignmentKeyCode: int, assignmentName: str):
+        """
+        Adds an assignment to the database
+
+        :param userKeyCode: int
+        :param assignmentKeyCode: int
+        :param assignmentName: str
+
+        """
+
+        self.updateAssignmentTime(userKeyCode, assignmentKeyCode)
+
+        command = f"""
+            UPDATE assignments
+            SET assignmentName = '{assignmentName}'
+            WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
+        """
+
+        self.cursor.execute(command)
+        self.cursor.execute("Commit")
+
+    def updateAssignmentTime(self, userKeyCode: int, assignmentKeyCode: int):
+        """
+        Given the 2 keys, it updates the assignment's last accessed date
+        Note that this still requires committing
+
+        :param userKeyCode: int
+        :param assignmentKeyCode: int
+        """
+        # Gets the current time
+        currentTime = datetime.now()
+        year = currentTime.year
+        month = currentTime.month
+        day = currentTime.day
+        hour = currentTime.hour
+        minute = currentTime.minute
+        second = currentTime.second
+
+        command = f"""
+                    UPDATE assignments
+                    SET yearUpdated={year}, monthUpdated={month}, dayUpdated={day}, hourUpdated={hour}, minuteUpdated={minute}, secondUpdated={second}
+
+                    WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
+                """
+
+        self.cursor.execute(command)
+
+    def changeCompleted(self, userKeyCode: int, assignmentKeyCode: int, completed: bool):
+        """
+        Changes the state of an assignment
+
+        :param userKeyCode: int
+        :param assignmentKeyCode: int
+        """
+        self.updateAssignmentTime(userKeyCode, assignmentKeyCode)
+
+        command = f"""
+            UPDATE assignments
+            SET completed = {int(completed)}
+            WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
+        """
+
+        self.cursor.execute(command)
+        self.cursor.execute("Commit")
+
+    def changeDeleted(self, userKeyCode: int, assignmentKeyCode: int):
+        """
+        Changes the delete state of an assignment
+
+        :param userKeyCode: int
+        :param assignmentKeyCode: int
+        """
+
+        self.updateAssignmentTime(userKeyCode, assignmentKeyCode)
+
+        command = f"""
+            UPDATE assignments
+            SET deleted = {int(True)}
+            WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
+        """
+
+        self.cursor.execute(command)
+        self.cursor.execute("Commit")
+
+
 
 
 if __name__ == '__main__':
-    print(int(False))
     d = CloudDataBase()
     d.connectToDataBase()
-    d.addAssignmentToDataBase(9876543210978765, "First Test")
+    d.editAssignmentName(9876543210978765, 7362647131834739, "Updating using 2 functions")
