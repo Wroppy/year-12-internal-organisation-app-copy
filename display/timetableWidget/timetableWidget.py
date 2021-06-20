@@ -13,11 +13,14 @@ from display.timetableWidget.timetableDisplay import TimetableDisplay
 from display.timetableWidget.buttonWidget import ButtonWidget
 from display.timetableWidget.addClassDialog import AddClassDialog
 from display.confirmDialog import ConfirmDialog
+from resourceManager.resourceHandler import ResourceHandler
 
 
 class TimetablePageWidget(QWidget):
     def __init__(self):
         super(TimetablePageWidget, self).__init__()
+
+        self.resourceManager = ResourceHandler()
 
         # Sets a layout and adds widgets to the page
         layout = QVBoxLayout(self)
@@ -51,6 +54,12 @@ class TimetablePageWidget(QWidget):
 
                 # Adds the class to the page
                 self.addClass(classTitle, startingTime, endingTime)
+
+                currentDay = self.timetableWidget.daysSelection.currentIndex()
+                self.resourceManager.addClassToFile(currentDay, classTitle, startingTime, endingTime)
+                print(1)
+
+
 
     def addClass(self, classTitle: str, startingTime: int, endingTime: int):
         """

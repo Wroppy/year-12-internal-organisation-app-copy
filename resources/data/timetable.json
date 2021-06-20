@@ -1,1 +1,20 @@
-{}
+{
+  "classes": [
+    [
+      {
+        "className": "Digi",
+        "startingTime": 1100,
+        "endingTime": 1200
+      },
+      {
+        "className": "english",
+        "startingTime": 0,
+        "endingTime": 10
+      }
+    ],
+    [],
+    [],
+    [],
+    []
+  ]
+}

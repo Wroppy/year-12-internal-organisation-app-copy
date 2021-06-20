@@ -31,7 +31,6 @@ class ClassHolder(QWidget):
         """
         self.classWidgets = []
         self.sortTimetable()
-        print(self.classes)
         for _class in self.classes:
             widget = ClassWidget(_class)
             self.widgetLayout.addWidget(widget)
