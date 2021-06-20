@@ -1,4 +1,6 @@
 import pyodbc
+import random
+from datetime import datetime
 
 
 class CloudDataBase:
@@ -9,7 +11,8 @@ class CloudDataBase:
     def hasConnection(self):
         return self.available
 
-
+    def generateKeyCode(self):
+        return int("".join(str(random.randint(1, 9)) for i in range(16)))
 
     def connectToDataBase(self) -> bool:
         """
@@ -28,6 +31,31 @@ class CloudDataBase:
             print(e)
             return False
 
+    def addAssignmentToDataBase(self, userKeyCode: int, assignmentName: str):
+        customKeyCode = self.generateKeyCode()
+        completed = int(False)
+        removed = int(False)
+
+        # Gets the current time
+        currentTime = datetime.now()
+        year = currentTime.year
+        month = currentTime.month
+        day = currentTime.day
+        hour = currentTime.hour
+        minute = currentTime.minute
+        second = currentTime.second
+
+        command = f"""
+            INSERT INTO assignments (keyCode, assignmentName, userKey, completed, removed, yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated)
+            values ({customKeyCode}, '{assignmentName}', {userKeyCode}, {completed}, {removed}, {year}, {month}, {day}, {hour}, {minute}, {second})
+        """
+        self.cursor.execute(command)
+        self.cursor.execute("COMMIT")
+
+
 
 if __name__ == '__main__':
-    print(CloudDataBase().connectToDataBase())
+    print(int(False))
+    d = CloudDataBase()
+    d.connectToDataBase()
+    d.addAssignmentToDataBase(9876543210978765, "First Test")
