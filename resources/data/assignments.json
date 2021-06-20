@@ -1,1 +1,8 @@
-{}
+{
+  "assignments": [
+    {
+      "assignmentName": "Assignment 1",
+      "completed": false
+    }
+  ]
+}

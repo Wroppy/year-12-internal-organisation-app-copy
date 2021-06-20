@@ -9,11 +9,14 @@ from display.assignmentWidget.assignmentDisplay import AssignmentDisplay
 from display.assignmentWidget.contentButtonWidget import ContentButtonWidget
 from display.assignmentWidget.addAssignmentDialog import AddAssignmentDialog
 from display.confirmDialog import ConfirmDialog
+from resourceManager.resourceHandler import ResourceHandler
 
 
 class AssignmentPage(QWidget):
     def __init__(self):
         super(AssignmentPage, self).__init__()
+
+        self.resourceManager = ResourceHandler()
 
         layout = QVBoxLayout(self)
 
@@ -36,11 +39,12 @@ class AssignmentPage(QWidget):
         for i in range(len(self.assignmentDisplay.widgetHolder.assignments)):
             # for i in range(len(self.timetableWidget.timetables[self.timetableWidget.daysSelection.currentIndex()].classWidgets))
             if self.assignmentDisplay.widgetHolder.assignmentWidgets[i].selectButton.isChecked():
-
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     self.assignmentDisplay.widgetHolder.deleteAssignment(i)
                     self.assignmentDisplay.widgetHolder.addAssignmentsToLayout()
+
+                    self.resourceManager.deleteAssignment(i)
                 break
 
     def addAssignment(self, assignmentTitle: str):
@@ -49,6 +53,7 @@ class AssignmentPage(QWidget):
 
         """
         self.assignmentDisplay.addWidget(assignmentTitle, False)
+
 
     def showAssignmentDialog(self):
         """
@@ -66,6 +71,7 @@ class AssignmentPage(QWidget):
 
                 # Adds the assignment to the page
                 self.addAssignment(assignmentTitle)
+                self.resourceManager.addAssignment(assignmentTitle, False)
 
     def addButtonFunction(self):
         """

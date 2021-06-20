@@ -1,11 +1,49 @@
 from resourceManager.internalDataHandler import *
 from resourceManager.databaseHandler import *
 from display.timetableWidget.classClass import Class
+from display.assignmentWidget.assignment import Assignment
 
 
 class ResourceHandler:
     def __init__(self):
         dataBaseHandler = CloudDataBase()
+
+    def returnAssignments(self):
+        data = loadJsonFile("data\\assignments")
+        assignmentData = data["assignments"]
+
+        assignments = []
+        for assignment in assignmentData:
+            a = Assignment(assignment["assignmentName"], assignment["completed"])
+            assignments.append(a)
+
+        return assignments
+
+    def addAssignment(self, assignmentName: str, completed: bool):
+        assignments = loadJsonFile("data\\assignments")
+
+        assignment = {
+            "assignmentName": assignmentName,
+            "completed": completed
+        }
+
+        assignments["assignments"].append(assignment)
+
+        writeJsonFile("data\\assignments", assignments)
+
+    def updateAssignmentCompleted(self, index: int, checked: bool):
+        assignments = loadJsonFile("data\\assignments")
+
+        assignments["assignments"][index]["completed"] = checked
+
+        writeJsonFile("data\\assignments", assignments)
+
+    def deleteAssignment(self, index: int):
+        assigments = loadJsonFile("data\\assignments")
+
+        assigments["assignments"].pop(index)
+
+        writeJsonFile("data\\assignments", assigments)
 
     def returnClasses(self):
         """
@@ -42,11 +80,13 @@ class ResourceHandler:
             "className": className,
             "startingTime": startingTime,
             "endingTime": endingTime
-            }
+        }
 
         timetable["classes"][day].append(_class)
 
         writeJsonFile("data\\timetable", timetable)
+
+
 if __name__ == '__main__':
     r = ResourceHandler()
     r.returnClasses()

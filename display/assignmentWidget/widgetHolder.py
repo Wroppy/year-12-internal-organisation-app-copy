@@ -7,6 +7,7 @@ from typing import *
 from display.assignmentWidget.assignmentWidget import AssignmentWidget
 from display.assignmentWidget.assignment import Assignment
 import sys
+from resourceManager.resourceHandler import ResourceHandler
 
 
 class WidgetHolder(QWidget):
@@ -19,8 +20,6 @@ class WidgetHolder(QWidget):
         self.widgetLayout = QVBoxLayout(self)
 
         self.addAssignmentsToLayout()
-
-
 
     def deleteItemsInLayout(self):
         """
@@ -49,7 +48,9 @@ class WidgetHolder(QWidget):
         :param index: int
         """
         self.assignments[index].completed = assignmentCheckBox.isChecked()
-        #for i in self.assignments:
+
+        ResourceHandler().updateAssignmentCompleted(index, assignmentCheckBox.isChecked())
+        # for i in self.assignments:
 
     def setCheckBoxesFunctions(self):
         """
@@ -57,7 +58,8 @@ class WidgetHolder(QWidget):
 
         """
         for i in range(len(self.assignmentWidgets)):
-            self.assignmentWidgets[i].completedButton.stateChanged.connect(lambda e, checkBox=self.assignmentWidgets[i].completedButton: self.changeAssignment(checkBox, i))
+            self.assignmentWidgets[i].completedButton.stateChanged.connect(
+                lambda e, checkBox=self.assignmentWidgets[i].completedButton: self.changeAssignment(checkBox, i))
 
     def addAssignmentsToLayout(self):
         """
