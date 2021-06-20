@@ -94,6 +94,7 @@ class TimetablePageWidget(QWidget):
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     timetables[currentDay].deleteClass(i)
+                    self.resourceManager.deleteClassFromfile(currentDay, i)
                 break
 
     def connectButtons(self):

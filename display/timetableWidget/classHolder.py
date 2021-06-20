@@ -3,7 +3,6 @@ Contains a list of class widgets
 
 """
 
-
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets
@@ -48,15 +47,12 @@ class ClassHolder(QWidget):
         :return: None
         """
 
-
         c = Class(classTitle, startingTime, endingTime)
         self.classes.append(c)
 
         self.deleteItemsInLayout()
 
         self.updateClasses()
-
-
 
     def deleteClass(self, index: int):
         """

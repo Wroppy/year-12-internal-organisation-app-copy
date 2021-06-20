@@ -26,6 +26,13 @@ class ResourceHandler:
             newTimetable.append(timetableDay)
         return newTimetable
 
+    def deleteClassFromfile(self, day: int, index: int):
+        timetable = loadJsonFile("data\\timetable")
+
+        timetable["classes"][day].pop(index)
+
+        writeJsonFile("data\\timetable", timetable)
+
     def addClassToFile(self, day: int, className: int, startingTime: int, endingTime: int):
         timetable = loadJsonFile("data\\timetable")
 
