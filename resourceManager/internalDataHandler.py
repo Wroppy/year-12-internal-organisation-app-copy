@@ -82,6 +82,13 @@ def loadJsonFile(fileName: str) -> dict:
 
 
 def writeJsonFile(fileName: str, data: Dict[Any, Any]):
+    """
+    Writes the a json file given the filename and the data
+
+    :param fileName: str
+    :param data: Dict[Any: Any]
+    :return: None
+    """
     prefix = ".json"
     projectPath = "resources\\"
     path = getProjectDirPath() + projectPath + fileName + prefix
@@ -91,15 +98,25 @@ def writeJsonFile(fileName: str, data: Dict[Any, Any]):
 
 
 class InternalDataBaseManager:
-    def getAccountKey(self):
+    def getAccountKey(self) -> Union[str, None]:
+        """
+        Loads the account key from the file
+
+        :return: Union[str, None]
+        """
         accountDetails = loadJsonFile("data\\account")
         userKeyCode = accountDetails["accountKey"]
         return userKeyCode
 
-    def addAccount(self, accountKey):
+    def addAccount(self, accountKey: int):
+        """
+        Adds an account to the file
+
+        :param accountKey: int
+        :return: None
+        """
         data = {"accountKey": accountKey}
         writeJsonFile("data\\account", data)
-
 
 
 if __name__ == '__main__':

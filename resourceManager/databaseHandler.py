@@ -103,6 +103,13 @@ class CloudDataBase:
             self.setAvailableFalse()
 
     def addAssignmentToDataBase(self, userKeyCode: int, assignmentName: str):
+        """
+        Creates a new assignment in the data base
+
+        :param userKeyCode: int
+        :param assignmentName: str
+        :return: None
+        """
         customKeyCode = self.generateKeyCode()
         completed = int(False)
         removed = int(False)
@@ -233,6 +240,7 @@ class CloudDataBase:
     def changeTimetable(self, userKeyCode: int, userTimetable: List[List[Class]]):
         """
         Changes the timetable of a user in the database
+
         :param userKeyCode: int
         :param userTimetable: List[List[Assignment]]
         :return: None
