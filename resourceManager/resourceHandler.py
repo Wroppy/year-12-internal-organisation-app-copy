@@ -105,6 +105,8 @@ class ResourceHandler:
 
         writeJsonFile("data\\timetable", timetable)
 
+
+
     def addClassToFile(self, day: int, className: str, startingTime: int, endingTime: int):
         """
         Adds a class to the file given the day and its index

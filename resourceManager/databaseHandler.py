@@ -60,8 +60,8 @@ class CloudDataBase:
         """
         try:
             command = f"""
-            INSERT INTO userAccounts (username, password, userKey);
-            VALUES ('{username}', '{password}');
+            INSERT INTO userAccounts (username, password, userKey)
+            VALUES ('{username}', '{password}')
             
             """
 
@@ -124,8 +124,8 @@ class CloudDataBase:
         second = currentTime.second
 
         command = f"""
-            INSERT INTO assignments (keyCode, assignmentName, userKey, completed, removed, yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated);
-            values ({customKeyCode}, '{assignmentName}', {userKeyCode}, {completed}, {removed}, {year}, {month}, {day}, {hour}, {minute}, {second});
+            INSERT INTO assignments (keyCode, assignmentName, userKey, completed, removed, yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated)
+            values ({customKeyCode}, '{assignmentName}', {userKeyCode}, {completed}, {removed}, {year}, {month}, {day}, {hour}, {minute}, {second})
         """
         self.cursor.execute(command)
         self.cursor.execute("COMMIT")
@@ -144,8 +144,8 @@ class CloudDataBase:
 
         command = f"""
             UPDATE assignments;
-            SET assignmentName = '{assignmentName}';
-            WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}';
+            SET assignmentName = '{assignmentName}'
+            WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
         """
 
         self.cursor.execute(command)
@@ -169,9 +169,9 @@ class CloudDataBase:
         second = currentTime.second
 
         command = f"""
-                    UPDATE assignments;
-                    SET yearUpdated={year}, monthUpdated={month}, dayUpdated={day}, hourUpdated={hour}, minuteUpdated={minute}, secondUpdated={second};
-                    WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}';
+                    UPDATE assignments
+                    SET yearUpdated={year}, monthUpdated={month}, dayUpdated={day}, hourUpdated={hour}, minuteUpdated={minute}, secondUpdated={second}
+                    WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
                 """
 
         self.cursor.execute(command)
@@ -187,8 +187,8 @@ class CloudDataBase:
 
         command = f"""
             UPDATE assignments;
-            SET completed = {int(completed)};
-            WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}';
+            SET completed = {int(completed)}
+            WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
         """
 
         self.cursor.execute(command)
@@ -205,9 +205,9 @@ class CloudDataBase:
         self.updateAssignmentTime(userKeyCode, assignmentKeyCode)
 
         command = f"""
-            UPDATE assignments;
-            SET deleted = {int(True)};
-            WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}';
+            UPDATE assignments
+            SET deleted = {int(True)}
+            WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
         """
 
         self.cursor.execute(command)
@@ -230,9 +230,9 @@ class CloudDataBase:
         second = currentTime.second
 
         command = f"""
-                    UPDATE timetables;
-                    SET yearUpdated={year}, monthUpdated={month}, dayUpdated={day}, hourUpdated={hour}, minuteUpdated={minute}, secondUpdated={second};
-                    WHERE userKey={userKeyCode};
+                    UPDATE timetables
+                    SET yearUpdated={year}, monthUpdated={month}, dayUpdated={day}, hourUpdated={hour}, minuteUpdated={minute}, secondUpdated={second}
+                    WHERE userKey={userKeyCode}
                 """
 
         self.cursor.execute(command)
@@ -250,8 +250,8 @@ class CloudDataBase:
 
         # Deletes everything from the user's timetable
         deleteCommand = f"""
-        DELETE FROM timetables ;
-        where userCode={userKeyCode};
+        DELETE FROM timetables 
+        where userCode={userKeyCode}
         """
 
         self.cursor.execute(deleteCommand)
@@ -261,9 +261,9 @@ class CloudDataBase:
             for i in range(len(day)):
                 _class = day[i]
                 insertCommand = f"""
-                    INSERT INTO timetable (class, day, startTime, endTime);
-                    VALUES ('{_class.timetableClass}', {i}, {_class.beginningTime}, {_class.endingTime});
-                    WHERE userKey = '{userKeyCode}';
+                    INSERT INTO timetable (class, day, startTime, endTime)
+                    VALUES ('{_class.timetableClass}', {i}, {_class.beginningTime}, {_class.endingTime})
+                    WHERE userKey = '{userKeyCode}'
                 """
                 self.cursor.execute(insertCommand)
 
@@ -273,6 +273,4 @@ class CloudDataBase:
 
 if __name__ == '__main__':
     d = CloudDataBase()
-    t1 = time.time()
-    print(d.connectToDataBase())
-    print(time.time() - t1)
+    d.connectToDataBase()

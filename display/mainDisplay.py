@@ -59,6 +59,7 @@ class MainWindow(QMainWindow):
     def resizeEvent(self, event: QResizeEvent) -> None:
         """
         Because there is no layout, the widgets are resized and moved in this function
+        Overrides the resizeEvent from QMainWindow
 
         :param event: QResizeEvent
         :return: None
@@ -75,6 +76,11 @@ class MainWindow(QMainWindow):
 
 
     def addNavButtonFunction(self):
+        """
+        When these buttons are clicked, will do certain commands
+
+        :return:
+        """
         for i in range(len(self.navBar.buttons)):
             self.navBar.buttons[i].clicked.connect(lambda checked=False, index=i: self.switchPage(index))
 
