@@ -137,8 +137,6 @@ class CloudDataBase:
         self.cursor.execute("Commit")
 
 
-
-
 if __name__ == '__main__':
     d = CloudDataBase()
     d.connectToDataBase()
