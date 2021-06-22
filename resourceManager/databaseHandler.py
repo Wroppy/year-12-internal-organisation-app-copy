@@ -213,7 +213,7 @@ class CloudDataBase:
         self.cursor.execute(command)
         self.cursor.execute("Commit")
 
-    def updateTimetableTime(self, userKeyCode: int):
+    def updateTimetableUpdateTime(self, userKeyCode: int):
         """
         Given the 2 keys, it updates the assignment's last accessed date
         Note that this still requires committing
@@ -246,8 +246,6 @@ class CloudDataBase:
         :return: None
         """
 
-        DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday"]
-
         # Deletes everything from the user's timetable
         deleteCommand = f"""
         DELETE FROM timetables 
@@ -269,6 +267,18 @@ class CloudDataBase:
 
         # Finally commits it
         self.cursor.execute("commit")
+
+    def loadTimetable(self, userKeyCode: int):
+        command = f"""
+            SELECT * from timetable
+            WHERE userKey={userKeyCode}
+        """
+
+        self.cursor.execute(command)
+
+        return self.cursor
+
+
 
 
 if __name__ == '__main__':

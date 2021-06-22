@@ -30,7 +30,7 @@ class ConfirmDialog(QDialog):
 
         layout.addWidget(labelWidget)
 
-        # Creates the button box
+        # Creates the button box that asks the user yes/no
         buttons = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
 
         self.buttonBox = QDialogButtonBox(buttons)

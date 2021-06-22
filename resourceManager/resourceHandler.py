@@ -2,11 +2,12 @@ from resourceManager.internalDataHandler import *
 from resourceManager.databaseHandler import *
 from display.timetableWidget.classClass import Class
 from display.assignmentWidget.assignment import Assignment
+from datetime import datetime, time
 
 
 class ResourceHandler:
     def __init__(self):
-        dataBaseHandler = CloudDataBase()
+        self.dataBaseHandler = CloudDataBase()
 
     def returnAssignments(self) -> List[Assignment]:
         """
@@ -79,12 +80,31 @@ class ResourceHandler:
         data = loadJsonFile("data\\timetable")
         timetable = data["classes"]
 
+
         # Adds it in a 2D array
         newTimetable = []
         for day in timetable:
             timetableDay = []
             for _class in day:
-                _classObj = Class(_class["className"], _class["startingTime"], _class["endingTime"])
+                # Creates a datetime class of the time it was last updated
+                key = "timeUpdated"
+                timetableUpdated = datetime(
+                    year=_class[key]["year"],
+                    month=_class[key]["month"],
+                    day=_class[key]["day"],
+                    hour=_class[key]["hour"],
+                    minute=_class[key]["minute"],
+                    second=_class[key]["second"]
+                )
+
+
+                # Creates the starting time class
+                startingTime = time(_class["startingTime"]["hour"], _class["startingTime"]["minute"])
+
+                # Creates the ending time class
+                endingTime = time(_class["endingTime"]["hour"], _class["endingTime"]["minute"])
+
+                _classObj = Class(_class["className"], startingTime, endingTime, timetableUpdated)
                 timetableDay.append(_classObj)
             newTimetable.append(timetableDay)
 
@@ -105,9 +125,7 @@ class ResourceHandler:
 
         writeJsonFile("data\\timetable", timetable)
 
-
-
-    def addClassToFile(self, day: int, className: str, startingTime: int, endingTime: int):
+    def addClassToFile(self, day: int, className: str, startingTime: time, endingTime: time, currentTime: datetime):
         """
         Adds a class to the file given the day and its index
 
@@ -115,19 +133,55 @@ class ResourceHandler:
         :param className: str
         :param startingTime: int
         :param endingTime: int
+        :param currentTime: datetime
         :return: None
         """
         timetable = loadJsonFile("data\\timetable")
 
         _class = {
             "className": className,
-            "startingTime": startingTime,
-            "endingTime": endingTime
+            "startingTime": {
+                "hour": startingTime.hour,
+                "minute": startingTime.minute
+            },
+            "endingTime": {
+                "hour": endingTime.hour,
+                "minute": endingTime.minute
+            },
+            "timeUpdated": {
+                "year": currentTime.year,
+                "month": currentTime.month,
+                "day": currentTime.day,
+                "hour": currentTime.hour,
+                "minute": currentTime.minute,
+                "second": currentTime.second
+            }
         }
 
         timetable["classes"][day].append(_class)
 
         writeJsonFile("data\\timetable", timetable)
+
+    def loadClassFromDatabase(self, userKeyCode: int):
+        loadedTimetable = self.dataBaseHandler.loadTimetable(userKeyCode)
+
+        timetable = [[], [], [], [], []]
+
+        for row in loadedTimetable:
+            day = row
+
+            className = row[0]
+            beginningTime = row[1]
+            endingTime = row[2]
+
+            yearUpdated = row[3]
+            monthUpdated = row[4]
+            dayUpdated = row[5]
+            hourUpdated = row[6]
+            minuteUpdated = row[7]
+            secondUpdated = row[8]
+
+            timeUpdated = datetime(yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated)
 
 
 if __name__ == '__main__':

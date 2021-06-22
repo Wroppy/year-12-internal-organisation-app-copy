@@ -11,6 +11,7 @@ from display.quickLinksWidget.quickLinksWidget import QuickLinksPage
 from display.account.accountWidget import AccountWidget
 from display.assignmentWidget.assignmentPage import AssignmentPage
 
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
@@ -73,8 +74,6 @@ class MainWindow(QMainWindow):
         else:
             self.enlargeContentWidget()
 
-
-
     def addNavButtonFunction(self):
         """
         When these buttons are clicked, will do certain commands
@@ -99,7 +98,6 @@ class MainWindow(QMainWindow):
         else:
             self.extendNavBar()
             self.shrinkContentWidget()
-
 
         self.navBar.changeExtended()
         print(self.navBar.isExtended())
@@ -141,6 +139,7 @@ class MainWindow(QMainWindow):
         RESIZEWIDTH = self.width() - 56
         self.windowPages.resize(QSize(RESIZEWIDTH, self.height()))
         self.windowPages.move(QPoint(56, 0))
+
 
 if __name__ == '__main__':
     app = QApplication()
