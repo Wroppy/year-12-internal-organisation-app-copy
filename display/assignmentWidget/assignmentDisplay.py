@@ -8,9 +8,10 @@ from resourceManager.resourceHandler import ResourceHandler
 
 
 class AssignmentDisplay(QWidget):
-    def __init__(self):
+    def __init__(self, resourceManager: ResourceHandler):
         super(AssignmentDisplay, self).__init__()
-        self.resourceManager = ResourceHandler()
+
+        self.resourceManager = resourceManager
         layout = QVBoxLayout(self)
         layout.setSpacing(0)
 
@@ -22,7 +23,7 @@ class AssignmentDisplay(QWidget):
         assignments = self.resourceManager.returnAssignments()
 
         # Creates the widget holder
-        self.widgetHolder = WidgetHolder(assignments)
+        self.widgetHolder = WidgetHolder(assignments, self.resourceManager)
 
         # Creates the scroll bar for the widget display
         scrollbar = QScrollArea()

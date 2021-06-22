@@ -13,15 +13,15 @@ from resourceManager.resourceHandler import ResourceHandler
 
 
 class AssignmentPage(QWidget):
-    def __init__(self):
+    def __init__(self, resourceManager: ResourceHandler):
         super(AssignmentPage, self).__init__()
 
-        self.resourceManager = ResourceHandler()
+        self.resourceManager = resourceManager
 
         layout = QVBoxLayout(self)
 
         # Adds widgets to the page
-        self.assignmentDisplay = AssignmentDisplay()
+        self.assignmentDisplay = AssignmentDisplay(self.resourceManager)
         layout.addWidget(self.assignmentDisplay)
 
         self.buttonWidget = ContentButtonWidget("Add Assignment", "Delete Assignment")
