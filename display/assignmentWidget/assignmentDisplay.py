@@ -4,11 +4,13 @@ from PySide6.QtGui import *
 from display.assignmentWidget.assignment import Assignment
 from display.assignmentWidget.widgetHolder import WidgetHolder
 from display.assignmentWidget.assignmentHeaders import Header
+from resourceManager.resourceHandler import ResourceHandler
 
 
 class AssignmentDisplay(QWidget):
     def __init__(self):
         super(AssignmentDisplay, self).__init__()
+        self.resourceManager = ResourceHandler()
         layout = QVBoxLayout(self)
         layout.setSpacing(0)
 
@@ -16,8 +18,11 @@ class AssignmentDisplay(QWidget):
         header = Header("Assignments")
         layout.addWidget(header)
 
+        # Gets the assignments from the resource manager
+        assignments = self.resourceManager.returnAssignments()
+
         # Creates the widget holder
-        self.widgetHolder = WidgetHolder([Assignment("Assignment", False) for _ in range(10)])
+        self.widgetHolder = WidgetHolder(assignments)
 
         # Creates the scroll bar for the widget display
         scrollbar = QScrollArea()

@@ -2,6 +2,7 @@
 This class only displays the timetables and its days
 
 """
+import datetime
 
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
@@ -13,11 +14,14 @@ from display.timetableWidget.classClass import Class
 from typing import *
 from resourceManager.internalDataHandler import loadJsonFile
 from display.timetableWidget.classHolder import ClassHolder
+from resourceManager.resourceHandler import ResourceHandler
+from datetime import time
 
 
 class TimetableDisplay(QWidget):
     def __init__(self):
         super(TimetableDisplay, self).__init__()
+        self.resourceManger = ResourceHandler()
         self.layout = QVBoxLayout(self)
 
         self.createComboBox()
@@ -60,15 +64,17 @@ class TimetableDisplay(QWidget):
         self.timetables = []
         self.timetablesWidget = QStackedWidget()
 
-        for _ in range(len(self.days)):
-            timetable = ClassHolder([Class("Eng", 1200, 1300), Class("Phy", 1500, 1600), Class("Digi", 1100, 1200)])
+        classes = self.resourceManger.returnClasses()
+
+        for i in range(len(self.days)):
+            timetable = ClassHolder(classes[i])
             self.timetablesWidget.addWidget(timetable)
 
             self.timetables.append(timetable)
 
         self.layout.addWidget(self.timetablesWidget)
 
-    def addClass(self, day: str, title: str, startingTime: int, endingTime: int):
+    def addClass(self, day: str, title: str, startingTime: time, endingTime: time, timeUpdated: datetime.datetime):
         """
         Adds a class to the timetable given the day
 
@@ -78,7 +84,9 @@ class TimetableDisplay(QWidget):
         :param endingTime: int
         :return: None
         """
-        self.classes[day].append(Class(title, startingTime, endingTime))
+
+
+        self.classes[day].append(Class(title, startingTime, endingTime, timeUpdated))
 
     def styleWidget(self):
         """

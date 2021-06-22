@@ -2,13 +2,14 @@
 Contains a list of class widgets
 
 """
-
+import datetime
 
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets
 from PySide6.QtGui import *
 from PySide6 import QtCore
+from datetime import time
 import sys
 from typing import *
 from display.timetableWidget.classClass import Class
@@ -31,7 +32,6 @@ class ClassHolder(QWidget):
         """
         self.classWidgets = []
         self.sortTimetable()
-        print(self.classes)
         for _class in self.classes:
             widget = ClassWidget(_class)
             self.widgetLayout.addWidget(widget)
@@ -39,25 +39,23 @@ class ClassHolder(QWidget):
 
         self.widgetLayout.addStretch()
 
-    def addClass(self, classTitle: str, startingTime: int, endingTime: int):
+    def addClass(self, classTitle: str, startingTime: time, endingTime: time, currentTime: datetime.datetime):
         """
         Adds a class to the timetable by appending it and re-displaying the layout
 
         :param classTitle: str
         :param startingTime: int
         :param endingTime: int
+        :param currentTime: datetime class
         :return: None
         """
 
-
-        c = Class(classTitle, startingTime, endingTime)
+        c = Class(classTitle, startingTime, endingTime, currentTime)
         self.classes.append(c)
 
         self.deleteItemsInLayout()
 
         self.updateClasses()
-
-
 
     def deleteClass(self, index: int):
         """
@@ -97,7 +95,7 @@ class ClassHolder(QWidget):
         :return: None
         """
         self.classes.sort(key=lambda t: t.beginningTime)
-        print(self.classes)
+        #print(self.classes)
 
 
 if __name__ == '__main__':

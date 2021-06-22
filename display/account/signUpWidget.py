@@ -14,6 +14,7 @@ class SignUpWidget(SignIn):
 
 
     """
+
     def __init__(self):
         super(SignUpWidget, self).__init__()
         TEXT = "Sign Up"

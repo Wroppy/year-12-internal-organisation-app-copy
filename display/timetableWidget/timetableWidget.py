@@ -2,22 +2,22 @@
 This class contains the entire timetable page, which includes the timetable display and the buttons
 
 """
+import datetime
 
 from PySide6.QtWidgets import *
-from PySide6.QtCore import *
-from PySide6 import QtWidgets
-from PySide6.QtGui import *
-from PySide6 import QtCore
-import sys
 from display.timetableWidget.timetableDisplay import TimetableDisplay
 from display.timetableWidget.buttonWidget import ButtonWidget
 from display.timetableWidget.addClassDialog import AddClassDialog
 from display.confirmDialog import ConfirmDialog
+from resourceManager.resourceHandler import ResourceHandler
+from datetime import time
 
 
 class TimetablePageWidget(QWidget):
     def __init__(self):
         super(TimetablePageWidget, self).__init__()
+
+        self.resourceManager = ResourceHandler()
 
         # Sets a layout and adds widgets to the page
         layout = QVBoxLayout(self)
@@ -46,25 +46,38 @@ class TimetablePageWidget(QWidget):
                 classTitle = dialog.classNameEntry.text()
 
                 # 18, 30 goes to 1830
-                startingTime = int(f"{dialog.startTimeHour.value()}{dialog.startTimeMinute.value()}")
-                endingTime = int(f"{dialog.endTimeHour.value()}{dialog.endTimeMinute.value()}")
+                startingTime = time(dialog.startTimeHour.value(), dialog.startTimeMinute.value())
+                endingTime = time(dialog.endTimeHour.value(), dialog.endTimeMinute.value())
+
+                # Checks if the starting time is greater than the ending time
+                if startingTime >= endingTime:
+                    self.showNewClassDialog()
+                    return
+
+                currentTime = datetime.datetime.now()
 
                 # Adds the class to the page
-                self.addClass(classTitle, startingTime, endingTime)
+                self.addClass(classTitle, startingTime, endingTime, currentTime)
 
-    def addClass(self, classTitle: str, startingTime: int, endingTime: int):
+                currentDay = self.timetableWidget.daysSelection.currentIndex()
+                self.resourceManager.addClassToFile(currentDay, classTitle, startingTime, endingTime, currentTime)
+
+
+
+    def addClass(self, classTitle: str, startingTime: int, endingTime: int, currentTime: datetime.datetime):
         """
         Adds a class to a specific day
 
         :param classTitle: str
         :param startingTime: int
         :param endingTime: int
+        :param currentTIme: datetime class
         :return: None
         """
         currentDay = self.timetableWidget.daysSelection.currentIndex()
         timetables = self.timetableWidget.timetables
         # Timetable -> Specific Day of Timetable -> Each individual class. addClass(:params)
-        timetables[currentDay].addClass(classTitle, startingTime, endingTime)
+        timetables[currentDay].addClass(classTitle, startingTime, endingTime, currentTime)
 
 
     def showDeleteDialog(self):
@@ -85,6 +98,7 @@ class TimetablePageWidget(QWidget):
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     timetables[currentDay].deleteClass(i)
+                    self.resourceManager.deleteClassFromfile(currentDay, i)
                 break
 
     def connectButtons(self):

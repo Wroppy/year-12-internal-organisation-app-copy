@@ -23,7 +23,10 @@ class ClassWidget(QWidget):
 
         classTitle = QLabel(timetableClass.timetableClass)
 
-        durationText = f"{timetableClass.beginningTime} - {timetableClass.endingTime}"
+        beginningTime = timetableClass.beginningTime.strftime("%X")[:-3]
+        endingTime = timetableClass.endingTime.strftime("%X")[:-3]
+
+        durationText = f"{beginningTime} - {endingTime}"
         durationLabel = QLabel(durationText)
 
         layout.addWidget(self.selectButton)

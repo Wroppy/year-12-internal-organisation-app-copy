@@ -5,7 +5,7 @@ The icons and images will be handled by a .qrc file
 """
 
 import pathlib
-from typing import Dict
+from typing import *
 import json
 
 
@@ -79,6 +79,44 @@ def loadJsonFile(fileName: str) -> dict:
         print("There was an error decoding the json file")
 
         createFile(path)
+
+
+def writeJsonFile(fileName: str, data: Dict[Any, Any]):
+    """
+    Writes the a json file given the filename and the data
+
+    :param fileName: str
+    :param data: Dict[Any: Any]
+    :return: None
+    """
+    prefix = ".json"
+    projectPath = "resources\\"
+    path = getProjectDirPath() + projectPath + fileName + prefix
+
+    with open(path, "w") as file:
+        json.dump(data, file)
+
+
+class InternalDataBaseManager:
+    def getAccountKey(self) -> Union[str, None]:
+        """
+        Loads the account key from the file
+
+        :return: Union[str, None]
+        """
+        accountDetails = loadJsonFile("data\\account")
+        userKeyCode = accountDetails["accountKey"]
+        return userKeyCode
+
+    def addAccount(self, accountKey: int):
+        """
+        Adds an account to the file
+
+        :param accountKey: int
+        :return: None
+        """
+        data = {"accountKey": accountKey}
+        writeJsonFile("data\\account", data)
 
 
 if __name__ == '__main__':
