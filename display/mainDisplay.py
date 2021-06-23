@@ -10,11 +10,14 @@ from display.timetableWidget.timetableWidget import TimetablePageWidget
 from display.quickLinksWidget.quickLinksWidget import QuickLinksPage
 from display.account.accountWidget import AccountWidget
 from display.assignmentWidget.assignmentPage import AssignmentPage
+from resourceManager.resourceHandler import ResourceHandler
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
+
+        self.resourceManager = ResourceHandler()
 
         self.createWidgets()
 
@@ -37,9 +40,9 @@ class MainWindow(QMainWindow):
         self.windowPages = QStackedWidget(self)
         self.windowPages.move(self.navBar.width(), 0)
         PAGES = [
-            TimetablePageWidget(),
-            AssignmentPage(),
-            QLabel("Events"),
+            TimetablePageWidget(self.resourceManager),
+            AssignmentPage(self.resourceManager),
+            QLabel("Events, Coming Soon!"),
             QuickLinksPage(),
             AccountWidget()
         ]

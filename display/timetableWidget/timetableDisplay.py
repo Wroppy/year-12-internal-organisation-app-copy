@@ -19,9 +19,9 @@ from datetime import time
 
 
 class TimetableDisplay(QWidget):
-    def __init__(self):
+    def __init__(self, resourceManger: ResourceHandler):
         super(TimetableDisplay, self).__init__()
-        self.resourceManger = ResourceHandler()
+        self.resourceManger = resourceManger
         self.layout = QVBoxLayout(self)
 
         self.createComboBox()

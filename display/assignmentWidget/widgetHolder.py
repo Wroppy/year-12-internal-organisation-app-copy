@@ -5,14 +5,17 @@ from PySide6.QtGui import *
 from PySide6 import QtCore
 from typing import *
 from display.assignmentWidget.assignmentWidget import AssignmentWidget
+from resourceManager.resourceHandler import ResourceHandler
 from display.assignmentWidget.assignment import Assignment
 import sys
-from resourceManager.resourceHandler import ResourceHandler
+
 
 
 class WidgetHolder(QWidget):
-    def __init__(self, assignments: List[Assignment]):
+    def  __init__(self, assignments: List[Assignment], resourceManager: ResourceHandler):
         super(WidgetHolder, self).__init__()
+
+        self.resourceManager = resourceManager
 
         self.assignmentWidgets = []
         self.assignments = assignments
@@ -49,7 +52,7 @@ class WidgetHolder(QWidget):
         """
         self.assignments[index].completed = assignmentCheckBox.isChecked()
 
-        ResourceHandler().updateAssignmentCompleted(index, assignmentCheckBox.isChecked())
+        self.resourceManager.updateAssignmentCompleted(index, assignmentCheckBox.isChecked())
         # for i in self.assignments:
 
     def setCheckBoxesFunctions(self):

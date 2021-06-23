@@ -1,3 +1,8 @@
+"""
+Will not be used for the digi internal
+
+"""
+
 from notifications.notification import *
 from datetime import datetime
 from plyer import notification as n

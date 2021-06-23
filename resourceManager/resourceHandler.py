@@ -11,6 +11,14 @@ class ResourceHandler:
         self.userAccountKey = ""
         self.dataBaseHandler = CloudDataBase()
 
+    def generateKeyCode(self) -> int:
+        """
+        Returns a randomly generated key code
+
+        :return: int
+        """
+        return int("".join(str(random.randint(1, 9)) for _ in range(16)))
+
     def returnAssignments(self) -> List[Assignment]:
         """
         Returns a list of assignments
@@ -23,8 +31,9 @@ class ResourceHandler:
         # Adds the data the an array then returns it
         assignments = []
         for assignment in assignmentData:
-            a = Assignment(assignment["assignmentName"], assignment["completed"])
-            assignments.append(a)
+            if not assignment["deleted"]:
+                a = Assignment(assignment["assignmentName"], assignment["completed"])
+                assignments.append(a)
 
         return assignments
 
@@ -37,11 +46,24 @@ class ResourceHandler:
         :return: None
         """
 
+        currentTime = datetime.now()
+
         assignments = loadJsonFile("data\\assignments")
         assignment = {
             "assignmentName": assignmentName,
-            "completed": completed
+            "completed": completed,
+            "deleted": False,
+            "lastUpdated": {
+            "year": currentTime.year,
+            "month": currentTime.month,
+            "day": currentTime.day,
+            "hour": currentTime.hour,
+            "minute": currentTime.minute,
+            "second": currentTime.second
         }
+        }
+
+
         assignments["assignments"].append(assignment)
         writeJsonFile("data\\assignments", assignments)
 
@@ -57,6 +79,16 @@ class ResourceHandler:
 
         assignments["assignments"][index]["completed"] = checked
 
+        currentTime = datetime.now()
+        assignments["assignments"][index]["lastUpdated"] = {
+            "year": currentTime.year,
+            "month": currentTime.month,
+            "day": currentTime.day,
+            "hour": currentTime.hour,
+            "minute": currentTime.minute,
+            "second": currentTime.second
+        }
+
         writeJsonFile("data\\assignments", assignments)
 
     def deleteAssignment(self, index: int):
@@ -66,11 +98,23 @@ class ResourceHandler:
         :param index: int
         :return: None
         """
-        assigments = loadJsonFile("data\\assignments")
 
-        assigments["assignments"].pop(index)
 
-        writeJsonFile("data\\assignments", assigments)
+        assignments = loadJsonFile("data\\assignments")
+
+        assignments["assignments"][index]["deleted"] = True
+
+        currentTime = datetime.now()
+        assignments["assignments"][index]["lastUpdated"] = {
+            "year": currentTime.year,
+            "month": currentTime.month,
+            "day": currentTime.day,
+            "hour": currentTime.hour,
+            "minute": currentTime.minute,
+            "second": currentTime.second
+        }
+
+        writeJsonFile("data\\assignments", assignments)
 
     def returnClasses(self) -> List[List[Class]]:
         """
@@ -111,7 +155,7 @@ class ResourceHandler:
         # returns [[Classes], [], [], [], [] ]
         return newTimetable
 
-    def deleteClassFromfile(self, day: int, index: int):
+    def deleteClassFromfile(self, day: int, index: int, currentTime: datetime):
         """
         Deletes a class from the file given the day and its index
 
@@ -122,6 +166,15 @@ class ResourceHandler:
         timetable = loadJsonFile("data\\timetable")
 
         timetable["classes"][day].pop(index)
+
+        timetable["lastUpdated"] = {
+            "year": currentTime.year,
+            "month": currentTime.month,
+            "day": currentTime.day,
+            "hour": currentTime.hour,
+            "minute": currentTime.minute,
+            "second": currentTime.second
+        }
 
         writeJsonFile("data\\timetable", timetable)
 
@@ -147,18 +200,19 @@ class ResourceHandler:
             "endingTime": {
                 "hour": endingTime.hour,
                 "minute": endingTime.minute
-            },
-            "timeUpdated": {
-                "year": currentTime.year,
-                "month": currentTime.month,
-                "day": currentTime.day,
-                "hour": currentTime.hour,
-                "minute": currentTime.minute,
-                "second": currentTime.second
             }
         }
 
         timetable["classes"][day].append(_class)
+
+        timetable["lastUpdated"] = {
+            "year": currentTime.year,
+            "month": currentTime.month,
+            "day": currentTime.day,
+            "hour": currentTime.hour,
+            "minute": currentTime.minute,
+            "second": currentTime.second
+        }
 
         writeJsonFile("data\\timetable", timetable)
 

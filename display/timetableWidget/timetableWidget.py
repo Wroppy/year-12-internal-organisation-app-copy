@@ -14,15 +14,15 @@ from datetime import time
 
 
 class TimetablePageWidget(QWidget):
-    def __init__(self):
+    def __init__(self, resourceManger: ResourceHandler):
         super(TimetablePageWidget, self).__init__()
 
-        self.resourceManager = ResourceHandler()
+        self.resourceManager = resourceManger
 
         # Sets a layout and adds widgets to the page
         layout = QVBoxLayout(self)
 
-        self.timetableWidget = TimetableDisplay()
+        self.timetableWidget = TimetableDisplay(self.resourceManager)
 
         self.buttonWidget = ButtonWidget()
 
@@ -45,7 +45,6 @@ class TimetablePageWidget(QWidget):
             else:
                 classTitle = dialog.classNameEntry.text()
 
-                # 18, 30 goes to 1830
                 startingTime = time(dialog.startTimeHour.value(), dialog.startTimeMinute.value())
                 endingTime = time(dialog.endTimeHour.value(), dialog.endTimeMinute.value())
 
@@ -64,7 +63,7 @@ class TimetablePageWidget(QWidget):
 
 
 
-    def addClass(self, classTitle: str, startingTime: int, endingTime: int, currentTime: datetime.datetime):
+    def addClass(self, classTitle: str, startingTime: time, endingTime: time, currentTime: datetime.datetime):
         """
         Adds a class to a specific day
 
@@ -98,7 +97,8 @@ class TimetablePageWidget(QWidget):
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     timetables[currentDay].deleteClass(i)
-                    self.resourceManager.deleteClassFromfile(currentDay, i)
+                    currentTime = datetime.datetime.now()
+                    self.resourceManager.deleteClassFromfile(currentDay, i, currentTime)
                 break
 
     def connectButtons(self):
