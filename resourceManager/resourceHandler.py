@@ -7,6 +7,8 @@ from datetime import datetime, time
 
 class ResourceHandler:
     def __init__(self):
+        self.loggedIn = False
+        self.userAccountKey = ""
         self.dataBaseHandler = CloudDataBase()
 
     def returnAssignments(self) -> List[Assignment]:
@@ -80,7 +82,6 @@ class ResourceHandler:
         data = loadJsonFile("data\\timetable")
         timetable = data["classes"]
 
-
         # Adds it in a 2D array
         newTimetable = []
         for day in timetable:
@@ -96,7 +97,6 @@ class ResourceHandler:
                     minute=_class[key]["minute"],
                     second=_class[key]["second"]
                 )
-
 
                 # Creates the starting time class
                 startingTime = time(_class["startingTime"]["hour"], _class["startingTime"]["minute"])
@@ -182,6 +182,24 @@ class ResourceHandler:
             secondUpdated = row[8]
 
             timeUpdated = datetime(yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated)
+
+    def isLoggedIn(self):
+        return self.loggedIn
+
+    def loggedInFalse(self):
+        self.loggedIn = False
+
+    def loggedInTrue(self):
+        self.loggedIn = True
+
+    def getAccountKey(self):
+        userAccountKey = loadJsonFile("data\\account")["accountKey"]
+
+        if userAccountKey != None:
+            self.userAccountKey = userAccountKey
+
+    def databaseRunning(self) -> bool:
+        return self.dataBaseHandler.available
 
 
 if __name__ == '__main__':

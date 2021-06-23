@@ -278,6 +278,16 @@ class CloudDataBase:
 
         return self.cursor
 
+    def getAccountKey(self, username: str, password: str) -> int:
+        command = f"""
+            SELECT * from accounts
+            WHERE username='{username}' AND password='{password}'
+        """
+
+        self.cursor.execute(command)
+
+
+        return self.cursor[0][2]
 
 
 

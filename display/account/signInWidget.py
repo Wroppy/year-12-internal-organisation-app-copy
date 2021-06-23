@@ -24,7 +24,7 @@ class SignIn(QWidget):
         """
         layout = QVBoxLayout(self)
         layout.setContentsMargins(60, 11, 60, 11)
-        layout.addSpacing(10)
+        layout.setSpacing(20)
 
         self.headerLabel = QLabel("Sign In")
         headerWidget = self.createHorizontalCenterWidget(self.headerLabel)
@@ -51,6 +51,7 @@ class SignIn(QWidget):
         # This places the button to the right of the display
         buttonWidget = QWidget()
         buttonWidgetLayout = QHBoxLayout(buttonWidget)
+        buttonWidgetLayout.setContentsMargins(0, 0, 0, 0)
         buttonWidgetLayout.addStretch()
 
         buttonWidgetLayout.addWidget(self.processButton)
@@ -89,6 +90,7 @@ class SignIn(QWidget):
         """
         hWidget = QWidget()
         hLayout = QHBoxLayout(hWidget)
+        hLayout.setContentsMargins(0, 0, 0, 0)
         for widget in widgets:
             hLayout.addWidget(widget)
 
@@ -102,6 +104,7 @@ class SignIn(QWidget):
         :return: QWidget
         """
         horizontalWidget = QWidget()
+        horizontalWidget.setContentsMargins(0, 0, 0, 0)
         hLayout = QHBoxLayout(horizontalWidget)
 
         hLayout.addStretch()
