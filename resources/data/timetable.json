@@ -1,7 +1,42 @@
 {
   "classes": [
-    [],
-    [],
+    [
+      {
+        "className": "New class",
+        "startingTime": {
+          "hour": 1,
+          "minute": 0
+        },
+        "endingTime": {
+          "hour": 2,
+          "minute": 0
+        }
+      }
+    ],
+    [
+      {
+        "className": "Chemistry",
+        "startingTime": {
+          "hour": 10,
+          "minute": 30
+        },
+        "endingTime": {
+          "hour": 11,
+          "minute": 30
+        }
+      },
+      {
+        "className": "English",
+        "startingTime": {
+          "hour": 10,
+          "minute": 0
+        },
+        "endingTime": {
+          "hour": 10,
+          "minute": 30
+        }
+      }
+    ],
     [],
     [],
     []
@@ -9,9 +44,9 @@
   "lastUpdated": {
     "year": 2021,
     "month": 6,
-    "day": 22,
-    "hour": 21,
-    "minute": 27,
-    "second": 9
+    "day": 24,
+    "hour": 14,
+    "minute": 16,
+    "second": 8
   }
 }

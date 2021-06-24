@@ -127,21 +127,23 @@ class ResourceHandler:
         data = loadJsonFile("data\\timetable")
         timetable = data["classes"]
 
+        # Creates a datetime class of the time it was last updated
+        key = "lastUpdated"
+        lastUpdated = datetime(
+                    year=data[key]["year"],
+                    month=data[key]["month"],
+                    day=data[key]["day"],
+                    hour=data[key]["hour"],
+                    minute=data[key]["minute"],
+                    second=data[key]["second"]
+                )
+
         # Adds it in a 2D array
         newTimetable = []
         for day in timetable:
             timetableDay = []
             for _class in day:
-                # Creates a datetime class of the time it was last updated
-                key = "timeUpdated"
-                timetableUpdated = datetime(
-                    year=_class[key]["year"],
-                    month=_class[key]["month"],
-                    day=_class[key]["day"],
-                    hour=_class[key]["hour"],
-                    minute=_class[key]["minute"],
-                    second=_class[key]["second"]
-                )
+
 
                 # Creates the starting time class
                 startingTime = time(_class["startingTime"]["hour"], _class["startingTime"]["minute"])
@@ -149,7 +151,7 @@ class ResourceHandler:
                 # Creates the ending time class
                 endingTime = time(_class["endingTime"]["hour"], _class["endingTime"]["minute"])
 
-                _classObj = Class(_class["className"], startingTime, endingTime, timetableUpdated)
+                _classObj = Class(_class["className"], startingTime, endingTime, lastUpdated)
                 timetableDay.append(_classObj)
             newTimetable.append(timetableDay)
 
