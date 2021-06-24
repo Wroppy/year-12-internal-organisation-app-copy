@@ -1,15 +1,20 @@
 import pyodbc
 import random
 from display.timetableWidget.classClass import Class
+from PySide6.QtCore import QThreadPool, QObject
+from PySide6.QtWidgets import QVBoxLayout, QLabel, QPushButton, QWidget, QMainWindow, QApplication
 from datetime import datetime
 from typing import *
 import time
+from resourceManager.workerThread import Worker
 
 
-class CloudDataBase:
+class CloudDataBase(QWidget):
     def __init__(self):
+        super().__init__()
         self.available = True
         self.cursor = None
+        self.threadpool = QThreadPool()
 
     def setAvailableFalse(self):
         self.available = False
@@ -33,13 +38,14 @@ class CloudDataBase:
         """
         return int("".join(str(random.randint(1, 9)) for i in range(16)))
 
-    def connectToDataBase(self) -> bool:
+    def connectToDataBase(self, *args, **kwargs) -> bool:
         """
         Attempts to connect to the database and returns a boolean variable
 
         :returns: bool
         """
         try:
+            print(1)
             connection = pyodbc.connect(
                 'driver={SQL Server};  Server=3.25.137.79; Database=OrgApp; Trusted_Connection=no; UID=supermoon; PWD=Bluesky*99')
 
@@ -50,7 +56,7 @@ class CloudDataBase:
             print(e)
             return False
 
-    def addUserToDataBase(self, username: str, password: int):
+    def addUserToDataBase(self, username: str, password: str, userKeyCode: str):
         """
         Adds a user to the database
 
@@ -61,8 +67,7 @@ class CloudDataBase:
         try:
             command = f"""
             INSERT INTO userAccounts (username, password, userKey)
-            VALUES ('{username}', '{password}')
-            
+            VALUES ('{username}', '{password}', '{userKeyCode}')
             """
 
             self.cursor.execute(command)
@@ -102,7 +107,7 @@ class CloudDataBase:
         except (pyodbc.OperationalError, pyodbc.Error):
             self.setAvailableFalse()
 
-    def addAssignmentToDataBase(self, userKeyCode: int, assignmentName: str):
+    def addAssignmentToDataBase(self, userKeyCode: str, assignmentName: str):
         """
         Creates a new assignment in the data base
 
@@ -130,7 +135,7 @@ class CloudDataBase:
         self.cursor.execute(command)
         self.cursor.execute("COMMIT")
 
-    def editAssignmentName(self, userKeyCode: int, assignmentKeyCode: int, assignmentName: str):
+    def editAssignmentName(self, userKeyCode: str, assignmentKeyCode: str, assignmentName: str):
         """
         Adds an assignment to the database
 
@@ -151,7 +156,7 @@ class CloudDataBase:
         self.cursor.execute(command)
         self.cursor.execute("Commit")
 
-    def updateAssignmentTime(self, userKeyCode: int, assignmentKeyCode: int):
+    def updateAssignmentTime(self, userKeyCode: str, assignmentKeyCode: str):
         """
         Given the 2 keys, it updates the assignment's last accessed date
         Note that this still requires committing
@@ -176,7 +181,7 @@ class CloudDataBase:
 
         self.cursor.execute(command)
 
-    def changeAssignmentCompleted(self, userKeyCode: int, assignmentKeyCode: int, completed: bool):
+    def changeAssignmentCompleted(self, userKeyCode: str, assignmentKeyCode: str, completed: bool):
         """
         Changes the state of an assignment
 
@@ -194,7 +199,7 @@ class CloudDataBase:
         self.cursor.execute(command)
         self.cursor.execute("Commit")
 
-    def changeAssignmentDeleted(self, userKeyCode: int, assignmentKeyCode: int):
+    def changeAssignmentDeleted(self, userKeyCode: str, assignmentKeyCode: str):
         """
         Changes the delete state of an assignment
 
@@ -213,7 +218,7 @@ class CloudDataBase:
         self.cursor.execute(command)
         self.cursor.execute("Commit")
 
-    def updateTimetableUpdateTime(self, userKeyCode: int):
+    def updateTimetableUpdateTime(self, userKeyCode: str):
         """
         Given the 2 keys, it updates the assignment's last accessed date
         Note that this still requires committing
@@ -230,14 +235,14 @@ class CloudDataBase:
         second = currentTime.second
 
         command = f"""
-                    UPDATE timetables
-                    SET yearUpdated={year}, monthUpdated={month}, dayUpdated={day}, hourUpdated={hour}, minuteUpdated={minute}, secondUpdated={second}
-                    WHERE userKey={userKeyCode}
+                    UPDATE timetable_last_updated
+                    SET year={year}, month={month}, day={day}, hour={hour}, minute={minute}, second={second}
+                    WHERE accountKey={userKeyCode}
                 """
 
         self.cursor.execute(command)
 
-    def changeTimetable(self, userKeyCode: int, userTimetable: List[List[Class]]):
+    def changeTimetable(self, userKeyCode: str, userTimetable: List[List[Class]]):
         """
         Changes the timetable of a user in the database
 
@@ -268,7 +273,7 @@ class CloudDataBase:
         # Finally commits it
         self.cursor.execute("commit")
 
-    def loadTimetable(self, userKeyCode: int):
+    def loadTimetable(self, userKeyCode: str):
         command = f"""
             SELECT * from timetable
             WHERE userKey={userKeyCode}
@@ -278,7 +283,7 @@ class CloudDataBase:
 
         return self.cursor
 
-    def getAccountKey(self, username: str, password: str) -> int:
+    def getAccountKey(self, username: str, password: str) -> str:
         command = f"""
             SELECT * from accounts
             WHERE username='{username}' AND password='{password}'
@@ -286,9 +291,34 @@ class CloudDataBase:
 
         self.cursor.execute(command)
 
-
         return self.cursor[0][2]
 
+    def startRunningLoop(self):
+        """
+        Runs the database connection loop in a separate worker thread
+
+        :return:
+        """
+        func = self.connectToDataBase
+        worker = Worker(func)
+        worker.signals.error.connect(self.startRunningLoop)
+        worker.signals.result.connect(self.databaseConnected)
+        self.threadpool.start(worker)
+
+
+
+    def databaseConnected(self, connected: bool):
+        if connected:
+            self.setAvailableTrue()
+            print("Connected to Database")
+        else:
+            print("Failed to Connect")
+
+
+
 if __name__ == '__main__':
+    app = QApplication()
     d = CloudDataBase()
-    d.connectToDataBase()
+    d.show()
+    d.startRunningLoop()
+    app.exec()

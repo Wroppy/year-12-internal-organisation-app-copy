@@ -5,7 +5,7 @@ from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
 from typing import *
-from display.account import signInWidget, signUpWidget
+from display.account import signInWidget, signUpWidget, userAccountWidget
 
 
 class AccountWidget(QStackedWidget):
@@ -18,6 +18,8 @@ class AccountWidget(QStackedWidget):
 
         self.addWidget(self.signIn)
         self.addWidget(self.signUp)
+        self.addWidget(userAccountWidget.UserSigedInWidget())
+        self.setCurrentIndex(2)
 
         # Sets commands for the buttons
         self.signIn.signUpButton.clicked.connect(self.changeToSignUp)
