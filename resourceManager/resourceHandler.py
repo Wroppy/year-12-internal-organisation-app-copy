@@ -11,13 +11,13 @@ class ResourceHandler:
         self.userAccountKey = ""
         self.dataBaseHandler = CloudDataBase()
 
-    def generateKeyCode(self) -> int:
+    def generateKeyCode(self) -> str:
         """
         Returns a randomly generated key code
 
-        :return: int
+        :return: str
         """
-        return int("".join(str(random.randint(1, 9)) for _ in range(16)))
+        return "".join(str(random.randint(1, 9)) for _ in range(16))
 
     def returnAssignments(self) -> List[Assignment]:
         """
@@ -25,24 +25,24 @@ class ResourceHandler:
 
         :return: List[Assignments]
         """
-        data = loadJsonFile("data\\assignments")
-        assignmentData = data["assignments"]
+        assignmentsData = loadJsonFile("data\\assignments")
 
-        # Adds the data the an array then returns it
         assignments = []
-        for assignment in assignmentData:
-            if not assignment["deleted"]:
-                a = Assignment(assignment["assignmentName"], assignment["completed"])
+        # Adds the data the an array then returns it
+        for key in assignmentsData.keys():
+            if not assignmentsData[key]["deleted"]:
+                a = Assignment(assignmentsData[key]["assignmentName"], assignmentsData[key]["completed"], key)
                 assignments.append(a)
 
         return assignments
 
-    def addAssignment(self, assignmentName: str, completed: bool):
+    def addAssignment(self, assignmentName: str, completed: bool, keyCode: str):
         """
         Adds an assignment to the file system
 
         :param assignmentName: str
         :param completed: bool
+        :param keyCode: stsr
         :return: None
         """
 
@@ -54,33 +54,32 @@ class ResourceHandler:
             "completed": completed,
             "deleted": False,
             "lastUpdated": {
-            "year": currentTime.year,
-            "month": currentTime.month,
-            "day": currentTime.day,
-            "hour": currentTime.hour,
-            "minute": currentTime.minute,
-            "second": currentTime.second
-        }
+                "year": currentTime.year,
+                "month": currentTime.month,
+                "day": currentTime.day,
+                "hour": currentTime.hour,
+                "minute": currentTime.minute,
+                "second": currentTime.second
+            }
         }
 
-
-        assignments["assignments"].append(assignment)
+        assignments[keyCode] = assignment
         writeJsonFile("data\\assignments", assignments)
 
-    def updateAssignmentCompleted(self, index: int, checked: bool):
+    def updateAssignmentCompleted(self, keyCode: str, checked: bool):
         """
         Updated an assignment's completed state
 
-        :param index: int
+        :param index: str
         :param checked: bool
         :return: None
         """
         assignments = loadJsonFile("data\\assignments")
 
-        assignments["assignments"][index]["completed"] = checked
+        assignments[keyCode]["completed"] = checked
 
         currentTime = datetime.now()
-        assignments["assignments"][index]["lastUpdated"] = {
+        assignments[keyCode]["lastUpdated"] = {
             "year": currentTime.year,
             "month": currentTime.month,
             "day": currentTime.day,
@@ -91,7 +90,7 @@ class ResourceHandler:
 
         writeJsonFile("data\\assignments", assignments)
 
-    def deleteAssignment(self, index: int):
+    def deleteAssignment(self, keyCode: str):
         """
         Deletes an assignment from the internal database
 
@@ -99,13 +98,13 @@ class ResourceHandler:
         :return: None
         """
 
-
         assignments = loadJsonFile("data\\assignments")
 
-        assignments["assignments"][index]["deleted"] = True
-
+        assignments[keyCode]["deleted"] = True
+        print(assignments[keyCode]["deleted"])
+        print(assignments[keyCode])
         currentTime = datetime.now()
-        assignments["assignments"][index]["lastUpdated"] = {
+        assignments[keyCode]["lastUpdated"] = {
             "year": currentTime.year,
             "month": currentTime.month,
             "day": currentTime.day,
@@ -113,6 +112,8 @@ class ResourceHandler:
             "minute": currentTime.minute,
             "second": currentTime.second
         }
+
+        print(assignments)
 
         writeJsonFile("data\\assignments", assignments)
 

@@ -43,16 +43,17 @@ class WidgetHolder(QWidget):
         else:
             pass
 
-    def changeAssignment(self, assignmentCheckBox: QCheckBox, index: int):
+    def changeAssignment(self, assignmentCheckBox: QCheckBox, index: int, assignmentKeyCode: str):
         """
         Changes the state of an assignment in the self.assignment variable
 
         :param assignmentCheckBox: QCheckBox
         :param index: int
+        :param assignmentKeyCode: str
         """
         self.assignments[index].completed = assignmentCheckBox.isChecked()
 
-        self.resourceManager.updateAssignmentCompleted(index, assignmentCheckBox.isChecked())
+        self.resourceManager.updateAssignmentCompleted(assignmentKeyCode, assignmentCheckBox.isChecked())
         # for i in self.assignments:
 
     def setCheckBoxesFunctions(self):
@@ -62,7 +63,7 @@ class WidgetHolder(QWidget):
         """
         for i in range(len(self.assignmentWidgets)):
             self.assignmentWidgets[i].completedButton.stateChanged.connect(
-                lambda e, checkBox=self.assignmentWidgets[i].completedButton: self.changeAssignment(checkBox, i))
+                lambda e, checkBox=self.assignmentWidgets[i].completedButton: self.changeAssignment(checkBox, i, self.assignments[i].assignmentKeyCode))
 
     def addAssignmentsToLayout(self):
         """

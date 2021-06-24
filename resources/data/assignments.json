@@ -1,17 +1,54 @@
 {
-  "assignments": [
-    {
-      "assignmentName": "da",
-      "completed": false,
-      "deleted": true,
-      "lastUpdated": {
-        "year": 2021,
-        "month": 6,
-        "day": 22,
-        "hour": 21,
-        "minute": 37,
-        "second": 54
-      }
+  "3466681974833417": {
+    "assignmentName": "Nice",
+    "completed": false,
+    "deleted": true,
+    "lastUpdated": {
+      "year": 2021,
+      "month": 6,
+      "day": 24,
+      "hour": 12,
+      "minute": 47,
+      "second": 0
     }
-  ]
+  },
+  "5349364256699462": {
+    "assignmentName": "Nice",
+    "completed": false,
+    "deleted": true,
+    "lastUpdated": {
+      "year": 2021,
+      "month": 6,
+      "day": 24,
+      "hour": 12,
+      "minute": 47,
+      "second": 25
+    }
+  },
+  "7454842466717885": {
+    "assignmentName": "Assignment 1",
+    "completed": true,
+    "deleted": true,
+    "lastUpdated": {
+      "year": 2021,
+      "month": 6,
+      "day": 24,
+      "hour": 12,
+      "minute": 55,
+      "second": 46
+    }
+  },
+  "7935269992965389": {
+    "assignmentName": "assignment 2",
+    "completed": true,
+    "deleted": false,
+    "lastUpdated": {
+      "year": 2021,
+      "month": 6,
+      "day": 24,
+      "hour": 12,
+      "minute": 55,
+      "second": 38
+    }
+  }
 }

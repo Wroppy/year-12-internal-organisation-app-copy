@@ -36,14 +36,18 @@ class AssignmentDisplay(QWidget):
 
         self.styleWidgets()
 
-    def addWidget(self, title: str, completed: bool):
+    def returnAssignmentKeyCode(self, index: int):
+        return self.widgetHolder.assignments[index].assignmentKeyCode
+
+    def addWidget(self, title: str, completed: bool, assignmentKey: str):
         """
         Adds an assignment given the title and its state
 
         :param title: str
         :param completed: boolean
+        :param assignmentKey: str
         """
-        assignment = Assignment(title, completed)
+        assignment = Assignment(title, completed, assignmentKey)
         self.widgetHolder.appendAssignments(assignment)
 
         self.widgetHolder.addAssignmentsToLayout()
