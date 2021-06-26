@@ -44,8 +44,8 @@ class ClassHolder(QWidget):
         Adds a class to the timetable by appending it and re-displaying the layout
 
         :param classTitle: str
-        :param startingTime: int
-        :param endingTime: int
+        :param startingTime: time
+        :param endingTime: time
         :param currentTime: datetime class
         :return: None
         """

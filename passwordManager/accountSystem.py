@@ -8,3 +8,6 @@ def hashPassword(password: str):
     return hashlib.sha256(bytes(password, encoding="utf-8")).hexdigest()
 
 
+if __name__ == '__main__':
+    print(hashPassword("password"))
+

@@ -9,7 +9,7 @@ class ResourceHandler:
     def __init__(self):
         self.loggedIn = False
         self.userAccountKey = ""
-        self.dataBaseHandler = CloudDataBase()
+        #self.dataBaseHandler = CloudDataBase()
 
     def generateKeyCode(self) -> str:
         """
