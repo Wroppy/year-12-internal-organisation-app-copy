@@ -14,8 +14,14 @@ class DatabaseHandler:
     def isDatabaseActive(self) -> bool:
         return self.database.hasConnection()
 
-    def connectToDoDatabase(self, **kwargs) -> bool:
-        return self.database.connectToDataBase()
+    def setDatabaseActive(self):
+        self.database.setAvailableTrue()
+
+    def setDatabaseUnActive(self):
+        self.database.setAvailableFalse()
+
+    def connectToDoDatabase(self, **kwargs):
+        self.database.connectToDataBase()
 
     def addUserToDatabase(self, **kwargs):
         self.database.addUserToDataBase(kwargs["username"], kwargs["password"], kwargs["userKeyCode"])

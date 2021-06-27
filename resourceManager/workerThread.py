@@ -50,12 +50,11 @@ class Worker(QRunnable):
 
     '''
 
-    def __init__(self, fn, *args, **kwargs):
+    def __init__(self, fn, **kwargs):
         super(Worker, self).__init__()
 
         # Store constructor arguments (re-used for processing)
         self.fn = fn
-        self.args = args
         self.kwargs = kwargs
         self.signals = WorkerSignals()
 
@@ -70,7 +69,7 @@ class Worker(QRunnable):
 
         # Retrieve args/kwargs here; and fire processing using them
         try:
-            result = self.fn(*self.args, **self.kwargs)
+            result = self.fn(**self.kwargs)
         except:
             traceback.print_exc()
             exctype, value = sys.exc_info()[:2]

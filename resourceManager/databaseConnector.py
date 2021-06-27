@@ -28,25 +28,18 @@ class CloudDataBase:
         """
         return self.available
 
-    def connectToDataBase(self) -> bool:
+    def connectToDataBase(self):
         """
         Attempts to connect to the database and returns a boolean variable
 
         :returns: bool
         """
-        try:
-            connection = pyodbc.connect(
-                'driver={SQL Server};  Server=3.25.137.79; Database=OrgApp; Trusted_Connection=no; UID=supermoon; PWD=Bluesky*99')
+        connection = pyodbc.connect(
+            'driver={SQL Server};  Server=3.25.137.79; Database=OrgApp; Trusted_Connection=no; UID=supermoon; PWD=Bluesky*99')
 
-            self.cursor = connection.cursor()
+        self.cursor = connection.cursor()
 
-            return True
-        except (pyodbc.OperationalError, pyodbc.Error) as e:
-            print(e)
 
-            self.connectToDataBase()
-
-            return False
 
     def addUserToDataBase(self, username: str, password: str, userKeyCode: str):
         """
