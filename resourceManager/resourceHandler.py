@@ -1,5 +1,5 @@
 from resourceManager.internalDataHandler import *
-from resourceManager.databaseHandler import *
+from resourceManager.databaseConnector import *
 from display.timetableWidget.classClass import Class
 from display.assignmentWidget.assignment import Assignment
 from datetime import datetime, time

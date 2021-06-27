@@ -19,7 +19,6 @@ class AccountWidget(QStackedWidget):
         self.addWidget(self.signIn)
         self.addWidget(self.signUp)
         self.addWidget(userAccountWidget.UserSigedInWidget())
-        self.setCurrentIndex(2)
 
         # Sets commands for the buttons
         self.signIn.signUpButton.clicked.connect(self.changeToSignUp)
