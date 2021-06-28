@@ -40,8 +40,6 @@ class ThreadHandler:
         print("Success")
 
     def addUserToDatabase(self, username: str, password: str, userKeyCode: str):
-        if not self.databaseHandler.isDatabaseActive():
-            return
 
         worker = Worker(
             self.databaseHandler.addUserToDatabase(username=username, password=password, userKeyCode=userKeyCode))
@@ -50,7 +48,7 @@ class ThreadHandler:
         self.threadPool.start(worker)
 
     def isUserPasswordMatch(self, username: str, password: str) -> bool:
-        z
+        pass
 
 
 class TestWindow(QWidget):

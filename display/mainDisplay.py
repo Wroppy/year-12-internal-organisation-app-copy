@@ -8,15 +8,19 @@ from typing import *
 from display.navigationBar import navBar
 from display.timetableWidget.timetableWidget import TimetablePageWidget
 from display.quickLinksWidget.quickLinksWidget import QuickLinksPage
-from display.account.accountWidget import AccountWidget
 from display.assignmentWidget.assignmentPage import AssignmentPage
 from resourceManager.resourceHandler import ResourceHandler
+import resourceManager.resources
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
 
+        APPICON = QIcon(":/appIcons/appIcon.png")
+        self.setWindowIcon(APPICON)
+
+        threadPool = QThreadPool()
         self.resourceManager = ResourceHandler()
 
         self.createWidgets()
@@ -44,7 +48,7 @@ class MainWindow(QMainWindow):
             AssignmentPage(self.resourceManager),
             QLabel("Events, Coming Soon!"),
             QuickLinksPage(),
-            AccountWidget()
+            QLabel("Accounts, Coming Soon!")
         ]
         for page in PAGES:
             self.windowPages.addWidget(page)

@@ -31,7 +31,7 @@ class SignIn(QWidget):
         layout.addWidget(headerWidget)
 
         # Creates the headings for the text fields
-        usernameHeading = QLabel("Username:")
+        usernameHeading = QLabel("Username:" )
         passwordHeading = QLabel("Password:")
 
         # Creates the text fields for signing in
