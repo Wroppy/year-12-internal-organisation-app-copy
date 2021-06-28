@@ -19,13 +19,12 @@ class Event:
         :return: str
         """
 
-        hour = self.notifyTime.hour
-        minute = self.notifyTime.minute
+        formattedTime = self.notifyTime.strftime("%X")[:-3]
 
         day = self.notifyTime.strftime("%a")
         month = self.notifyTime.strftime("%b")
         year = self.notifyTime.strftime("%Y")
 
-        text = f"{hour}:{minute} {day}/{month}/{year}"
+        text = f"{formattedTime} {day}/{month}/{year}"
 
         return text
