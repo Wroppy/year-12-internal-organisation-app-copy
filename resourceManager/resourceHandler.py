@@ -3,13 +3,13 @@ from resourceManager.databaseConnector import *
 from display.timetableWidget.classClass import Class
 from display.assignmentWidget.assignment import Assignment
 from datetime import datetime, time
+from resourceManager.threadHandler import ThreadHandler
 
 
 class ResourceHandler:
     def __init__(self):
         self.loggedIn = False
         self.userAccountKey = ""
-        #self.dataBaseHandler = CloudDataBase()
 
     def generateKeyCode(self) -> str:
         """
@@ -255,8 +255,9 @@ class ResourceHandler:
         if userAccountKey != None:
             self.userAccountKey = userAccountKey
 
-    def databaseRunning(self) -> bool:
-        return self.dataBaseHandler.available
+
+    def logIn(self, username: str, password: str):
+        pass
 
 
 if __name__ == '__main__':

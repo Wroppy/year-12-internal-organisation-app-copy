@@ -11,7 +11,8 @@
         <file alias="user.png">icons/user.png</file>
     </qresource>
     <qresource prefix="appIcons">
-        <file alias="appIcon.png">icons/appIcon.png</file>
+        <file alias="appIcon.png">icons/diary.png</file>
+        <file alias="splashScreen.png">icons/splash_screen.png</file>
     </qresource>
 
 </RCC>
