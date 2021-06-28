@@ -5,7 +5,7 @@ Will not be used for the digi internal
 
 from notifications.notification import *
 from datetime import datetime
-from plyer import notification as n
+from pynotifier import Notification
 from PySide6.QtCore import QRunnable, Slot, QThreadPool
 from resourceManager.internalDataHandler import *
 from display.eventsWidget.event import Event
@@ -75,11 +75,17 @@ class NotificationHandler:
         try:
             appIcon = getProjectDirPath() + "resources\\icons\\diary.ico"
 
-            n.notify(title=title, app_name=appName, app_icon=appIcon, toast=toast)
+            # Sends the notification through
+            Notification(
+                title=title,
+                description="From Weyman's Organiser App",
+                icon_path=appIcon,
+                duration=5,
+                urgency="normal"
+            ).send()
             print("Sent")
         except Exception as e:
             print(e)
-            n.notify(title=title, app_name=appName, toast=toast)
             print("error")
 
 
@@ -102,4 +108,5 @@ class NotificationWorker(QRunnable):
 
 if __name__ == '__main__':
     notify = NotificationHandler(ResourceHandler())
-    notify.sendNotification(Event("me", datetime.now(), "2"))\
+    notify.startLoop()
+
