@@ -11,7 +11,7 @@ from display.timetableWidget.addClassDialog import AddClassDialog
 from display.confirmDialog import ConfirmDialog
 from resourceManager.resourceHandler import ResourceHandler
 from datetime import time
-
+from typing import *
 
 class TimetablePageWidget(QWidget):
     def __init__(self, resourceManger: ResourceHandler):
@@ -31,17 +31,17 @@ class TimetablePageWidget(QWidget):
 
         self.connectButtons()
 
-    def showNewClassDialog(self):
+    def showNewClassDialog(self, errorMessage: Union[str, None]):
         """
         Displays a dialog window that asks the user for a class
 
         :return: None
         """
-        dialog = AddClassDialog(self)
+        dialog = AddClassDialog(self, errorMessage)
         if dialog.exec():
             # If there is no input, and the user pressed "ok" then then it will display the window again
             if len(dialog.classNameEntry.text()) == 0:
-                self.showNewClassDialog()
+                self.showNewClassDialog("Please Input a class")
             else:
                 classTitle = dialog.classNameEntry.text()
 
@@ -50,7 +50,7 @@ class TimetablePageWidget(QWidget):
 
                 # Checks if the starting time is greater than the ending time
                 if startingTime >= endingTime:
-                    self.showNewClassDialog()
+                    self.showNewClassDialog("Please Input a Valid Time")
                     return
 
                 currentTime = datetime.datetime.now()
@@ -107,7 +107,7 @@ class TimetablePageWidget(QWidget):
 
         :return: None
         """
-        self.buttonWidget.newButton.clicked.connect(self.showNewClassDialog)
+        self.buttonWidget.newButton.clicked.connect(lambda: self.showNewClassDialog(None))
         self.buttonWidget.deleteButton.clicked.connect(self.showDeleteDialog)
 
 

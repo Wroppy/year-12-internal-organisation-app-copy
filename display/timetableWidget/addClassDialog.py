@@ -5,10 +5,11 @@ from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
 import resourceManager.resources
+from typing import *
 
 
 class AddClassDialog(QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, parent: QWidget, errorMessage: Union[str, None]):
         super(AddClassDialog, self).__init__(parent=parent)
         APPICON = QIcon(":/appIcons/appIcon.png")
         self.setWindowIcon(APPICON)
@@ -17,6 +18,11 @@ class AddClassDialog(QDialog):
         self.setWindowTitle(TITLE)
         layout = QVBoxLayout(self)
         layout.setSpacing(10)
+
+        if errorMessage is not None:
+            errorLabel = QLabel(errorMessage)
+            errorLabel.setStyleSheet("color: red")
+            layout.addWidget(errorLabel)
 
         # Asks for the user's class
         classWidget = QWidget()
@@ -66,7 +72,6 @@ class AddClassDialog(QDialog):
         endTimeLayout.addWidget(self.endTimeMinute)
 
         layout.addWidget(endTimeWidget)
-
 
         layout.addStretch()
 
