@@ -8,29 +8,27 @@ from datetime import datetime
 from plyer import notification as n
 from PySide6.QtCore import QRunnable, Slot, QThreadPool
 from resourceManager.internalDataHandler import *
+from display.eventsWidget.event import Event
+from resourceManager.resourceHandler import ResourceHandler
+import resourceManager.resources
 
 
 class NotificationHandler:
-    def __init__(self):
-        self.notifications = []
+    def __init__(self, resourceHandler: ResourceHandler):
+        self.resourceHandler = resourceHandler
+
+        self.notifications = self.resourceHandler.returnNotifyEvents()
         self.running = True
 
-    def addNotification(self, title: str, message: str, year: int, month: int, day: int, hour: int, minute: int):
+    def addNotification(self, event: Event):
         """
-        Creates a notification class and appends it to the end of the list
+        Creates a notification and appends it to the end of the list
 
-        :param title: str
-        :param message: str
-        :param year: int
-        :param month: int
-        :param day: int
-        :param hour: int
-        :param minute: int
+        :param event: Event
         :return: None
         """
 
-        notification = Notification(title, message, year, month, day, hour, minute)
-        self.notifications.append(notification)
+        self.notifications.append(event)
 
     def startLoop(self):
         """
@@ -38,13 +36,17 @@ class NotificationHandler:
 
         :return: None
         """
-        while self.running:
-            for notification in self.notifications:
-                if notification.notificationTime > datetime.now():
-                    self.sendNotification(notification)
-                    self.removeNotification(notification)
 
-    def removeNotification(self, notification: Notification):
+        print("stareting loop")
+        while self.running:
+            for event in self.notifications:
+                print(event.notifyTime)
+                if event.notifyTime <= datetime.now():
+                    print(2)
+                    self.sendNotification(event)
+                    self.removeNotification(event)
+                    break
+    def removeNotification(self, notification: Event):
         """
         Removes a notification from the notification variables
 
@@ -55,25 +57,30 @@ class NotificationHandler:
         index = self.notifications.index(notification)
         self.notifications.pop(index)
 
-    def sendNotification(self, userNotification: Notification):
+    def removeNotificationFromFile(self, event: Event):
+        self.resourceHandler.changeEventNotified(event.eventKeyCode)
+
+    def sendNotification(self, userNotification: Event):
         """
         Sends out and notifies the user's window
 
-        :param userNotification: Notification
+        :param userNotification: Event
         :return: None
         """
+        print("Notifying")
         appName = "Organisation App"
         toast = False
 
-        title = userNotification.title
-        message = userNotification.message
-
+        title = userNotification.eventName
         try:
-            appIcon = getProjectDirPath() + "resources\\icons\\appIcon.png"
+            appIcon = getProjectDirPath() + "resources\\icons\\diary.ico"
 
-            n.notify(title=title, message=message, app_name=appName, app_icon=appIcon, toast=toast)
-        except Exception:
-            n.notify(title=title, message=message, app_name=appName, toast=toast)
+            n.notify(title=title, app_name=appName, app_icon=appIcon, toast=toast)
+            print("Sent")
+        except Exception as e:
+            print(e)
+            n.notify(title=title, app_name=appName, toast=toast)
+            print("error")
 
 
 class NotificationWorker(QRunnable):
@@ -94,7 +101,5 @@ class NotificationWorker(QRunnable):
 
 
 if __name__ == '__main__':
-    appIcon = getProjectDirPath() + "resources\\icons\\appIcon.ico"
-
-    n.notify(title="This is the title", app_name="Organiser", message="This is a message",
-             app_icon=appIcon)
+    notify = NotificationHandler(ResourceHandler())
+    notify.sendNotification(Event("me", datetime.now(), "2"))\

@@ -1,9 +1,10 @@
 from resourceManager.internalDataHandler import *
-from resourceManager.databaseConnector import *
+# from resourceManager.databaseConnector import *
 from display.timetableWidget.classClass import Class
 from display.assignmentWidget.assignment import Assignment
+from display.eventsWidget.event import Event
 from datetime import datetime, time
-from resourceManager.threadHandler import ThreadHandler
+import random
 
 
 class ResourceHandler:
@@ -111,7 +112,6 @@ class ResourceHandler:
             "second": currentTime.second
         }
 
-
         writeJsonFile("data\\assignments", assignments)
 
     def returnClasses(self) -> List[List[Class]]:
@@ -127,21 +127,19 @@ class ResourceHandler:
         # Creates a datetime class of the time it was last updated
         key = "lastUpdated"
         lastUpdated = datetime(
-                    year=data[key]["year"],
-                    month=data[key]["month"],
-                    day=data[key]["day"],
-                    hour=data[key]["hour"],
-                    minute=data[key]["minute"],
-                    second=data[key]["second"]
-                )
+            year=data[key]["year"],
+            month=data[key]["month"],
+            day=data[key]["day"],
+            hour=data[key]["hour"],
+            minute=data[key]["minute"],
+            second=data[key]["second"]
+        )
 
         # Adds it in a 2D array
         newTimetable = []
         for day in timetable:
             timetableDay = []
             for _class in day:
-
-
                 # Creates the starting time class
                 startingTime = time(_class["startingTime"]["hour"], _class["startingTime"]["minute"])
 
@@ -216,47 +214,157 @@ class ResourceHandler:
 
         writeJsonFile("data\\timetable", timetable)
 
-    def loadClassFromDatabase(self, userKeyCode: int):
-        loadedTimetable = self.dataBaseHandler.loadTimetable(userKeyCode)
+    def addEventToFile(self, eventName: str, notifyTime: datetime, keyCode: str):
+        events = loadJsonFile("data\\events")
 
-        timetable = [[], [], [], [], []]
+        currentTime = datetime.now()
+        lastUpdated = {
+            "year": currentTime.year,
+            "month": currentTime.month,
+            "day": currentTime.day,
+            "hour": currentTime.hour,
+            "minute": currentTime.minute,
+            "second": currentTime.second
+        }
+        eventData = {
+            "eventName": eventName,
+            "notifyTime": {
+                "year": notifyTime.year,
+                "month": notifyTime.month,
+                "day": notifyTime.day,
+                "hour": notifyTime.hour,
+                "minute": notifyTime.minute
+            },
+            "deleted": False,
+            "notified": False,
+            "lastUpdated": lastUpdated
+        }
+        events[keyCode] = eventData
 
-        for row in loadedTimetable:
-            day = row
+        writeJsonFile("data\\events", events)
 
-            className = row[0]
-            beginningTime = row[1]
-            endingTime = row[2]
+    def deleteEvent(self, keyCode: str):
+        events = loadJsonFile("data\\events")
 
-            yearUpdated = row[3]
-            monthUpdated = row[4]
-            dayUpdated = row[5]
-            hourUpdated = row[6]
-            minuteUpdated = row[7]
-            secondUpdated = row[8]
+        currentTime = datetime.now()
+        lastUpdated = {
+            "year": currentTime.year,
+            "month": currentTime.month,
+            "day": currentTime.day,
+            "hour": currentTime.hour,
+            "minute": currentTime.minute,
+            "second": currentTime.second
+        }
 
-            timeUpdated = datetime(yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated)
+        events[keyCode]["lastUpdated"] = lastUpdated
+        events[keyCode]["deleted"] = True
 
-    def isLoggedIn(self):
-        return self.loggedIn
+        writeJsonFile("data\\events", events)
 
-    def loggedInFalse(self):
-        self.loggedIn = False
+    def changeEventNotified(self, keyCode: str):
+        events = loadJsonFile("data\\events")
 
-    def loggedInTrue(self):
-        self.loggedIn = True
+        currentTime = datetime.now()
+        lastUpdated = {
+            "year": currentTime.year,
+            "month": currentTime.month,
+            "day": currentTime.day,
+            "hour": currentTime.hour,
+            "minute": currentTime.minute,
+            "second": currentTime.second
+        }
 
-    def getAccountKey(self):
-        userAccountKey = loadJsonFile("data\\account")["accountKey"]
+        events[keyCode]["lastUpdated"] = lastUpdated
+        events[keyCode]["notified"] = True
 
-        if userAccountKey != None:
-            self.userAccountKey = userAccountKey
+        writeJsonFile("data\\events", events)
 
+    def returnEvents(self) -> List[Event]:
+        """
+        Returns all of the events in
 
-    def logIn(self, username: str, password: str):
-        pass
+        """
+        events = loadJsonFile("data\\events")
+
+        eventData = []
+        for keyCode in events.keys():
+            # Checks if the event has already been deleted
+            if not events[keyCode]["deleted"]:
+                eventName = events[keyCode]["eventName"]
+
+                notifyTime = datetime(
+                    year=events[keyCode]["notifyTime"]["year"],
+                    month=events[keyCode]["notifyTime"]["month"],
+                    day=events[keyCode]["notifyTime"]["day"],
+                    hour=events[keyCode]["notifyTime"]["hour"],
+                    minute=events[keyCode]["notifyTime"]["minute"]
+                )
+
+                event = Event(eventName, notifyTime, keyCode)
+
+                eventData.append(event)
+
+        return eventData
+
+    def returnNotifyEvents(self) -> List[Event]:
+        """
+        Loops through each event and checks if they have a chance of notifying the user
+
+        :return: List[Event]
+        """
+        events = self.returnEvents()
+
+        eventsData = []
+        for event in events:
+            # Checks if the time has not already passed
+            if event.notifyTime >= datetime.now():
+                eventsData.append(event)
+
+        return eventsData
+
+    # def loadClassFromDatabase(self, userKeyCode: int):
+    #     loadedTimetable = self.dataBaseHandler.loadTimetable(userKeyCode)
+    #
+    #     timetable = [[], [], [], [], []]
+    #
+    #     for row in loadedTimetable:
+    #         day = row
+    #
+    #         className = row[0]
+    #         beginningTime = row[1]
+    #         endingTime = row[2]
+    #
+    #         yearUpdated = row[3]
+    #         monthUpdated = row[4]
+    #         dayUpdated = row[5]
+    #         hourUpdated = row[6]
+    #         minuteUpdated = row[7]
+    #         secondUpdated = row[8]
+    #
+    #         timeUpdated = datetime(yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated)
+    #
+    # def isLoggedIn(self):
+    #     return self.loggedIn
+    #
+    # def loggedInFalse(self):
+    #     self.loggedIn = False
+    #
+    # def loggedInTrue(self):
+    #     self.loggedIn = True
+    #
+    # def getAccountKey(self):
+    #     userAccountKey = loadJsonFile("data\\account")["accountKey"]
+    #
+    #     if userAccountKey != None:
+    #         self.userAccountKey = userAccountKey
+    #
+    # def logIn(self, username: str, password: str):
+    #     pass
 
 
 if __name__ == '__main__':
     r = ResourceHandler()
-    r.returnClasses()
+    a = r.returnNotifyEvents()
+
+    for event in a:
+        print(event.notifyTime)

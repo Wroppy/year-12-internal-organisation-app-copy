@@ -26,7 +26,9 @@ class EventsDisplay(QWidget):
         header = Header("Events")
         layout.addWidget(header)
 
-        events = [Event(f"Test {i}", datetime.datetime.now(), "1") for i in range(5)]
+        #events = [Event(f"Test {i}", datetime.datetime.now(), "1") for i in range(5)]
+
+        events = self.resourceManager.returnEvents()
         # Creates the widget holder
         self.eventHolder = EventHolder(events, self.resourceManager)
 
@@ -42,6 +44,7 @@ class EventsDisplay(QWidget):
         self.styleWidgets()
 
     def returnEventKeyCode(self, index: int):
+        print(index)
         return self.eventHolder.events[index].eventKeyCode
 
     def addWidget(self, title: str, notifyTime: datetime.datetime, keyCode: str):

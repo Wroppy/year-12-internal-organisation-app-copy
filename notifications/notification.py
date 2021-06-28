@@ -7,20 +7,16 @@ from datetime import datetime
 
 
 class Notification:
-    def __init__(self, title: str, message: str, year: int, month: int, day: int, hour: int, minute: int):
+    def __init__(self, title: str, message: str, notificationTime: datetime):
         """
         Constructor for the notifications
 
         :param title: str
         :param message: str
-        :param year: int
-        :param month: int
-        :param day: int
-        :param hour: int
-        :param minute: int
+        :param notificationTime: datetime
         """
 
         self.title = title
         self.message = message
 
-        self.notificationTime = datetime(year, month, day, hour, minute)
+        self.notificationTime = notificationTime

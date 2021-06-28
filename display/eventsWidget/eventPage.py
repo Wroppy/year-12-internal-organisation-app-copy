@@ -7,6 +7,7 @@ from display.contentButtonWidget import ContentButtonWidget
 from display.eventsWidget.addEventDialog import AddEventDialog
 from display.confirmDialog import ConfirmDialog
 from resourceManager.resourceHandler import ResourceHandler
+from typing import *
 
 
 class EventPage(QWidget):
@@ -37,11 +38,12 @@ class EventPage(QWidget):
             if self.eventDisplay.eventHolder.eventWidgets[i].selectButton.isChecked():
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
+                    eventKeyCode = self.eventDisplay.returnEventKeyCode(i)
+
                     self.eventDisplay.eventHolder.deleteEvent(i)
                     self.eventDisplay.eventHolder.addEventsToLayout()
 
-                    # eventKeyCode = self.eventDisplay.returnEventKeyCode
-                    # self.resourceManager.deleteEvent(eventKeyCode)
+                    self.resourceManager.deleteEvent(eventKeyCode)
                 break
 
     def addEvent(self, eventTitle: str, notifyTime: datetime.datetime, eventKey: str):
@@ -55,7 +57,7 @@ class EventPage(QWidget):
 
         self.eventDisplay.addWidget(eventTitle, notifyTime, eventKey)
 
-    def showEventDialog(self, errorCode):
+    def showEventDialog(self, errorCode: Union[str, None]):
         """
         Is displayed when the user decides to add a new event
 
@@ -93,11 +95,12 @@ class EventPage(QWidget):
 
             eventTitle = dialog.eventEntry.text()
 
-            # eventKey = self.resourceManager.generateKeyCode()
-            eventKey = "2"
+            eventKey = self.resourceManager.generateKeyCode()
+
             # Adds the event to the page
             self.addEvent(eventTitle, notifyTime, eventKey)
-            # self.resourceManager.addEvent(eventTitle, False, eventKey)
+
+            self.resourceManager.addEventToFile(eventTitle, notifyTime, eventKey)
 
     def addButtonFunction(self):
         """
