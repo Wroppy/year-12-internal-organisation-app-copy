@@ -3,18 +3,21 @@ This class creates a simple yes/no dialog window with a label
 
 """
 
-
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6 import QtWidgets
 from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
+import resourceManager.resources
 
 
 class ConfirmDialog(QDialog):
     def __init__(self, text: str):
         super(ConfirmDialog, self).__init__()
+        APPICON = QIcon(":/appIcons/appIcon.png")
+        self.setWindowIcon(APPICON)
+
         TITLE = "Confirm"
         self.setWindowTitle(TITLE)
         layout = QVBoxLayout(self)
@@ -37,6 +40,7 @@ class ConfirmDialog(QDialog):
         self.buttonBox.accepted.connect(self.accept)
         self.buttonBox.rejected.connect(self.reject)
         layout.addWidget(self.buttonBox)
+
 
 if __name__ == '__main__':
     app = QApplication()
