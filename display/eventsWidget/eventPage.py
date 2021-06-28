@@ -73,6 +73,12 @@ class EventPage(QWidget):
             if len(dialog.eventEntry.text()) == 0:
                 self.showEventDialog("Please Input An Event")
                 return
+
+            # Checks if the event is made up of only digits
+            if dialog.eventEntry.text().isdigit():
+                self.showNewClassDialog("Please Input An Event")
+                return
+
             # If there is an error with the time, then the dialog will reappear
             try:
                 year = dialog.dateYear.value()

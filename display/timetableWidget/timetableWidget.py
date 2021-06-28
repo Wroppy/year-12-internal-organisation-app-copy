@@ -42,24 +42,30 @@ class TimetablePageWidget(QWidget):
             # If there is no input, and the user pressed "ok" then then it will display the window again
             if len(dialog.classNameEntry.text()) == 0:
                 self.showNewClassDialog("Please Input a class")
-            else:
-                classTitle = dialog.classNameEntry.text()
+                return
 
-                startingTime = time(dialog.startTimeHour.value(), dialog.startTimeMinute.value())
-                endingTime = time(dialog.endTimeHour.value(), dialog.endTimeMinute.value())
+            classTitle = dialog.classNameEntry.text()
 
-                # Checks if the starting time is greater than the ending time
-                if startingTime >= endingTime:
-                    self.showNewClassDialog("Please Input a Valid Time")
-                    return
+            # Checks if the class is made up of only digits
+            if classTitle.isdigit():
+                self.showNewClassDialog("Please Input a Class")
+                return
 
-                currentTime = datetime.datetime.now()
+            startingTime = time(dialog.startTimeHour.value(), dialog.startTimeMinute.value())
+            endingTime = time(dialog.endTimeHour.value(), dialog.endTimeMinute.value())
 
-                # Adds the class to the page
-                self.addClass(classTitle, startingTime, endingTime, currentTime)
+            # Checks if the starting time is greater than the ending time
+            if startingTime >= endingTime:
+                self.showNewClassDialog("Please Input a Valid Time")
+                return
 
-                currentDay = self.timetableWidget.daysSelection.currentIndex()
-                self.resourceManager.addClassToFile(currentDay, classTitle, startingTime, endingTime, currentTime)
+            currentTime = datetime.datetime.now()
+
+            # Adds the class to the page
+            self.addClass(classTitle, startingTime, endingTime, currentTime)
+
+            currentDay = self.timetableWidget.daysSelection.currentIndex()
+            self.resourceManager.addClassToFile(currentDay, classTitle, startingTime, endingTime, currentTime)
 
 
 
