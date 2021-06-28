@@ -58,9 +58,7 @@ class AssignmentPage(QWidget):
 
         """
 
-
         self.assignmentDisplay.addWidget(assignmentTitle, False, assignmentKey)
-
 
     def showAssignmentDialog(self, errorMessage: str):
         """
@@ -70,16 +68,22 @@ class AssignmentPage(QWidget):
 
         dialog = AddAssignmentDialog(self, errorMessage)
         if dialog.exec():
-            # If there is no input, and the user pressed "ok" then then it will display the window again
-            if len(dialog.assignmentEntry.text()) == 0:
-                self.showAssignmentDialog("Please Input An Assignment")
-            else:
-                assignmentTitle = dialog.assignmentEntry.text()
+            assignmentTitle = dialog.assignmentEntry.text()
 
-                assignmentKey = self.resourceManager.generateKeyCode()
-                # Adds the assignment to the page
-                self.addAssignment(assignmentTitle, assignmentKey)
-                self.resourceManager.addAssignment(assignmentTitle, False, assignmentKey)
+            # If there is no input, and the user pressed "ok" then then it will display the window again
+            if len(assignmentTitle) == 0:
+                self.showAssignmentDialog("Please Input An Assignment")
+                return
+
+            # Checks if the assignment name is made up of digits
+            if assignmentTitle.isdigit():
+                self.showAssignmentDialog("Please Input An Assignment")
+                return
+
+            assignmentKey = self.resourceManager.generateKeyCode()
+            # Adds the assignment to the page
+            self.addAssignment(assignmentTitle, assignmentKey)
+            self.resourceManager.addAssignment(assignmentTitle, False, assignmentKey)
 
     def addButtonFunction(self):
         """
