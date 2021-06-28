@@ -101,8 +101,6 @@ class ResourceHandler:
         assignments = loadJsonFile("data\\assignments")
 
         assignments[keyCode]["deleted"] = True
-        print(assignments[keyCode]["deleted"])
-        print(assignments[keyCode])
         currentTime = datetime.now()
         assignments[keyCode]["lastUpdated"] = {
             "year": currentTime.year,
@@ -113,7 +111,6 @@ class ResourceHandler:
             "second": currentTime.second
         }
 
-        print(assignments)
 
         writeJsonFile("data\\assignments", assignments)
 

@@ -82,7 +82,6 @@ class WidgetHolder(QWidget):
             widget = AssignmentWidget(assignment)
             layout.addWidget(widget)
             self.assignmentWidgets.append(widget)
-            print(type(widget))
 
         layout.addStretch()
 

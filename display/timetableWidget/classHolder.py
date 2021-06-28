@@ -75,7 +75,6 @@ class ClassHolder(QWidget):
 
         :return: None
         """
-        print(self.widgetLayout.count())
         if self.widgetLayout.count() > 1:
             # Deletes each widget in the layout one by one
             while self.widgetLayout.count():
@@ -95,7 +94,6 @@ class ClassHolder(QWidget):
         :return: None
         """
         self.classes.sort(key=lambda t: t.beginningTime)
-        #print(self.classes)
 
 
 if __name__ == '__main__':

@@ -309,11 +309,8 @@ class CloudDataBase:
 
 
 if __name__ == '__main__':
-    print(0)
     d = CloudDataBase()
-    print("Initialized Class")
     d.connectToDataBase()
-    print("Connected to Database")
     currentTime = dt.datetime.now()
 
     classes = [
@@ -322,4 +319,3 @@ if __name__ == '__main__':
         [], [Class("Chemistry", dt.time(11, 30), dt.time(12, 30), currentTime)], [], []]
 
     d.changeTimetable("1234567890123456", classes, currentTime)
-    print("Inserted into Deatabase")

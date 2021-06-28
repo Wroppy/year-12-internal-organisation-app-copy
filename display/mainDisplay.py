@@ -108,7 +108,6 @@ class MainWindow(QMainWindow):
             self.shrinkContentWidget()
 
         self.navBar.changeExtended()
-        print(self.navBar.isExtended())
 
     def extendNavBar(self):
         """

@@ -29,7 +29,6 @@ class TestWindow(QWidget):
         super().__init__()
         s = SplashScreen()
         s.displayMessage("Loading Database")
-        print(2)
         s.displayMessage("Loading Application")
         s.finish(self)
 
