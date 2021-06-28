@@ -6,25 +6,54 @@ from PySide6 import QtCore
 import sys
 from typing import *
 from display.navigationBar import navBar
+from display.spashScreen import SplashScreen
 from display.timetableWidget.timetableWidget import TimetablePageWidget
 from display.quickLinksWidget.quickLinksWidget import QuickLinksPage
 from display.assignmentWidget.assignmentPage import AssignmentPage
 from resourceManager.resourceHandler import ResourceHandler
 from display.eventsWidget.eventPage import EventPage
-
+from notifications.notificationHandler import *
 import resourceManager.resources
+import threading
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__(parent=None)
+        self.threadPool = QThreadPool()
 
         APPICON = QIcon(":/appIcons/appIcon.png")
-        self.setWindowIcon(APPICON)
+        APPNAME = "Organiser"
 
+        self.setWindowIcon(APPICON)
+        self.setWindowTitle(APPNAME)
+
+        splashScreen = SplashScreen()
+
+        splashScreen.displayMessage("Connecting To Notification Manager")
         self.resourceManager = ResourceHandler()
 
+        self.notificationManager = NotificationHandler(self.resourceManager)
+        self.startNotificationThread()
+        # threading.Thread(target=self.notificationManager.startLoop).start()
+
+        splashScreen.displayMessage("Creating Widgets")
         self.createWidgets()
+
+        splashScreen.displayMessage("Launching Window")
+
+    def startNotificationThread(self):
+        worker = NotificationWorker(self.notificationManager)
+        self.threadPool.start(worker)
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        """
+        Closes the window, and stops the notification handler
+
+        event: QCloseEvent
+        """
+        super().closeEvent(event)
+        self.notificationManager.running = False
 
     def createWidgets(self):
         """
@@ -47,7 +76,7 @@ class MainWindow(QMainWindow):
         PAGES = [
             TimetablePageWidget(self.resourceManager),
             AssignmentPage(self.resourceManager),
-            EventPage(self.resourceManager),
+            EventPage(self.resourceManager, self.notificationManager),
             QuickLinksPage(),
             QLabel("Accounts, Coming Soon!")
         ]

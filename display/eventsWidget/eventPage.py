@@ -7,14 +7,16 @@ from display.contentButtonWidget import ContentButtonWidget
 from display.eventsWidget.addEventDialog import AddEventDialog
 from display.confirmDialog import ConfirmDialog
 from resourceManager.resourceHandler import ResourceHandler
+from notifications.notificationHandler import NotificationHandler
 from typing import *
-
+from display.eventsWidget.event import Event
 
 class EventPage(QWidget):
-    def __init__(self, resourceManager: ResourceHandler):
+    def __init__(self, resourceManager: ResourceHandler, notificationHandler: NotificationHandler):
         super(EventPage, self).__init__()
 
         self.resourceManager = resourceManager
+        self.notificationManger = notificationHandler
 
         layout = QVBoxLayout(self)
 
@@ -39,11 +41,13 @@ class EventPage(QWidget):
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     eventKeyCode = self.eventDisplay.returnEventKeyCode(i)
-
+                    self.notificationManger.removeNotification(self.eventDisplay.eventHolder.events[i])
                     self.eventDisplay.eventHolder.deleteEvent(i)
                     self.eventDisplay.eventHolder.addEventsToLayout()
 
                     self.resourceManager.deleteEvent(eventKeyCode)
+
+
                 break
 
     def addEvent(self, eventTitle: str, notifyTime: datetime.datetime, eventKey: str):
@@ -101,6 +105,9 @@ class EventPage(QWidget):
             self.addEvent(eventTitle, notifyTime, eventKey)
 
             self.resourceManager.addEventToFile(eventTitle, notifyTime, eventKey)
+
+            # Adds the event to the notification manager
+            self.notificationManger.addNotification(Event(eventTitle, notifyTime, eventKey))
 
     def addButtonFunction(self):
         """

@@ -11,6 +11,7 @@ from resourceManager.internalDataHandler import *
 from display.eventsWidget.event import Event
 from resourceManager.resourceHandler import ResourceHandler
 import resourceManager.resources
+import time
 
 
 class NotificationHandler:
@@ -37,15 +38,18 @@ class NotificationHandler:
         :return: None
         """
 
-        print("stareting loop")
         while self.running:
             for event in self.notifications:
-                print(event.notifyTime)
+                time.sleep(0.5)
                 if event.notifyTime <= datetime.now():
-                    print(2)
                     self.sendNotification(event)
                     self.removeNotification(event)
                     break
+            # This makes the loop stop every 5 seconds.
+            # This is extremely crucial, as the entire program was laggy before
+            # Completely coded in by accident
+            time.sleep(5)
+
     def removeNotification(self, notification: Event):
         """
         Removes a notification from the notification variables
@@ -53,12 +57,21 @@ class NotificationHandler:
         :param notification: Notification
         :return: None
         """
-
-        index = self.notifications.index(notification)
-        self.notifications.pop(index)
+        try:
+            index = self.notifications.index(notification)
+            self.notifications.pop(index)
+        except Exception:
+            print("Bad")
 
     def removeNotificationFromFile(self, event: Event):
-        self.resourceHandler.changeEventNotified(event.eventKeyCode)
+        """
+        Removes a
+
+        """
+        try:
+            self.resourceHandler.changeEventNotified(event.eventKeyCode)
+        except Exception:
+            pass
 
     def sendNotification(self, userNotification: Event):
         """
@@ -68,9 +81,6 @@ class NotificationHandler:
         :return: None
         """
         print("Notifying")
-        appName = "Organisation App"
-        toast = False
-
         title = userNotification.eventName
         try:
             appIcon = getProjectDirPath() + "resources\\icons\\diary.ico"
@@ -87,6 +97,12 @@ class NotificationHandler:
         except Exception as e:
             print(e)
             print("error")
+            Notification(
+                title=title,
+                description="From Weyman's Organiser App",
+                duration=5,
+                urgency="normal"
+            ).send()
 
 
 class NotificationWorker(QRunnable):
@@ -109,4 +125,3 @@ class NotificationWorker(QRunnable):
 if __name__ == '__main__':
     notify = NotificationHandler(ResourceHandler())
     notify.startLoop()
-

@@ -3,7 +3,7 @@ from PySide6.QtCore import *
 from PySide6 import QtWidgets
 import resourceManager.resources
 from PySide6.QtGui import *
-
+import time
 
 class SplashScreen(QSplashScreen):
     def __init__(self):
@@ -22,6 +22,7 @@ class SplashScreen(QSplashScreen):
         self.showMessage(f"{message}...", alignment=Qt.AlignBottom | Qt.AlignRight)
         self.font.setPointSize(15)
         self.setFont(self.font)
+        time.sleep(1)
 
 
 class TestWindow(QWidget):
