@@ -6,7 +6,7 @@ from PySide6 import QtCore
 import sys
 
 from display.assignmentWidget.assignmentDisplay import AssignmentDisplay
-from display.assignmentWidget.contentButtonWidget import ContentButtonWidget
+from display.contentButtonWidget import ContentButtonWidget
 from display.assignmentWidget.addAssignmentDialog import AddAssignmentDialog
 from display.confirmDialog import ConfirmDialog
 from resourceManager.resourceHandler import ResourceHandler
@@ -36,15 +36,15 @@ class AssignmentPage(QWidget):
         """
         # Accesses the radiobutton inside the assignment holder
         # Assignment holder -> All assignments -> Each assignment -> radio button
-        for i in range(len(self.assignmentDisplay.widgetHolder.assignments)):
+        for i in range(len(self.assignmentDisplay.widgetHolder.events)):
             # for i in range(len(self.timetableWidget.timetables[self.timetableWidget.daysSelection.currentIndex()].classWidgets))
-            if self.assignmentDisplay.widgetHolder.assignmentWidgets[i].selectButton.isChecked():
+            if self.assignmentDisplay.widgetHolder.eventWidgets[i].selectButton.isChecked():
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     assignmentKeyCode = self.assignmentDisplay.returnAssignmentKeyCode(i)
 
                     self.assignmentDisplay.widgetHolder.deleteAssignment(i)
-                    self.assignmentDisplay.widgetHolder.addAssignmentsToLayout()
+                    self.assignmentDisplay.widgetHolder.addEventsToLayout()
 
                     self.resourceManager.deleteAssignment(assignmentKeyCode)
                 break
