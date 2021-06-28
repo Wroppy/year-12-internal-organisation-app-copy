@@ -60,7 +60,6 @@ class EventHolder(QWidget):
             widget = EventWidget(event)
             layout.addWidget(widget)
             self.eventWidgets.append(widget)
-            print(self.eventWidgets)
 
         layout.addStretch()
 

@@ -366,5 +366,3 @@ if __name__ == '__main__':
     r = ResourceHandler()
     a = r.returnNotifyEvents()
 
-    for event in a:
-        print(event.notifyTime)

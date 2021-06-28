@@ -44,7 +44,6 @@ class EventsDisplay(QWidget):
         self.styleWidgets()
 
     def returnEventKeyCode(self, index: int):
-        print(index)
         return self.eventHolder.events[index].eventKeyCode
 
     def addWidget(self, title: str, notifyTime: datetime.datetime, keyCode: str):
