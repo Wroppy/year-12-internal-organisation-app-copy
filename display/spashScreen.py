@@ -10,7 +10,7 @@ class SplashScreen(QSplashScreen):
         super(SplashScreen, self).__init__()
         self.setCursor(QCursor(Qt.ArrowCursor))
         pixmap = QPixmap(":/appIcons/splashScreen.png")
-        self.setPixmap(pixmap.scaled(720, 405))
+        self.setPixmap(pixmap.scaled(500,260))
         self.setMask(self.mask())
         self.font = QFont()
         self.font.setPointSize(15)
