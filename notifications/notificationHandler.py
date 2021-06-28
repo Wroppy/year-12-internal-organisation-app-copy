@@ -41,13 +41,13 @@ class NotificationHandler:
         while self.running:
             for event in self.notifications:
                 time.sleep(0.5)
+                # Checks if the time of the event has passed t he current paper
                 if event.notifyTime <= datetime.now():
                     self.sendNotification(event)
                     self.removeNotification(event)
                     break
             # This makes the loop stop every 5 seconds.
             # This is extremely crucial, as the entire program was laggy before
-            # Completely coded in by accident
             time.sleep(5)
 
     def removeNotification(self, notification: Event):
