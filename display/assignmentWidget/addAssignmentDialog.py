@@ -8,7 +8,7 @@ import resourceManager.resources
 
 
 class AddAssignmentDialog(QDialog):
-    def __init__(self, parent: QWidget):
+    def __init__(self, parent: QWidget, errorText: str):
         super(AddAssignmentDialog, self).__init__(parent=parent)
         APPICON = QIcon(":/appIcons/appIcon.png")
         self.setWindowIcon(APPICON)
@@ -23,6 +23,11 @@ class AddAssignmentDialog(QDialog):
         assignmentWidget = QWidget()
         assignmentLayout = QHBoxLayout(assignmentWidget)
         assignmentLayout.setContentsMargins(0, 0, 0, 0)
+
+        if errorText is not None:
+            errorLabel = QLabel(errorText)
+            errorLabel.setStyleSheet("color: red")
+            layout.addWidget(errorLabel)
 
         # Creates a label for the entry box
         assignmentLabel = QLabel("Assignment")

@@ -36,15 +36,15 @@ class AssignmentPage(QWidget):
         """
         # Accesses the radiobutton inside the assignment holder
         # Assignment holder -> All assignments -> Each assignment -> radio button
-        for i in range(len(self.assignmentDisplay.widgetHolder.events)):
+        for i in range(len(self.assignmentDisplay.widgetHolder.assignments)):
             # for i in range(len(self.timetableWidget.timetables[self.timetableWidget.daysSelection.currentIndex()].classWidgets))
-            if self.assignmentDisplay.widgetHolder.eventWidgets[i].selectButton.isChecked():
+            if self.assignmentDisplay.widgetHolder.assignmentWidgets[i].selectButton.isChecked():
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     assignmentKeyCode = self.assignmentDisplay.returnAssignmentKeyCode(i)
 
                     self.assignmentDisplay.widgetHolder.deleteAssignment(i)
-                    self.assignmentDisplay.widgetHolder.addEventsToLayout()
+                    self.assignmentDisplay.widgetHolder.addAssignmentsToLayout()
 
                     self.resourceManager.deleteAssignment(assignmentKeyCode)
                 break
@@ -62,17 +62,17 @@ class AssignmentPage(QWidget):
         self.assignmentDisplay.addWidget(assignmentTitle, False, assignmentKey)
 
 
-    def showAssignmentDialog(self):
+    def showAssignmentDialog(self, errorMessage: str):
         """
         Is displayed when the user decides to open add a new assignment
 
         """
 
-        dialog = AddAssignmentDialog(self)
+        dialog = AddAssignmentDialog(self, errorMessage)
         if dialog.exec():
             # If there is no input, and the user pressed "ok" then then it will display the window again
             if len(dialog.assignmentEntry.text()) == 0:
-                self.showAssignmentDialog()
+                self.showAssignmentDialog("Please Input An Assignment")
             else:
                 assignmentTitle = dialog.assignmentEntry.text()
 
@@ -86,7 +86,7 @@ class AssignmentPage(QWidget):
         Adds functionality to the buttons
 
         """
-        self.buttonWidget.addButton.clicked.connect(self.showAssignmentDialog)
+        self.buttonWidget.addButton.clicked.connect(lambda: self.showAssignmentDialog(None))
         self.buttonWidget.deleteButton.clicked.connect(self.deleteAssignmentDialog)
 
 
