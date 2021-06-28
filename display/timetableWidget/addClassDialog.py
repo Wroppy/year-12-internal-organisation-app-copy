@@ -4,11 +4,15 @@ from PySide6 import QtWidgets
 from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
+import resourceManager.resources
 
 
 class AddClassDialog(QDialog):
     def __init__(self, parent=None):
         super(AddClassDialog, self).__init__(parent=parent)
+        APPICON = QIcon(":/appIcons/appIcon.png")
+        self.setWindowIcon(APPICON)
+
         TITLE = "Add Class"
         self.setWindowTitle(TITLE)
         layout = QVBoxLayout(self)

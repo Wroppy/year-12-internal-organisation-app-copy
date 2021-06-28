@@ -4,11 +4,15 @@ from PySide6 import QtWidgets
 from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
+import resourceManager.resources
 
 
 class AddAssignmentDialog(QDialog):
     def __init__(self, parent: QWidget):
         super(AddAssignmentDialog, self).__init__(parent=parent)
+        APPICON = QIcon(":/appIcons/appIcon.png")
+        self.setWindowIcon(APPICON)
+
         self.resize(300, 100)
         TITLE = "Add Assignment"
         self.setWindowTitle(TITLE)
