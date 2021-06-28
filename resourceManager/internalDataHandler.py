@@ -18,7 +18,7 @@ def getProjectDirPath() -> str:
     :return: str
     """
     try:
-        appFolderName = "year_12_organisation_app"
+        appFolderName = "display"
         absolutePath = str(pathlib.Path().absolute())
         for i in range(0, len(absolutePath)):
             # folderName = year_12_organisation_app
@@ -26,7 +26,7 @@ def getProjectDirPath() -> str:
             folderName = absolutePath[i: i + len(appFolderName)]
             if folderName == appFolderName:
                 # returns C:\Users\Weyman\PycharmProjects\year_12_organisation_app\
-                return absolutePath[0: i + len(appFolderName)] + "\\"
+                return absolutePath[0: i]
         raise Exception
     except Exception:
         print("File path does not exist")
@@ -57,7 +57,6 @@ def loadJsonFile(fileName: str) -> dict:
     prefix = ".json"
     projectPath = "resources\\"
     path = getProjectDirPath() + projectPath + fileName + prefix
-
     try:
         with open(path, "r") as file:
             data = json.load(file)
