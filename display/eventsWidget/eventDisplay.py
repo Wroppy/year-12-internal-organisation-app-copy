@@ -26,13 +26,11 @@ class EventsDisplay(QWidget):
         header = Header("Events")
         layout.addWidget(header)
 
-        # Gets the assignments from the resource manager
-        #events = self.resourceManager.returnAssignments()
-        events = [Event("No", datetime.datetime.now(), "1") for _ in range(10)]
+        events = [Event(f"Test {i}", datetime.datetime.now(), "1") for i in range(5)]
         # Creates the widget holder
         self.eventHolder = EventHolder(events, self.resourceManager)
 
-        # Creates the scroll bar for the widget display
+        # Creates the scroll bar for the event display
         scrollbar = QScrollArea()
         scrollbar.setWidget(self.eventHolder)
         scrollbar.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
@@ -48,7 +46,7 @@ class EventsDisplay(QWidget):
 
     def addWidget(self, title: str, notifyTime: datetime.datetime, keyCode: str):
         """
-        Adds an assignment given the title and its state
+        Adds an event given the title and its notify time
 
         :param title: str
         :param notifyTime: datetime

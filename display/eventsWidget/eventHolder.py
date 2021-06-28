@@ -45,7 +45,7 @@ class EventHolder(QWidget):
 
     def addEventsToLayout(self):
         """
-        Adds the assignments to the layout
+        Adds the events to the layout
 
         """
 
@@ -55,7 +55,7 @@ class EventHolder(QWidget):
 
         layout = self.layout()
 
-        # Displays all of the assignments on the window
+        # Displays all of the events on the window
         for event in self.events:
             widget = EventWidget(event)
             layout.addWidget(widget)
@@ -66,15 +66,15 @@ class EventHolder(QWidget):
 
     def appendEvent(self, event: Event):
         """
-        Given the assignment, it adds it at the end of a list
+        Given the event, it adds it at the end of a list
 
-        :param assignment: Assignment
+        :param event:Event
         """
         self.events.append(event)
 
     def deleteEvent(self, index: int):
         """
-        Given the index, deleted the assignment off the list
+        Given the index, deleted the event off the list
 
         :param index: int
         """
@@ -84,7 +84,8 @@ class EventHolder(QWidget):
 if __name__ == '__main__':
     app = QApplication()
 
-    display = EventHolder([Event("No", datetime.datetime.now()) for _ in range(10)], None)
+    display = EventHolder([Event("No", datetime.datetime.now(), "2") for _ in range(10)], None)
+
     display.show()
 
     app.exec()

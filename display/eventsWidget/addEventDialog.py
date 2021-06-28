@@ -7,10 +7,11 @@ from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
 import resourceManager.resources
+from typing import *
 
 
 class AddEventDialog(QDialog):
-    def __init__(self, parent: QWidget):
+    def __init__(self, parent: QWidget, errorText):
         super(AddEventDialog, self).__init__(parent=parent)
         APPICON = QIcon(":/appIcons/appIcon.png")
         self.setWindowIcon(APPICON)
@@ -21,21 +22,25 @@ class AddEventDialog(QDialog):
 
         layout = QVBoxLayout(self)
         layout.setSpacing(15)
+        if errorText is not None:
+            errorLabel = QLabel(errorText)
+            errorLabel.setStyleSheet("color: red")
+            layout.addWidget(errorLabel)
 
         # This widget is for the label and the entry box
-        assignmentWidget = QWidget()
-        assignmentLayout = QHBoxLayout(assignmentWidget)
-        assignmentLayout.setContentsMargins(0, 0, 0, 0)
+        eventWidget = QWidget()
+        eventLayout = QHBoxLayout(eventWidget)
+        eventLayout.setContentsMargins(0, 0, 0, 0)
 
         # Creates a label for the entry box
-        assignmentLabel = QLabel("Event")
-        assignmentLayout.addWidget(assignmentLabel)
+        eventLabel = QLabel("Event")
+        eventLayout.addWidget(eventLabel)
 
-        # Creates an entry box for user to input their assignment
-        self.assignmentEntry = QLineEdit()
-        assignmentLayout.addWidget(self.assignmentEntry)
+        # Creates an entry box for user to input their event
+        self.eventEntry = QLineEdit()
+        eventLayout.addWidget(self.eventEntry)
 
-        layout.addWidget(assignmentWidget)
+        layout.addWidget(eventWidget)
 
         # Creates the widget that asks the user for the date
         dateWidget = self.createDateWidget()

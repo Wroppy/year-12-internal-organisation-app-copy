@@ -31,57 +31,80 @@ class EventPage(QWidget):
         Asks the user if they want to delete an event or not
 
         """
-        # Accesses the radiobutton inside the assignment holder
-        # Assignment holder -> All assignments -> Each assignment -> radio button
+        # Accesses the radiobutton inside the event holder
+        # Event holder -> All events -> Each event -> radio button
         for i in range(len(self.eventDisplay.eventHolder.events)):
-            # for i in range(len(self.timetableWidget.timetables[self.timetableWidget.daysSelection.currentIndex()].classWidgets))
             if self.eventDisplay.eventHolder.eventWidgets[i].selectButton.isChecked():
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     self.eventDisplay.eventHolder.deleteEvent(i)
                     self.eventDisplay.eventHolder.addEventsToLayout()
 
-                    # assignmentKeyCode = self.eventDisplay.returnAssignmentKeyCode
-                    # self.resourceManager.deleteAssignment(assignmentKeyCode)
+                    # eventKeyCode = self.eventDisplay.returnEventKeyCode
+                    # self.resourceManager.deleteEvent(eventKeyCode)
                 break
 
     def addEvent(self, eventTitle: str, notifyTime: datetime.datetime, eventKey: str):
         """
-        Adds an assignment to the display
+        Adds an event to the display
 
-        :param assignmentTitle: str
-        :param assignmentKey: str
-
+        :param eventTitle: str
+        :param notifyTime: datetime
+        :param eventKey: str
         """
 
         self.eventDisplay.addWidget(eventTitle, notifyTime, eventKey)
 
-    def showEventDialog(self):
+    def showEventDialog(self, errorCode):
         """
-        Is displayed when the user decides to open add a new assignment
+        Is displayed when the user decides to add a new event
 
         """
 
-        dialog = AddEventDialog(self)
+        dialog = AddEventDialog(self, errorCode)
         if dialog.exec():
             # If there is no input, and the user pressed "ok" then then it will display the window again
-            if len(dialog.assignmentEntry.text()) == 0:
-                self.showEventDialog()
-            else:
-                assignmentTitle = dialog.assignmentEntry.text()
+            if len(dialog.eventEntry.text()) == 0:
+                self.showEventDialog("Please Input An Event")
+                return
+            # If there is an error with the time, then the dialog will reappear
+            try:
+                year = dialog.dateYear.value()
+                month = dialog.dateMonth.value()
+                day = dialog.dateDay.value()
 
-                #assignmentKey = self.resourceManager.generateKeyCode()
-                assignmentKey = "2"
-                # Adds the assignment to the page
-                self.addEvent(assignmentTitle, datetime.datetime.now(), assignmentKey)
-                #self.resourceManager.addAssignment(assignmentTitle, False, assignmentKey)
+                hour = dialog.notifyTimeHour.value()
+                minute = dialog.notifyTimeMinute.value()
+
+                notifyTime = datetime.datetime(
+                    year=year,
+                    month=month,
+                    day=day,
+                    hour=hour,
+                    minute=minute
+                )
+
+                # Checks if the time has already passed
+                if notifyTime <= datetime.datetime.now():
+                    raise Exception
+            except Exception:
+                self.showEventDialog("Please Input A Valid Time")
+                return
+
+            eventTitle = dialog.eventEntry.text()
+
+            # eventKey = self.resourceManager.generateKeyCode()
+            eventKey = "2"
+            # Adds the event to the page
+            self.addEvent(eventTitle, notifyTime, eventKey)
+            # self.resourceManager.addEvent(eventTitle, False, eventKey)
 
     def addButtonFunction(self):
         """
         Adds functionality to the buttons
 
         """
-        self.buttonWidget.addButton.clicked.connect(self.showEventDialog)
+        self.buttonWidget.addButton.clicked.connect(lambda: self.showEventDialog(None))
         self.buttonWidget.deleteButton.clicked.connect(self.deleteEventDialog)
 
 

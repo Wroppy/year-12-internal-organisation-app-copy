@@ -10,17 +10,18 @@ from display.timetableWidget.timetableWidget import TimetablePageWidget
 from display.quickLinksWidget.quickLinksWidget import QuickLinksPage
 from display.assignmentWidget.assignmentPage import AssignmentPage
 from resourceManager.resourceHandler import ResourceHandler
+from display.eventsWidget.eventPage import EventPage
+
 import resourceManager.resources
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        super(MainWindow, self).__init__()
+        super(MainWindow, self).__init__(parent=None)
 
         APPICON = QIcon(":/appIcons/appIcon.png")
         self.setWindowIcon(APPICON)
 
-        threadPool = QThreadPool()
         self.resourceManager = ResourceHandler()
 
         self.createWidgets()
@@ -46,7 +47,7 @@ class MainWindow(QMainWindow):
         PAGES = [
             TimetablePageWidget(self.resourceManager),
             AssignmentPage(self.resourceManager),
-            QLabel("Events, Coming Soon!"),
+            EventPage(self.resourceManager),
             QuickLinksPage(),
             QLabel("Accounts, Coming Soon!")
         ]
