@@ -14,7 +14,6 @@ class QuickLinksPage(QWidget):
     def __init__(self):
         super(QuickLinksPage, self).__init__()
         layout = QVBoxLayout(self)
-        print(layout.contentsMargins())
         layout.setContentsMargins(18, 18, 18, 18)
 
         # Creates a header for the daily notices
