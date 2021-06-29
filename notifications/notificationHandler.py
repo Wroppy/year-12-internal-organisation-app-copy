@@ -48,24 +48,28 @@ class NotificationHandler:
                     break
             # This makes the loop stop every 5 seconds.
             # This is extremely crucial, as the entire program was laggy before
-            time.sleep(5)
+            time.sleep(1)
 
-    def removeNotification(self, notification: Event):
+    def removeNotification(self, event: Event):
         """
         Removes a notification from the notification variables
 
-        :param notification: Notification
+        :param event: Event
         :return: None
         """
         try:
-            index = self.notifications.index(notification)
-            self.notifications.pop(index)
-        except Exception:
-            print("Bad")
+            # Loops through each notification and deletes the event based on the key code
+            for i in range(len(self.notifications)):
+                eventKey = event.eventKeyCode
+                if self.notifications[i].eventKeyCode == eventKey:
+                    self.notifications.pop(i)
+                    return
+        except Exception as e:
+            print(e)
 
     def removeNotificationFromFile(self, event: Event):
         """
-        Removes a
+        Changes the state of the notification to notified
 
         """
         try:

@@ -107,10 +107,11 @@ class EventPage(QWidget):
 
             eventKey = self.resourceManager.generateKeyCode()
 
+            # Adds the event to the json file
+            self.resourceManager.addEventToFile(eventTitle, notifyTime, eventKey)
+
             # Adds the event to the page
             self.addEvent(eventTitle, notifyTime, eventKey)
-
-            self.resourceManager.addEventToFile(eventTitle, notifyTime, eventKey)
 
             # Adds the event to the notification manager
             self.notificationManger.addNotification(Event(eventTitle, notifyTime, eventKey))
