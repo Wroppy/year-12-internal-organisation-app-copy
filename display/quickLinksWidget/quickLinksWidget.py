@@ -22,6 +22,7 @@ class QuickLinksPage(QWidget):
         header.setObjectName(HEADERNAME)
         layout.addWidget(header)
 
+        # Creates links for the widget page
         LINKS = [
             "https://www.scotscollege.school.nz/daily-notices/",
             "https://www.scotscollege.school.nz/about-us/college-communications/handbooks/",

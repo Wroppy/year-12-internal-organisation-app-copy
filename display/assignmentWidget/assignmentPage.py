@@ -55,7 +55,7 @@ class AssignmentPage(QWidget):
 
         :param assignmentTitle: str
         :param assignmentKey: str
-
+        :return: None
         """
 
         self.assignmentDisplay.addWidget(assignmentTitle, False, assignmentKey)
@@ -64,6 +64,8 @@ class AssignmentPage(QWidget):
         """
         Is displayed when the user decides to open add a new assignment
 
+        :param errorMessage: str
+        :return: None
         """
 
         dialog = AddAssignmentDialog(self, errorMessage)
@@ -89,6 +91,7 @@ class AssignmentPage(QWidget):
         """
         Adds functionality to the buttons
 
+        :return: None
         """
         self.buttonWidget.addButton.clicked.connect(lambda: self.showAssignmentDialog(None))
         self.buttonWidget.deleteButton.clicked.connect(self.deleteAssignmentDialog)

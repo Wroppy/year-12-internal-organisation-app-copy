@@ -19,6 +19,12 @@ class SplashScreen(QSplashScreen):
         self.show()
 
     def displayMessage(self, message: str):
+        """
+        Displays a message on the splash screen
+
+        :param message: str
+        :return: None
+        """
         self.showMessage(f"{message}...", alignment=Qt.AlignBottom | Qt.AlignRight)
         self.font.setPointSize(15)
         self.setFont(self.font)

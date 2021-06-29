@@ -75,6 +75,7 @@ class AddEventDialog(QDialog):
 
         time = datetime.datetime.now()
 
+        # Creates spin boxes and sets the values to the current date
         self.dateDay = QSpinBox()
         self.dateDay.setMinimum(1)
         self.dateDay.setMaximum(31)
@@ -108,6 +109,7 @@ class AddEventDialog(QDialog):
 
         time = datetime.datetime.now()
 
+        # Creates the spin box and sets its values to the time
         notifyTimeLabel = QLabel("Notify Time (24Hr Time):")
         self.notifyTimeHour = QSpinBox()
         self.notifyTimeHour.setValue(time.hour)

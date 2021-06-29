@@ -47,6 +47,7 @@ class EventHolder(QWidget):
         """
         Adds the events to the layout
 
+        :return: None
         """
 
         # Deletes all old widgets and clears previous widgets as well
@@ -68,7 +69,8 @@ class EventHolder(QWidget):
         """
         Given the event, it adds it at the end of a list
 
-        :param event:Event
+        :param event: Event
+        :return: None
         """
         self.events.append(event)
 
@@ -77,6 +79,7 @@ class EventHolder(QWidget):
         Given the index, deleted the event off the list
 
         :param index: int
+        :return: None
         """
         self.events.pop(index)
 

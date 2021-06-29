@@ -115,7 +115,7 @@ class MainWindow(QMainWindow):
         """
         When these buttons are clicked, will do certain commands
 
-        :return:
+        :return: None
         """
         for i in range(len(self.navBar.buttons)):
             self.navBar.buttons[i].clicked.connect(lambda checked=False, index=i: self.switchPage(index))

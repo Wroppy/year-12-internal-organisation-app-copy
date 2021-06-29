@@ -10,10 +10,12 @@ import resourceManager.resources
 class AddAssignmentDialog(QDialog):
     def __init__(self, parent: QWidget, errorText: str):
         super(AddAssignmentDialog, self).__init__(parent=parent)
+        # Sets the window icon, title, and size
         APPICON = QIcon(":/appIcons/appIcon.png")
         self.setWindowIcon(APPICON)
 
         self.resize(300, 100)
+
         TITLE = "Add Assignment"
         self.setWindowTitle(TITLE)
 
@@ -24,6 +26,7 @@ class AddAssignmentDialog(QDialog):
         assignmentLayout = QHBoxLayout(assignmentWidget)
         assignmentLayout.setContentsMargins(0, 0, 0, 0)
 
+        # Will display an error message if one is parsed through
         if errorText is not None:
             errorLabel = QLabel(errorText)
             errorLabel.setStyleSheet("color: red")

@@ -71,6 +71,8 @@ class NotificationHandler:
         """
         Changes the state of the notification to notified
 
+        :param event: Event
+
         """
         try:
             self.resourceHandler.changeEventNotified(event.eventKeyCode)

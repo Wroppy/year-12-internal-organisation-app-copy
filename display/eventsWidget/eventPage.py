@@ -33,6 +33,7 @@ class EventPage(QWidget):
         """
         Asks the user if they want to delete an event or not
 
+        :return: None
         """
         # Accesses the radiobutton inside the event holder
         # Event holder -> All events -> Each event -> radio button
@@ -57,6 +58,7 @@ class EventPage(QWidget):
         :param eventTitle: str
         :param notifyTime: datetime
         :param eventKey: str
+        :return: None
         """
 
         self.eventDisplay.addWidget(eventTitle, notifyTime, eventKey)
@@ -65,6 +67,7 @@ class EventPage(QWidget):
         """
         Is displayed when the user decides to add a new event
 
+        :return: None
         """
 
         dialog = AddEventDialog(self, errorCode)
@@ -120,6 +123,7 @@ class EventPage(QWidget):
         """
         Adds functionality to the buttons
 
+        :return: None
         """
         self.buttonWidget.addButton.clicked.connect(lambda: self.showEventDialog(None))
         self.buttonWidget.deleteButton.clicked.connect(self.deleteEventDialog)

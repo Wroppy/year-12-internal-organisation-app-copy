@@ -54,12 +54,12 @@ class WidgetHolder(QWidget):
         self.assignments[index].completed = assignmentCheckBox.isChecked()
 
         self.resourceManager.updateAssignmentCompleted(assignmentKeyCode, assignmentCheckBox.isChecked())
-        # for i in self.assignments:
 
     def setCheckBoxesFunctions(self):
         """
         Adds functions to the check boxes in all of the assignment widgets
 
+        :return: None
         """
         for i in range(len(self.assignmentWidgets)):
             self.assignmentWidgets[i].completedButton.stateChanged.connect(
@@ -69,6 +69,7 @@ class WidgetHolder(QWidget):
         """
         Adds the assignments to the layout
 
+        :return: None
         """
 
         # Deletes all old widgets and clears previous widgets as well
@@ -92,6 +93,7 @@ class WidgetHolder(QWidget):
         Given the assignment, it adds it at the end of a list
 
         :param assignment: Assignment
+        :return: None
         """
         self.assignments.append(assignment)
 
@@ -100,6 +102,7 @@ class WidgetHolder(QWidget):
         Given the index, deleted the assignment off the list
 
         :param index: int
+        :return: None
         """
         self.assignments.pop(index)
 

@@ -61,8 +61,9 @@ class EventsDisplay(QWidget):
 
     def styleWidgets(self):
         """
-        Styles the widgets nested
+        Styles the widgets nested inside
 
+        :return: None
         """
         STYLE = f"""
             QScrollArea{{
