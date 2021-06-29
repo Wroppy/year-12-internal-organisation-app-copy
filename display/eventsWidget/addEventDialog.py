@@ -106,11 +106,15 @@ class AddEventDialog(QDialog):
         notifyTimeLayout = QHBoxLayout(notifyTimeWidget)
         notifyTimeLayout.setContentsMargins(0, 0, 0, 0)
 
+        time = datetime.datetime.now()
+
         notifyTimeLabel = QLabel("Notify Time (24Hr Time):")
         self.notifyTimeHour = QSpinBox()
+        self.notifyTimeHour.setValue(time.hour)
         self.notifyTimeHour.setMaximum(23)
 
         self.notifyTimeMinute = QSpinBox()
+        self.notifyTimeMinute.setValue(time.minute)
         self.notifyTimeMinute.setMaximum(59)
 
         notifyTimeLayout.addWidget(notifyTimeLabel)
