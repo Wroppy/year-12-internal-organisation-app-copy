@@ -6,6 +6,7 @@ from PySide6 import QtCore
 import sys
 from typing import *
 from resourceManager.internalDataHandler import loadJsonFile
+from display.eventsWidget.eventHeader import Header
 
 
 
@@ -13,9 +14,11 @@ class QuickLinksPage(QWidget):
     def __init__(self):
         super(QuickLinksPage, self).__init__()
         layout = QVBoxLayout(self)
+        print(layout.contentsMargins())
+        layout.setContentsMargins(18, 18, 18, 18)
 
         # Creates a header for the daily notices
-        header = QLabel("Quick Links")
+        header = Header("Quick Links")
         HEADERNAME = "header"
         header.setObjectName(HEADERNAME)
         layout.addWidget(header)

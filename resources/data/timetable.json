@@ -1,1 +1,17 @@
-{"classes": [[{"className": "liam", "startingTime": {"hour": 13, "minute": 45}, "endingTime": {"hour": 14, "minute": 45}}], [], [], [], []], "lastUpdated": {"year": 2021, "month": 6, "day": 29, "hour": 10, "minute": 52, "second": 45}}
+{
+  "classes": [
+    [],
+    [],
+    [],
+    [],
+    []
+  ],
+  "lastUpdated": {
+    "year": 2021,
+    "month": 6,
+    "day": 29,
+    "hour": 13,
+    "minute": 2,
+    "second": 59
+  }
+}
