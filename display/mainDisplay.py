@@ -40,7 +40,13 @@ class MainWindow(QMainWindow):
         splashScreen.displayMessage("Creating Widgets")
         self.createWidgets()
 
+        splashScreen.displayMessage("Creating Cool Animations")
+        self.animationTime = 300
+        self.createAnimations()
+
         splashScreen.displayMessage("Launching Window")
+
+        self.animating = False
 
     def startNotificationThread(self):
         worker = NotificationWorker(self.notificationManager)
@@ -105,11 +111,19 @@ class MainWindow(QMainWindow):
 
         # Resizes the nav bar to the height of the window
         self.navBar.resize(self.navBar.width(), self.height())
+        if self.animating:
+            self.stopAnimations()
+
 
         if self.navBar.isExtended():
             self.shrinkContentWidget()
         else:
             self.enlargeContentWidget()
+
+        if self.animating:
+            self.hamburgerButtonClicked()
+
+
 
     def addNavButtonFunction(self):
         """
@@ -122,21 +136,125 @@ class MainWindow(QMainWindow):
 
         self.navBar.header.hamburgerButton.clicked.connect(lambda: self.hamburgerButtonClicked())
 
+    def createAnimations(self):
+        """
+        Creates the animation variables for later
+
+        :return: None
+        """
+        self.navBarPosAnimation = QPropertyAnimation(self.navBar, b"pos")
+        self.navBarPosAnimation.setEasingCurve(QEasingCurve.InOutCubic)
+
+        self.navbarHamburgerButtonAnimation = QPropertyAnimation(self.navBar.header.hamburgerButton, b"pos")
+        self.navbarHamburgerButtonAnimation.setEasingCurve(QEasingCurve.InOutCubic)
+
+        self.contentPosAnimation = QPropertyAnimation(self.windowPages, b"pos")
+        self.contentPosAnimation.setEasingCurve(QEasingCurve.InOutCubic)
+
+        self.contentSizeAnimation = QPropertyAnimation(self.windowPages, b"size")
+        self.contentSizeAnimation.setEasingCurve(QEasingCurve.InOutCubic)
+
     def hamburgerButtonClicked(self):
         """
         Will collapse or extend the nav bar and resize the widgets
 
         :return: None
         """
+
         if self.navBar.isExtended():
-            self.collapseNavBar()
-            self.enlargeContentWidget()
+            self.animating = True
+
+            self.collapseNavbarAnimate()
+            self.enlargeContentWidgetAnimate()
+
+            self.closeNavBarAnimate()
+
+            # self.collapseNavBar()
+            # self.enlargeContentWidget()
 
         else:
-            self.extendNavBar()
-            self.shrinkContentWidget()
+            self.animating = True
+            self.enlargeNavBarAnimate()
+            self.shrinkContentWidgetAnimate()
 
+            self.openNavBarAnimation()
+            # self.extendNavBar()
+            # self.shrinkContentWidget()
+
+    def closeNavBarAnimate(self):
+        """
+        Closes the nav bar
+
+        :return: None
+        """
+
+
+        self.closeNavBarAnimationGroup = QParallelAnimationGroup(self)
+        self.closeNavBarAnimationGroup.finished.connect(self.animationFinished)
+
+        self.closeNavBarAnimationGroup.addAnimation(self.contentPosAnimation)
+        self.closeNavBarAnimationGroup.addAnimation(self.contentSizeAnimation)
+        self.closeNavBarAnimationGroup.addAnimation(self.navBarPosAnimation)
+        self.closeNavBarAnimationGroup.addAnimation(self.navbarHamburgerButtonAnimation)
+
+        self.closeNavBarAnimationGroup.start()
+
+    def openNavBarAnimation(self):
+        """
+        Opens the nav bar
+
+        :return: None
+        """
+        self.openNavBarAnimationGroup = QParallelAnimationGroup(self)
+        self.openNavBarAnimationGroup.finished.connect(self.animationFinished)
+
+        self.openNavBarAnimationGroup.addAnimation(self.contentPosAnimation)
+        self.openNavBarAnimationGroup.addAnimation(self.contentSizeAnimation)
+        self.openNavBarAnimationGroup.addAnimation(self.navBarPosAnimation)
+        self.openNavBarAnimationGroup.addAnimation(self.navbarHamburgerButtonAnimation)
+
+        self.openNavBarAnimationGroup.start()
+    def animationFinished(self):
+        """
+        Changes the animation state
+        Changes the extended state
+
+        :return: None
+        """
+        self.changeAnimatingFalse()
         self.navBar.changeExtended()
+
+    def changeAnimatingFalse(self):
+        """
+        Changes the state of animating
+
+        :return:
+        """
+        self.animating = False
+
+    def stopAnimations(self):
+        """
+        Stops all animations
+
+        :return: None
+        """
+        try:
+            self.closeNavBarAnimationGroup.stop()
+        except AttributeError as e:
+            print(e)
+
+        try:
+            self.openNavBarAnimationGroup.stop()
+        except AttributeError as e:
+            print(e)
+
+    def changeAnimate(self):
+        """
+        Changes the animating state
+
+        :return: None
+        """
+        self.animating = not self.animating
 
     def extendNavBar(self):
         """
@@ -155,6 +273,53 @@ class MainWindow(QMainWindow):
         """
         self.navBar.move(QPoint(-144, 0))
         self.navBar.header.moveButtonCollapsed()
+
+    def collapseNavbarAnimate(self):
+        self.navBarPosAnimation.setEndValue(QPoint(-144, 0))
+        self.navBarPosAnimation.setDuration(self.animationTime)
+
+        self.navbarHamburgerButtonAnimation.setEndValue(QPoint(144, 0))
+        self.navbarHamburgerButtonAnimation.setDuration(self.animationTime)
+
+    def enlargeContentWidgetAnimate(self):
+        """
+        Enlarges the content widget
+
+        :return: None
+        """
+        RESIZEWIDTH = self.width() - 56
+
+        self.contentSizeAnimation.setEndValue(QSize(RESIZEWIDTH, self.height()))
+        self.contentSizeAnimation.setDuration(self.animationTime)
+
+        self.contentPosAnimation.setEndValue(QPoint(56, 0))
+        self.contentPosAnimation.setDuration(self.animationTime)
+
+    def shrinkContentWidgetAnimate(self):
+        """
+        shrinks the content widget
+
+        :return:
+        """
+        RESIZEWIDTH = self.width() - self.navBar.width()
+
+        self.contentSizeAnimation.setEndValue(QSize(RESIZEWIDTH, self.height()))
+        self.contentSizeAnimation.setDuration(self.animationTime)
+
+        self.contentPosAnimation.setEndValue(QPoint(200, 0))
+        self.contentPosAnimation.setDuration(self.animationTime)
+
+    def enlargeNavBarAnimate(self):
+        """
+        Enlarges the nav bar
+
+        :return: None
+        """
+        self.navBarPosAnimation.setEndValue(QPoint(0, 0))
+        self.navBarPosAnimation.setDuration(self.animationTime)
+
+        self.navbarHamburgerButtonAnimation.setEndValue(QPoint(0, 0))
+        self.navbarHamburgerButtonAnimation.setDuration(self.animationTime)
 
     def shrinkContentWidget(self):
         """

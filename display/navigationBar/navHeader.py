@@ -20,8 +20,9 @@ class NavHeader(QWidget):
         self.setFixedSize(self.WIDTH, self.HEIGHT)
         self.layout.setContentsMargins(0, 0, 0, 0)
 
-        self.createButton()
         self.createLabel()
+        self.createButton()
+
 
         self.styleWidgets()
 
@@ -64,6 +65,7 @@ class NavHeader(QWidget):
         STYLE = f"""
             QPushButton#headerButton{{
                 border: none;
+                background-color: rgb{tuple(COLOURS["headerColour"])}
             }}
             
             QLabel#headerLabel{{
