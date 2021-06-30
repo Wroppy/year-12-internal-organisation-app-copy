@@ -11,7 +11,7 @@ from typing import *
 
 
 class AddEventDialog(QDialog):
-    def __init__(self, parent: QWidget, errorText):
+    def __init__(self, parent: QWidget, errorText: Union[str, None], eventName: Union[str, None]):
         super(AddEventDialog, self).__init__(parent=parent)
         APPICON = QIcon(":/appIcons/appIcon.png")
         self.setWindowIcon(APPICON)
@@ -38,6 +38,7 @@ class AddEventDialog(QDialog):
 
         # Creates an entry box for user to input their event
         self.eventEntry = QLineEdit()
+        self.eventEntry.setText(eventName)
         eventLayout.addWidget(self.eventEntry)
 
         layout.addWidget(eventWidget)

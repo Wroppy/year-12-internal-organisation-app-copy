@@ -4,6 +4,7 @@ from PySide6 import QtWidgets
 from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
+from typing import *
 
 from display.assignmentWidget.assignmentDisplay import AssignmentDisplay
 from display.contentButtonWidget import ContentButtonWidget
@@ -60,26 +61,27 @@ class AssignmentPage(QWidget):
 
         self.assignmentDisplay.addWidget(assignmentTitle, False, assignmentKey)
 
-    def showAssignmentDialog(self, errorMessage: str):
+    def showAssignmentDialog(self, errorMessage: Union[str, None], assignmentName: Union[str, None]):
         """
         Is displayed when the user decides to open add a new assignment
 
-        :param errorMessage: str
+        :param errorMessage: str, or None
+        :param assignmentName: str, or None
         :return: None
         """
 
-        dialog = AddAssignmentDialog(self, errorMessage)
+        dialog = AddAssignmentDialog(self, errorMessage, assignmentName)
         if dialog.exec():
             assignmentTitle = dialog.assignmentEntry.text()
 
             # If there is no input, and the user pressed "ok" then then it will display the window again
             if len(assignmentTitle) == 0:
-                self.showAssignmentDialog("Please Input An Assignment")
+                self.showAssignmentDialog("Please Input An Assignment", None)
                 return
 
             # Checks if the assignment name is made up of digits
             if assignmentTitle.isdigit():
-                self.showAssignmentDialog("Please Input An Assignment")
+                self.showAssignmentDialog("Please Input An Assignment", assignmentTitle)
                 return
 
             assignmentKey = self.resourceManager.generateKeyCode()
@@ -93,7 +95,7 @@ class AssignmentPage(QWidget):
 
         :return: None
         """
-        self.buttonWidget.addButton.clicked.connect(lambda: self.showAssignmentDialog(None))
+        self.buttonWidget.addButton.clicked.connect(lambda: self.showAssignmentDialog(None, None))
         self.buttonWidget.deleteButton.clicked.connect(self.deleteAssignmentDialog)
 
 

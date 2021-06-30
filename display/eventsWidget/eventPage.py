@@ -63,23 +63,27 @@ class EventPage(QWidget):
 
         self.eventDisplay.addWidget(eventTitle, notifyTime, eventKey)
 
-    def showEventDialog(self, errorCode: Union[str, None]):
+    def showEventDialog(self, errorCode: Union[str, None], eventName: Union[str, None]):
         """
         Is displayed when the user decides to add a new event
 
+        :param errorCode: str or None
+        :param eventName: str or None
         :return: None
         """
 
-        dialog = AddEventDialog(self, errorCode)
+        dialog = AddEventDialog(self, errorCode, eventName)
         if dialog.exec():
+            eventName = dialog.eventEntry.text()
+
             # If there is no input, and the user pressed "ok" then then it will display the window again
-            if len(dialog.eventEntry.text()) == 0:
-                self.showEventDialog("Please Input An Event")
+            if len(eventName) == 0:
+                self.showEventDialog("Please Input An Event", None)
                 return
 
             # Checks if the event is made up of only digits
-            if dialog.eventEntry.text().isdigit():
-                self.showNewClassDialog("Please Input An Event")
+            if eventName.isdigit():
+                self.showNewClassDialog("Please Input Some Characters", eventName)
                 return
 
             # If there is an error with the time, then the dialog will reappear
@@ -103,21 +107,20 @@ class EventPage(QWidget):
                 if notifyTime <= datetime.datetime.now():
                     raise Exception
             except Exception:
-                self.showEventDialog("Please Input A Valid Time")
+                self.showEventDialog("Please Input A Valid Time", eventName)
                 return
 
-            eventTitle = dialog.eventEntry.text()
 
             eventKey = self.resourceManager.generateKeyCode()
 
             # Adds the event to the json file
-            self.resourceManager.addEventToFile(eventTitle, notifyTime, eventKey)
+            self.resourceManager.addEventToFile(eventName, notifyTime, eventKey)
 
             # Adds the event to the page
-            self.addEvent(eventTitle, notifyTime, eventKey)
+            self.addEvent(eventName, notifyTime, eventKey)
 
             # Adds the event to the notification manager
-            self.notificationManger.addNotification(Event(eventTitle, notifyTime, eventKey))
+            self.notificationManger.addNotification(Event(eventName, notifyTime, eventKey))
 
     def addButtonFunction(self):
         """
@@ -125,7 +128,7 @@ class EventPage(QWidget):
 
         :return: None
         """
-        self.buttonWidget.addButton.clicked.connect(lambda: self.showEventDialog(None))
+        self.buttonWidget.addButton.clicked.connect(lambda: self.showEventDialog(None, None))
         self.buttonWidget.deleteButton.clicked.connect(self.deleteEventDialog)
 
 

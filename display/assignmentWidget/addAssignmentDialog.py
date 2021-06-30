@@ -5,10 +5,10 @@ from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
 import resourceManager.resources
-
+from typing import *
 
 class AddAssignmentDialog(QDialog):
-    def __init__(self, parent: QWidget, errorText: str):
+    def __init__(self, parent: QWidget, errorText: Union[str, None], assignmentName: Union[str, None]):
         super(AddAssignmentDialog, self).__init__(parent=parent)
         # Sets the window icon, title, and size
         APPICON = QIcon(":/appIcons/appIcon.png")
@@ -38,6 +38,7 @@ class AddAssignmentDialog(QDialog):
 
         # Creates an entry box for user to input their assignment
         self.assignmentEntry = QLineEdit()
+        self.assignmentEntry.setText(assignmentName)
         assignmentLayout.addWidget(self.assignmentEntry)
 
         layout.addWidget(assignmentWidget)
