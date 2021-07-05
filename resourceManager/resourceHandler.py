@@ -89,6 +89,8 @@ class ResourceHandler:
             "second": currentTime.second
         }
 
+        print(assignments[keyCode]["assignmentName"])
+
         writeJsonFile("data\\assignments", assignments)
 
     def deleteAssignment(self, keyCode: str):

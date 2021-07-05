@@ -10,9 +10,8 @@ from display.assignmentWidget.assignment import Assignment
 import sys
 
 
-
 class WidgetHolder(QWidget):
-    def  __init__(self, assignments: List[Assignment], resourceManager: ResourceHandler):
+    def __init__(self, assignments: List[Assignment], resourceManager: ResourceHandler):
         super(WidgetHolder, self).__init__()
 
         self.resourceManager = resourceManager
@@ -63,7 +62,10 @@ class WidgetHolder(QWidget):
         """
         for i in range(len(self.assignmentWidgets)):
             self.assignmentWidgets[i].completedButton.stateChanged.connect(
-                lambda e, checkBox=self.assignmentWidgets[i].completedButton: self.changeAssignment(checkBox, i, self.assignments[i].assignmentKeyCode))
+                lambda e, checkBox=self.assignmentWidgets[i].completedButton, index=i: self.changeAssignment(checkBox,
+                                                                                                             index,
+                                                                                                             self.assignments[
+                                                                                                                 index].assignmentKeyCode))
 
     def addAssignmentsToLayout(self):
         """

@@ -43,7 +43,6 @@ class AssignmentPage(QWidget):
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     assignmentKeyCode = self.assignmentDisplay.returnAssignmentKeyCode(i)
-
                     self.assignmentDisplay.widgetHolder.deleteAssignment(i)
                     self.assignmentDisplay.widgetHolder.addAssignmentsToLayout()
 
