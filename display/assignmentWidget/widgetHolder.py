@@ -29,18 +29,15 @@ class WidgetHolder(QWidget):
 
         :return: None
         """
-
-        if self.widgetLayout.count() > 1:
-            # Deletes each widget in the layout one by one
-            while self.widgetLayout.count():
-                item = self.widgetLayout.takeAt(0)
-                widget = item.widget()
-                if widget is not None:
-                    widget.deleteLater()
-                else:
-                    pass
-        else:
-            pass
+        print(self.widgetLayout.count())
+        # Deletes each widget in the layout one by one
+        while self.widgetLayout.count():
+            item = self.widgetLayout.takeAt(0)
+            widget = item.widget()
+            if widget is not None:
+                widget.deleteLater()
+            else:
+                pass
 
     def changeAssignment(self, assignmentCheckBox: QCheckBox, index: int, assignmentKeyCode: str):
         """
