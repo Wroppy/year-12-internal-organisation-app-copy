@@ -54,6 +54,13 @@ class DatabaseHandler:
     def changeAssignmentDeleted(self, **kwargs):
         self.database.changeAssignmentDeleted(kwargs["userKeyCode"], kwargs["assignmentKeyCode"], kwargs["timeStamp"])
 
+    def addEvent(self, **kwargs):
+        self.database.addEvent(kwargs["userKeyCode"], kwargs["eventKeyCode"], kwargs["eventName"], kwargs["notifyTime"], kwargs["deleted"],
+                               kwargs["notified"], kwargs["timeStamp"])
+
+    def changeEventDeleted(self, **kwargs):
+        self.database.changeEventDeleted(kwargs["userKeyCode"], kwargs["eventKeyCode"], kwargs["timeStamp"])
+
     def updateTimetableTime(self, **kwargs):
         self.database.updateTimetableUpdateTime(kwargs["userKeyCode"], kwargs["timeStamp"])
 
@@ -65,4 +72,3 @@ class DatabaseHandler:
 
     def changeTimetable(self, **kwargs):
         self.database.changeTimetable(kwargs["userKeyCode"], kwargs["userTimetable"], kwargs["timeStamp"])
-

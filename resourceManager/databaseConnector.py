@@ -230,6 +230,73 @@ class CloudDataBase:
         self.cursor.execute(command)
         self.cursor.execute("Commit")
 
+    def addEvent(self, userKeyCode: str, eventKeyCode: str, eventName: str, notifyTime: dt.datetime, deleted: bool,
+                 notified: bool, timeStamp: dt.datetime):
+        """
+        Adds an event to the database
+
+
+        """
+
+        deleted = int(deleted)
+        notified = int(notified)
+
+        # Gets the current time
+        yearUpdated = timeStamp.year
+        monthUpdated = timeStamp.month
+        dayUpdated = timeStamp.day
+        hourUpdated = timeStamp.hour
+        minuteUpdated = timeStamp.minute
+        secondUpdated = timeStamp.second
+
+        notifyYear = notifyTime.year
+        notifyMonth = notifyTime.month
+        notifyDay = notifyTime.day
+        notifyHour = notifyTime.hour
+        notifyMinute = notifyTime.minute
+
+        command = f"""
+            INSERT INTO events (userKeyCode, eventKeyCode, eventName, notifyYear, notifyMonth, notifyDay, notifyHour, notifyMinute, deleted, notified, yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated)
+            values ('{userKeyCode}', '{eventKeyCode}', '{eventName}', {notifyYear}, {notifyMonth}, {notifyDay}, {notifyHour}, {notifyMinute}, {deleted}, {notified}, {yearUpdated}, {monthUpdated}, {dayUpdated}, {hourUpdated}, {minuteUpdated}, {secondUpdated})
+        """
+
+        self.cursor.execute(command)
+        self.cursor.execute("COMMIT")
+
+    def updateEventTime(self, userKeyCode: str, eventKeyCode: str, timeStamp: dt.datetime):
+        """
+        Changes the update time from the database
+
+
+        """
+
+        # Gets the current time
+        year = timeStamp.year
+        month = timeStamp.month
+        day = timeStamp.day
+        hour = timeStamp.hour
+        minute = timeStamp.minute
+        second = timeStamp.second
+        command = f"""
+                    UPDATE events
+                    SET yearUpdated={year}, monthUpdated={month}, dayUpdated={day}, hourUpdated={hour}, minuteUpdated={minute}, secondUpdated={second}
+                    WHERE eventKeyCode='{eventKeyCode}' AND userKeyCode='{userKeyCode}'
+                """
+
+        self.cursor.execute(command)
+
+    def changeEventDeleted(self, userKeyCode: str, eventKeyCode: str, timeStamp: dt.datetime):
+        self.updateEventTime(userKeyCode, eventKeyCode, timeStamp)
+
+        command = f"""
+                    UPDATE events
+                    SET deleted= {int(True)}
+                    WHERE eventKeyCode='{eventKeyCode}' AND userKeyCode='{userKeyCode}'
+                """
+
+        self.cursor.execute(command)
+        self.cursor.execute("Commit")
+
     def updateTimetableUpdateTime(self, userKeyCode: str, timeStamp: dt.datetime):
         """
         Given the 2 keys, it updates the assignment's last accessed date
@@ -316,8 +383,18 @@ if __name__ == '__main__':
     currentTime = dt.datetime.now()
 
     classes = [
-        [Class("digi", dt.time(10, 30), dt.time(11, 30), currentTime),
-         Class("English", dt.time(11, 30), dt.time(12, 30), currentTime)],
-        [], [Class("Chemistry", dt.time(11, 30), dt.time(12, 30), currentTime)], [], []]
+        [
+            Class("digi", dt.time(10, 30), dt.time(11, 30), currentTime),
+            Class("English", dt.time(11, 30), dt.time(12, 30), currentTime)
+        ], [
+
+        ], [
+            Class("Chemistry", dt.time(11, 30), dt.time(12, 30), currentTime)
+        ], [
+
+        ], [
+
+        ]
+    ]
 
     d.changeTimetable("1234567890123456", classes, currentTime)

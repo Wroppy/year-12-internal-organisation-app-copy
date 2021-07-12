@@ -254,7 +254,7 @@ class ResourceHandler:
 
         writeJsonFile("data\\timetable", timetable)
 
-    def addEventToFile(self, eventName: str, notifyTime: datetime, keyCode: str):
+    def addEvent(self, eventName: str, notifyTime: datetime, keyCode: str):
         events = loadJsonFile("data\\events")
 
         currentTime = datetime.now()
@@ -283,6 +283,12 @@ class ResourceHandler:
 
         writeJsonFile("data\\events", events)
 
+        # Adds the event to the database
+        worker = Worker(self.database.addEvent, userKeyCode=self.userAccountKey, eventKeyCode=keyCode,
+                        eventName=eventName, notifyTime=notifyTime, deleted=False, notified=False,
+                        timeStamp=currentTime)
+        self.threadPool.start(worker)
+
     def deleteEvent(self, keyCode: str):
         events = loadJsonFile("data\\events")
 
@@ -300,6 +306,11 @@ class ResourceHandler:
         events[keyCode]["deleted"] = True
 
         writeJsonFile("data\\events", events)
+
+        # Deleted the event from the database
+        worker = Worker(self.database.changeEventDeleted, userKeyCode=self.userAccountKey, eventKeyCode=keyCode,
+                        timeStamp=currentTime)
+        self.threadPool.start(worker)
 
     def changeEventNotified(self, keyCode: str):
         events = loadJsonFile("data\\events")
