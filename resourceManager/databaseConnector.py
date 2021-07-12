@@ -351,12 +351,12 @@ class CloudDataBase:
 
         self.cursor.execute(deleteCommand)
 
-    def changeTimetable(self, userKeyCode: str, userTimetable: List[List[Class]], timeStamp: dt.datetime):
+    def changeTimetable(self, userKeyCode: str, userTimetable: List[List[dict]], timeStamp: dt.datetime):
         """
         Changes the timetable of a user in the database
 
         :param userKeyCode: str
-        :param userTimetable: List[List[Class]]
+        :param userTimetable: List[List[Dict]]
         :param timeStamp: datetime
         :return: None
         """
@@ -369,7 +369,7 @@ class CloudDataBase:
                 _class = userTimetable[day][i]
                 insertCommand = f"""
                     INSERT INTO timetable (accountKey, className, day, startHour, startMinute, endHour, endMinute)
-                    VALUES ('{userKeyCode}', '{_class.timetableClass}', {day}, {_class.beginningTime.hour}, {_class.beginningTime.minute}, {_class.endingTime.hour}, {_class.endingTime.minute})
+                    VALUES ('{userKeyCode}', '{_class["className"]}', {day}, {_class["startingTime"]["hour"]}, {_class["startingTime"]["minute"]}, {_class["endingTime"]["hour"]}, {_class["endingTime"]["minute"]})
                 """
                 self.cursor.execute(insertCommand)
 

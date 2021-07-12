@@ -216,6 +216,8 @@ class ResourceHandler:
 
         writeJsonFile("data\\timetable", timetable)
 
+        self.addClassToDatabase(timetable["classes"], currentTime)
+
     def addClassToFile(self, day: int, className: str, startingTime: time, endingTime: time, currentTime: datetime):
         """
         Adds a class to the file given the day and its index
@@ -254,7 +256,15 @@ class ResourceHandler:
 
         writeJsonFile("data\\timetable", timetable)
 
+        self.addClassToDatabase(timetable["classes"], currentTime)
+
+    def addClassToDatabase(self, timetable: List[List[dict]], currentTime: datetime):
+        worker = Worker(self.database.changeTimetable, userKeyCode=self.userAccountKey, userTimetable=timetable,
+                        timeStamp=currentTime)
+        self.threadPool.start(worker)
+
     def addEvent(self, eventName: str, notifyTime: datetime, keyCode: str):
+
         events = loadJsonFile("data\\events")
 
         currentTime = datetime.now()
