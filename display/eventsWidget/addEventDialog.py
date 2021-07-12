@@ -117,7 +117,7 @@ class AddEventDialog(QDialog):
         self.notifyTimeHour.setMaximum(23)
 
         self.notifyTimeMinute = QSpinBox()
-        self.notifyTimeMinute.setValue(time.minute)
+        self.notifyTimeMinute.setValue(time.minute + 1)
         self.notifyTimeMinute.setMaximum(59)
 
         notifyTimeLayout.addWidget(notifyTimeLabel)
