@@ -8,7 +8,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from display.eventsWidget.event import Event
 from display.eventsWidget.eventHolder import EventHolder
-from display.assignmentWidget.assignmentHeaders import Header
+from display.header import Header
 from resourceManager.resourceHandler import ResourceHandler
 import datetime
 
@@ -23,7 +23,7 @@ class EventsDisplay(QWidget):
         layout.setSpacing(0)
 
         # Creates the header
-        header = Header("Events")
+        header = Header(QLabel("Events"))
         layout.addWidget(header)
 
         #events = [Event(f"Test {i}", datetime.datetime.now(), "1") for i in range(5)]

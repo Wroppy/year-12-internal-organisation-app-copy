@@ -18,7 +18,7 @@ class Header(QWidget):
         # Creates the header label for the header
         layout.addWidget(headerWidget)
 
-        layout.addStretch()
+        #layout.addStretch()
 
         # Styles the label
         COLOURS = loadJsonFile("settings\\colours")

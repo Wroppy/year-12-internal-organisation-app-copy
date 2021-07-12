@@ -3,7 +3,7 @@ from PySide6.QtCore import *
 from PySide6.QtGui import *
 from display.assignmentWidget.assignment import Assignment
 from display.assignmentWidget.widgetHolder import WidgetHolder
-from display.assignmentWidget.assignmentHeaders import Header
+from display.header import Header
 from resourceManager.resourceHandler import ResourceHandler
 
 
@@ -16,7 +16,7 @@ class AssignmentDisplay(QWidget):
         layout.setSpacing(0)
 
         # Creates the header
-        header = Header("Assignments")
+        header = Header(QLabel("Assignments"))
         layout.addWidget(header)
 
         # Gets the assignments from the resource manager
