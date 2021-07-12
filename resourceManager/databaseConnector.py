@@ -39,8 +39,6 @@ class CloudDataBase:
 
         self.cursor = connection.cursor()
 
-
-
     def addUserToDataBase(self, username: str, password: str, userKeyCode: str):
         """
         Adds a user to the database
@@ -130,11 +128,17 @@ class CloudDataBase:
         completed = int(completed)
         deleted = int(deleted)
 
-        self.updateAssignmentTime(userKeyCode, assignmentKeyCode, timeStamp)
+        # Gets the current time
+        year = timeStamp.year
+        month = timeStamp.month
+        day = timeStamp.day
+        hour = timeStamp.hour
+        minute = timeStamp.minute
+        second = timeStamp.second
 
         command = f"""
-            INSERT INTO assignments (keyCode, assignmentName, userKey, completed, removed)
-            values ({assignmentKeyCode}, '{assignmentName}', {userKeyCode}, {completed}, {deleted})
+            INSERT INTO assignments (keyCode, assignmentName, userKey, completed, removed, yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated)
+            values ({assignmentKeyCode}, '{assignmentName}', {userKeyCode}, {completed}, {deleted}, {year}, {month}, {day}, {hour}, {minute}, {second})
         """
         self.cursor.execute(command)
         self.cursor.execute("COMMIT")
@@ -177,7 +181,6 @@ class CloudDataBase:
         hour = timeStamp.hour
         minute = timeStamp.minute
         second = timeStamp.second
-
         command = f"""
                     UPDATE assignments
                     SET yearUpdated={year}, monthUpdated={month}, dayUpdated={day}, hourUpdated={hour}, minuteUpdated={minute}, secondUpdated={second}
@@ -199,7 +202,7 @@ class CloudDataBase:
         self.updateAssignmentTime(userKeyCode, assignmentKeyCode, timeStamp)
 
         command = f"""
-            UPDATE assignments;
+            UPDATE assignments
             SET completed = {int(completed)}
             WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
         """
@@ -220,7 +223,7 @@ class CloudDataBase:
 
         command = f"""
             UPDATE assignments
-            SET deleted = {int(True)}
+            SET removed= {int(True)}
             WHERE keyCode='{assignmentKeyCode}' AND userKey='{userKeyCode}'
         """
 
@@ -305,7 +308,6 @@ class CloudDataBase:
 
         # Finally commits it
         self.cursor.execute("commit")
-
 
 
 if __name__ == '__main__':

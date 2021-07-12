@@ -29,7 +29,6 @@ class WidgetHolder(QWidget):
 
         :return: None
         """
-        print(self.widgetLayout.count())
         # Deletes each widget in the layout one by one
         while self.widgetLayout.count():
             item = self.widgetLayout.takeAt(0)

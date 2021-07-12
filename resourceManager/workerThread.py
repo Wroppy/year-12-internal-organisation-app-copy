@@ -1,3 +1,8 @@
+"""
+CODE FROM
+https://www.mfitzp.com/tutorials/multithreading-pyside-applications-qthreadpool/
+"""
+
 from PySide6.QtWidgets import QVBoxLayout, QLabel, QPushButton, QWidget, QMainWindow, QApplication
 from PySide6.QtCore import QTimer, QRunnable, Slot, Signal, QObject, QThreadPool
 
@@ -5,14 +10,9 @@ import sys
 import time
 import traceback
 
-"""
-CODE FROM
-https://www.mfitzp.com/tutorials/multithreading-pyside-applications-qthreadpool/
-"""
-
 
 class WorkerSignals(QObject):
-    '''
+    """
     Defines the signals available from a running worker thread.
 
     Supported signals are:
@@ -29,7 +29,7 @@ class WorkerSignals(QObject):
     progress
         int indicating % progress
 
-    '''
+    """
     finished = Signal()
     error = Signal(tuple)
     result = Signal(object)
@@ -37,7 +37,7 @@ class WorkerSignals(QObject):
 
 
 class Worker(QRunnable):
-    '''
+    """
     Worker thread
 
     Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
@@ -48,7 +48,7 @@ class Worker(QRunnable):
     :param args: Arguments to pass to the callback function
     :param kwargs: Keywords to pass to the callback function
 
-    '''
+    """
 
     def __init__(self, fn, **kwargs):
         super(Worker, self).__init__()
@@ -63,9 +63,9 @@ class Worker(QRunnable):
 
     @Slot()
     def run(self):
-        '''
+        """
         Initialise the runner function with passed args, kwargs.
-        '''
+        """
 
         # Retrieve args/kwargs here; and fire processing using them
         try:
@@ -73,8 +73,11 @@ class Worker(QRunnable):
         except:
             traceback.print_exc()
             exctype, value = sys.exc_info()[:2]
+            print("Fail")
             self.signals.error.emit((exctype, value, traceback.format_exc()))
         else:
+            print("Success")
             self.signals.result.emit(result)  # Return the result of the processing
         finally:
+            print("Finished")
             self.signals.finished.emit()  # Done

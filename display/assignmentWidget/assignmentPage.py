@@ -11,6 +11,7 @@ from display.contentButtonWidget import ContentButtonWidget
 from display.assignmentWidget.addAssignmentDialog import AddAssignmentDialog
 from display.confirmDialog import ConfirmDialog
 from resourceManager.resourceHandler import ResourceHandler
+from display.assignmentWidget.assignment import Assignment
 
 
 class AssignmentPage(QWidget):
@@ -42,11 +43,14 @@ class AssignmentPage(QWidget):
             if self.assignmentDisplay.widgetHolder.assignmentWidgets[i].selectButton.isChecked():
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
-                    assignmentKeyCode = self.assignmentDisplay.returnAssignmentKeyCode(i)
+                    assignment = self.assignmentDisplay.returnAssignmentKeyCode(i)
                     self.assignmentDisplay.widgetHolder.deleteAssignment(i)
                     self.assignmentDisplay.widgetHolder.addAssignmentsToLayout()
 
-                    self.resourceManager.deleteAssignment(assignmentKeyCode)
+                    # Deletes the assignment from the 2 data sources
+                    self.resourceManager.deleteAssignment(assignment)
+
+
                 break
 
     def addAssignment(self, assignmentTitle: str, assignmentKey: str):
@@ -86,7 +90,10 @@ class AssignmentPage(QWidget):
             assignmentKey = self.resourceManager.generateKeyCode()
             # Adds the assignment to the page
             self.addAssignment(assignmentTitle, assignmentKey)
-            self.resourceManager.addAssignment(assignmentTitle, False, assignmentKey)
+
+            assignment = Assignment(assignmentTitle, False, assignmentKey)
+
+            self.resourceManager.addAssignment(assignment)
 
     def addButtonFunction(self):
         """

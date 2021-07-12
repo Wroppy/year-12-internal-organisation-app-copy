@@ -31,7 +31,8 @@ class MainWindow(QMainWindow):
         splashScreen = SplashScreen()
 
         splashScreen.displayMessage("Connecting To Notification Manager")
-        self.resourceManager = ResourceHandler()
+
+        self.resourceManager = ResourceHandler(self.threadPool)
 
         self.notificationManager = NotificationHandler(self.resourceManager)
         self.startNotificationThread()

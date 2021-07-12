@@ -36,14 +36,14 @@ class AssignmentDisplay(QWidget):
 
         self.styleWidgets()
 
-    def returnAssignmentKeyCode(self, index: int) -> str:
+    def returnAssignmentKeyCode(self, index: int) -> Assignment:
         """
-        Returns an assignment's keycode given the index of its location in the list
+        Returns an assignment class given the index of its location in the list
 
         :param index: int
-        :return: str
+        :return: Assignment
         """
-        return self.widgetHolder.assignments[index].assignmentKeyCode
+        return self.widgetHolder.assignments[index]
 
     def addWidget(self, title: str, completed: bool, assignmentKey: str):
         """

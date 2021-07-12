@@ -1,16 +1,32 @@
 from resourceManager.internalDataHandler import *
-# from resourceManager.databaseConnector import *
+from resourceManager.databaseHandler import DatabaseHandler
 from display.timetableWidget.classClass import Class
 from display.assignmentWidget.assignment import Assignment
 from display.eventsWidget.event import Event
 from datetime import datetime, time
 import random
+from PySide6.QtCore import QThreadPool
+from resourceManager.workerThread import Worker
 
 
 class ResourceHandler:
-    def __init__(self):
+    def __init__(self, threadPool: QThreadPool):
         self.loggedIn = False
-        self.userAccountKey = ""
+        self.userAccountKey = "5124718414712951"
+
+        self.threadPool = threadPool
+        self.database = DatabaseHandler()
+        self.connectToDatabase()
+
+    def connectToDatabase(self):
+        """
+        Attempts to establish a connection to the database
+
+        :return: None
+        """
+
+        worker = Worker(self.database.connectToDatabase)
+        self.threadPool.start(worker)
 
     def generateKeyCode(self) -> str:
         """
@@ -37,21 +53,24 @@ class ResourceHandler:
 
         return assignments
 
-    def addAssignment(self, assignmentName: str, completed: bool, keyCode: str):
+    def addAssignment(self, assignment: Assignment):
         """
         Adds an assignment to the file system
 
-        :param assignmentName: str
-        :param completed: bool
-        :param keyCode: stsr
+        :param assignment: assignment
         :return: None
         """
 
         currentTime = datetime.now()
 
         assignments = loadJsonFile("data\\assignments")
-        assignment = {
-            "assignmentName": assignmentName,
+
+        title = assignment.title
+        completed = assignment.completed
+        keyCode = assignment.assignmentKeyCode
+
+        assignmentDict = {
+            "assignmentName": title,
             "completed": completed,
             "deleted": False,
             "lastUpdated": {
@@ -64,14 +83,20 @@ class ResourceHandler:
             }
         }
 
-        assignments[keyCode] = assignment
+        assignments[keyCode] = assignmentDict
         writeJsonFile("data\\assignments", assignments)
+
+        # Adds the assignment to the database
+        worker = Worker(self.database.addAssignmentToDatabase, userKeyCode=self.userAccountKey,
+                        assignmentKeyCode=keyCode, assignmentName=title, timeStamp=currentTime, completed=completed,
+                        deleted=False)
+        self.threadPool.start(worker)
 
     def updateAssignmentCompleted(self, keyCode: str, checked: bool):
         """
         Updated an assignment's completed state
 
-        :param index: str
+        :param keyCode: str
         :param checked: bool
         :return: None
         """
@@ -93,13 +118,20 @@ class ResourceHandler:
 
         writeJsonFile("data\\assignments", assignments)
 
-    def deleteAssignment(self, keyCode: str):
-        """
-        Deletes an assignment from the internal database
+        # Updates the database
+        worker = Worker(self.database.changeAssignmentCompleted, userKeyCode=self.userAccountKey,
+                        assignmentKeyCode=keyCode, completed=checked, timeStamp=currentTime)
+        self.threadPool.start(worker)
 
-        :param index: int
+    def deleteAssignment(self, assignment: Assignment):
+        """
+        Deletes an assignment from the internal database and the database
+
+        :param assignment: Assignment
         :return: None
         """
+
+        keyCode = assignment.assignmentKeyCode
 
         assignments = loadJsonFile("data\\assignments")
 
@@ -115,6 +147,12 @@ class ResourceHandler:
         }
 
         writeJsonFile("data\\assignments", assignments)
+
+        # Deletes from the database
+        worker = Worker(self.database.changeAssignmentDeleted, userKeyCode=self.userAccountKey,
+                        assignmentKeyCode=keyCode, completed=assignment.completed, timeStamp=currentTime)
+
+        self.threadPool.start(worker)
 
     def returnClasses(self) -> List[List[Class]]:
         """
@@ -367,4 +405,3 @@ class ResourceHandler:
 if __name__ == '__main__':
     r = ResourceHandler()
     a = r.returnNotifyEvents()
-

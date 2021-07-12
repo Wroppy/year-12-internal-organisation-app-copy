@@ -20,7 +20,7 @@ class DatabaseHandler:
     def setDatabaseUnActive(self):
         self.database.setAvailableFalse()
 
-    def connectToDoDatabase(self, **kwargs):
+    def connectToDatabase(self, **kwargs):
         self.database.connectToDataBase()
 
     def addUserToDatabase(self, **kwargs):
@@ -65,3 +65,4 @@ class DatabaseHandler:
 
     def changeTimetable(self, **kwargs):
         self.database.changeTimetable(kwargs["userKeyCode"], kwargs["userTimetable"], kwargs["timeStamp"])
+
