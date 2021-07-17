@@ -4,15 +4,26 @@ This class contains the class Class.
 """
 
 import datetime
+from dataclasses import dataclass
 
 
-
+@ dataclass()
 class Class:
-    def __init__(self, timetableClass: str, beginningTime: datetime.time, endingTime: datetime.time, timeUpdated: datetime.datetime):
-        self.timetableClass = timetableClass
-        self.beginningTime = beginningTime
-        self.endingTime = endingTime
+    timetableClass: str
+    beginningTime: datetime.time
+    endingTime: datetime.time
 
-        self.timeUpdated = timeUpdated
+    def formatClassTime(self) -> str:
+        """
+        Returns the classes time in a format suitable for viewing
+
+        :return: str
+        """
+
+        beginningTime = self.beginningTime.strftime("%X")[:-3]
+        endingTime = self.endingTime.strftime("%X")[:-3]
+
+        return f"{beginningTime} - {endingTime}"
+
 
 
