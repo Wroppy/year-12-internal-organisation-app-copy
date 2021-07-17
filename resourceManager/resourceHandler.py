@@ -1,5 +1,6 @@
 from resourceManager.internalDataHandler import *
 from resourceManager.databaseHandler import DatabaseHandler
+from resourceManager.databaseConnector import CloudDataBase
 from display.timetableWidget.classClass import Class
 from display.assignmentWidget.assignment import Assignment
 from display.eventsWidget.event import Event
@@ -7,6 +8,7 @@ from datetime import datetime, time
 import random
 from PySide6.QtCore import QThreadPool
 from resourceManager.workerThread import Worker
+import time as t
 
 
 class ResourceHandler:
@@ -186,7 +188,7 @@ class ResourceHandler:
                 # Creates the ending time class
                 endingTime = time(_class["endingTime"]["hour"], _class["endingTime"]["minute"])
 
-                _classObj = Class(_class["className"], startingTime, endingTime, lastUpdated)
+                _classObj = Class(_class["className"], startingTime, endingTime)
                 timetableDay.append(_classObj)
             newTimetable.append(timetableDay)
 
@@ -383,44 +385,17 @@ class ResourceHandler:
 
         return eventsData
 
-    # def loadClassFromDatabase(self, userKeyCode: int):
-    #     loadedTimetable = self.dataBaseHandler.loadTimetable(userKeyCode)
-    #
-    #     timetable = [[], [], [], [], []]
-    #
-    #     for row in loadedTimetable:
-    #         day = row
-    #
-    #         className = row[0]
-    #         beginningTime = row[1]
-    #         endingTime = row[2]
-    #
-    #         yearUpdated = row[3]
-    #         monthUpdated = row[4]
-    #         dayUpdated = row[5]
-    #         hourUpdated = row[6]
-    #         minuteUpdated = row[7]
-    #         secondUpdated = row[8]
-    #
-    #         timeUpdated = datetime(yearUpdated, monthUpdated, dayUpdated, hourUpdated, minuteUpdated, secondUpdated)
-    #
-    # def isLoggedIn(self):
-    #     return self.loggedIn
-    #
-    # def loggedInFalse(self):
-    #     self.loggedIn = False
-    #
-    # def loggedInTrue(self):
-    #     self.loggedIn = True
-    #
-    # def getAccountKey(self):
-    #     userAccountKey = loadJsonFile("data\\account")["accountKey"]
-    #
-    #     if userAccountKey != None:
-    #         self.userAccountKey = userAccountKey
-    #
-    # def logIn(self, username: str, password: str):
-    #     pass
+    def loadClassFromDatabase(self):
+
+        self.createTableReturnWorker()
+        self.threadPool.start(self.worker)
+
+    def returnClassesFromDatabase(self, databaseStuff):
+        print(databaseStuff)
+
+    def createTableReturnWorker(self):
+        self.worker = Worker(self.database.returnTimetable, userKeyCode=self.userAccountKey)
+        self.worker.signals.result.connect(self.returnClassesFromDatabase)
 
 
 if __name__ == '__main__':
