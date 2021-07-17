@@ -39,18 +39,18 @@ class ClassHolder(QWidget):
 
         self.widgetLayout.addStretch()
 
-    def addClass(self, classTitle: str, startingTime: time, endingTime: time, currentTime: datetime.datetime):
+    def addClass(self, classTitle: str, startingTime: time, endingTime: time):
         """
         Adds a class to the timetable by appending it and re-displaying the layout
 
         :param classTitle: str
         :param startingTime: time
         :param endingTime: time
-        :param currentTime: datetime class
+
         :return: None
         """
 
-        c = Class(classTitle, startingTime, endingTime, currentTime)
+        c = Class(classTitle, startingTime, endingTime)
         self.classes.append(c)
 
         self.deleteItemsInLayout()

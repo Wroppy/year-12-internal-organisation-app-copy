@@ -62,14 +62,14 @@ class TimetablePageWidget(QWidget):
             currentTime = datetime.datetime.now()
 
             # Adds the class to the page
-            self.addClass(classTitle, startingTime, endingTime, currentTime)
+            self.addClass(classTitle, startingTime, endingTime)
 
             currentDay = self.timetableWidget.daysSelection.currentIndex()
             self.resourceManager.addClassToFile(currentDay, classTitle, startingTime, endingTime, currentTime)
 
 
 
-    def addClass(self, classTitle: str, startingTime: time, endingTime: time, currentTime: datetime.datetime):
+    def addClass(self, classTitle: str, startingTime: time, endingTime: time):
         """
         Adds a class to a specific day
 
@@ -82,7 +82,7 @@ class TimetablePageWidget(QWidget):
         currentDay = self.timetableWidget.daysSelection.currentIndex()
         timetables = self.timetableWidget.timetables
         # Timetable -> Specific Day of Timetable -> Each individual class. addClass(:params)
-        timetables[currentDay].addClass(classTitle, startingTime, endingTime, currentTime)
+        timetables[currentDay].addClass(classTitle, startingTime, endingTime)
 
 
     def showDeleteDialog(self):
