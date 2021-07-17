@@ -4,12 +4,13 @@ This class handles the event class
 """
 
 import datetime as dt
+from dataclasses import dataclass
 
+@dataclass()
 class Event:
-    def __init__(self, eventName: str, notifyTime: dt.datetime, eventKeyCode: str):
-        self.eventName = eventName
-        self.notifyTime = notifyTime
-        self.eventKeyCode = eventKeyCode
+    eventName: str
+    notifyTime: dt.datetime
+    eventKeyCode: str
 
     def formatTime(self) -> str:
         """
