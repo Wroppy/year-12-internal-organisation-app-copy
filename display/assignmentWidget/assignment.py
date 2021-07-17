@@ -2,10 +2,13 @@
 This file defines the assignment class
 """
 
+from dataclasses import dataclass
 
+
+@dataclass()
 class Assignment:
-    def __init__(self, title: str, completed: bool, assignmentKeyCode: str):
-        self.title = title
-        self.completed = completed
-        self.assignmentKeyCode = assignmentKeyCode
+    title: str
+    completed: bool
+    keyCode: str
+
 
