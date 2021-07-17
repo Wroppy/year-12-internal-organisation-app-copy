@@ -5,30 +5,26 @@ This class displays the Event classes attributes to the user
 import datetime
 from display.eventsWidget.event import Event
 from PySide6.QtWidgets import *
+from display.generalInfoDisplay import InfoDisplay
 
 
-class EventWidget(QWidget):
+class EventWidget(InfoDisplay):
     def __init__(self, event: Event):
+        self._event = event
         super(EventWidget, self).__init__()
-        layout = QHBoxLayout(self)
 
-        # Creates the widgets
-        self.selectButton = QRadioButton()
+    def createLeftSideWidgets(self):
+        titleLabel = QLabel(self._event.eventName)
+        self.layout.addWidget(titleLabel)
 
-        titleLabel = QLabel(event.eventName)
-
-        notifyTime = event.formatTime()
+    def createRightSideWidgets(self):
+        notifyTime = self._event.formatTime()
         notifyLabel = QLabel(f"Reminder: {notifyTime}")
-
-        # Adds them to the layout
-        layout.addWidget(self.selectButton)
-        layout.addWidget(titleLabel)
-        layout.addStretch()
-        layout.addWidget(notifyLabel)
+        self.layout.addWidget(notifyLabel)
 
 
 if __name__ == '__main__':
-    event = Event("Test 1", datetime.datetime.now())
+    event = Event("Test 1", datetime.datetime.now(), "aw")
 
     app = QApplication()
     display = EventWidget(event)
