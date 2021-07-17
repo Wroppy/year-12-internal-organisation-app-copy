@@ -11,31 +11,24 @@ from PySide6.QtGui import *
 from PySide6 import QtCore
 import sys
 from display.timetableWidget.classClass import *
+from display.generalInfoDisplay import InfoDisplay
 from resourceManager.internalDataHandler import *
 
 
-class ClassWidget(QWidget):
+class ClassWidget(InfoDisplay):
     def __init__(self, timetableClass: Class):
+        self.timetableClass = timetableClass
         super(ClassWidget, self).__init__()
-        layout = QHBoxLayout(self)
 
-        self.selectButton = QRadioButton()
+    def createLeftSideWidgets(self):
+        classTitle = QLabel(self.timetableClass.timetableClass)
+        self.layout.addWidget(classTitle)
 
-        classTitle = QLabel(timetableClass.timetableClass)
-
-        beginningTime = timetableClass.beginningTime.strftime("%X")[:-3]
-        endingTime = timetableClass.endingTime.strftime("%X")[:-3]
-
-        durationText = f"{beginningTime} - {endingTime}"
+    def createRightSideWidgets(self):
+        durationText = self.timetableClass.formatClassTime()
         durationLabel = QLabel(durationText)
 
-        layout.addWidget(self.selectButton)
-        layout.addWidget(classTitle)
-
-        layout.addStretch()
-
-        layout.addWidget(durationLabel)
-
+        self.layout.addWidget(durationLabel)
 
 
 if __name__ == '__main__':
