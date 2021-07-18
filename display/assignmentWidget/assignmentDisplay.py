@@ -2,7 +2,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from PySide6.QtGui import *
 from display.assignmentWidget.assignment import Assignment
-from display.assignmentWidget.widgetHolder import WidgetHolder
+from display.assignmentWidget.assignmentHolder import AssignmentHolder
 from display.header import Header
 from resourceManager.resourceHandler import ResourceHandler
 
@@ -23,7 +23,7 @@ class AssignmentDisplay(QWidget):
         assignments = self.resourceManager.returnAssignments()
 
         # Creates the widget holder
-        self.widgetHolder = WidgetHolder(assignments, self.resourceManager)
+        self.widgetHolder = AssignmentHolder(assignments, self.resourceManager)
 
         # Creates the scroll bar for the widget display
         scrollbar = QScrollArea()

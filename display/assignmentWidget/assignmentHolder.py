@@ -7,10 +7,11 @@ from typing import *
 from display.assignmentWidget.assignmentWidget import AssignmentWidget
 from resourceManager.resourceHandler import ResourceHandler
 from display.assignmentWidget.assignment import Assignment
+from display.widgetHolders import WidgetHolder
 import sys
 
 
-class WidgetHolder(QWidget):
+class AssignmentHolder(WidgetHolder):
     def __init__(self, assignments: List[Assignment], resourceManager: ResourceHandler):
         super(WidgetHolder, self).__init__()
 
