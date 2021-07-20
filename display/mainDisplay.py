@@ -49,6 +49,9 @@ class MainWindow(QMainWindow):
 
         self.animating = False
 
+        self.resourceManager.loadClassFromDatabase()
+
+
     def startNotificationThread(self):
         worker = NotificationWorker(self.notificationManager)
         self.threadPool.start(worker)

@@ -28,7 +28,7 @@ class EventsDisplay(QWidget):
 
         #events = [Event(f"Test {i}", datetime.datetime.now(), "1") for i in range(5)]
 
-        events = self.resourceManager.returnEvents()
+        events = self.resourceManager.returnEventsFromFile()
         # Creates the widget holder
         self.eventHolder = EventHolder(events, self.resourceManager)
 

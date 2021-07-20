@@ -44,11 +44,11 @@ class AssignmentPage(QWidget):
                 dialog = ConfirmDialog("Are you sure you want to delete?")
                 if dialog.exec():
                     assignment = self.assignmentDisplay.returnAssignmentKeyCode(i)
-                    self.assignmentDisplay.widgetHolder.deleteAssignment(i)
+                    self.assignmentDisplay.widgetHolder.deleteAssignmentFromFile(i)
                     self.assignmentDisplay.widgetHolder.addAssignmentsToLayout()
 
                     # Deletes the assignment from the 2 data sources
-                    self.resourceManager.deleteAssignment(assignment)
+                    self.resourceManager.deleteAssignmentFromFile(assignment)
 
 
                 break
@@ -93,7 +93,7 @@ class AssignmentPage(QWidget):
 
             assignment = Assignment(assignmentTitle, False, assignmentKey)
 
-            self.resourceManager.addAssignment(assignment)
+            self.resourceManager.addAssignmentToFile(assignment)
 
     def addButtonFunction(self):
         """

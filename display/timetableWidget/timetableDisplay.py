@@ -66,7 +66,7 @@ class TimetableDisplay(QWidget):
         self.timetables = []
         self.timetablesWidget = QStackedWidget()
 
-        classes = self.resourceManger.returnClasses()
+        classes = self.resourceManger.returnClassesFromFile()
 
         for i in range(len(self.days)):
             timetable = ClassHolder(classes[i])

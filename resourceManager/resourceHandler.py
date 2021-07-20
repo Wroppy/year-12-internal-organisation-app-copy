@@ -38,7 +38,7 @@ class ResourceHandler:
         """
         return "".join(str(random.randint(1, 9)) for _ in range(16))
 
-    def returnAssignments(self) -> List[Assignment]:
+    def returnAssignmentsFromFile(self) -> List[Assignment]:
         """
         Returns a list of assignments
 
@@ -55,7 +55,7 @@ class ResourceHandler:
 
         return assignments
 
-    def addAssignment(self, assignment: Assignment):
+    def addAssignmentToFile(self, assignment: Assignment):
         """
         Adds an assignment to the file system
 
@@ -63,7 +63,7 @@ class ResourceHandler:
         :return: None
         """
 
-        currentTime = datetime.now()
+        timeStamp = datetime.now()
 
         assignments = loadJsonFile("data\\assignments")
 
@@ -76,25 +76,31 @@ class ResourceHandler:
             "completed": completed,
             "deleted": False,
             "lastUpdated": {
-                "year": currentTime.year,
-                "month": currentTime.month,
-                "day": currentTime.day,
-                "hour": currentTime.hour,
-                "minute": currentTime.minute,
-                "second": currentTime.second
+                "year": timeStamp.year,
+                "month": timeStamp.month,
+                "day": timeStamp.day,
+                "hour": timeStamp.hour,
+                "minute": timeStamp.minute,
+                "second": timeStamp.second
             }
         }
 
         assignments[keyCode] = assignmentDict
         writeJsonFile("data\\assignments", assignments)
 
+    def addAssignmentToDatabase(self, assignment: Assignment, timeStamp: datetime):
+        title = assignment.title
+        completed = assignment.completed
+        keyCode = assignment.keyCode
+
+
         # Adds the assignment to the database
         worker = Worker(self.database.addAssignmentToDatabase, userKeyCode=self.userAccountKey,
-                        assignmentKeyCode=keyCode, assignmentName=title, timeStamp=currentTime, completed=completed,
+                        assignmentKeyCode=keyCode, assignmentName=title, timeStamp=timeStamp, completed=completed,
                         deleted=False)
         self.threadPool.start(worker)
 
-    def updateAssignmentCompleted(self, keyCode: str, checked: bool):
+    def updateAssignmentCompletedFile(self, keyCode: str, checked: bool):
         """
         Updated an assignment's completed state
 
@@ -106,26 +112,30 @@ class ResourceHandler:
 
         assignments[keyCode]["completed"] = checked
 
-        currentTime = datetime.now()
+        timeStamp = datetime.now()
         assignments[keyCode]["lastUpdated"] = {
-            "year": currentTime.year,
-            "month": currentTime.month,
-            "day": currentTime.day,
-            "hour": currentTime.hour,
-            "minute": currentTime.minute,
-            "second": currentTime.second
+            "year": timeStamp.year,
+            "month": timeStamp.month,
+            "day": timeStamp.day,
+            "hour": timeStamp.hour,
+            "minute": timeStamp.minute,
+            "second": timeStamp.second
         }
 
         print(assignments[keyCode]["assignmentName"])
 
         writeJsonFile("data\\assignments", assignments)
 
+
+    def updateAssignmentCompletedDatabase(self, keyCode: str, checked: bool, timeStamp: datetime):
+
+
         # Updates the database
         worker = Worker(self.database.changeAssignmentCompleted, userKeyCode=self.userAccountKey,
-                        assignmentKeyCode=keyCode, completed=checked, timeStamp=currentTime)
+                        assignmentKeyCode=keyCode, completed=checked, timeStamp=timeStamp)
         self.threadPool.start(worker)
 
-    def deleteAssignment(self, assignment: Assignment):
+    def deleteAssignmentFromFile(self, assignment: Assignment):
         """
         Deletes an assignment from the internal database and the database
 
@@ -138,25 +148,29 @@ class ResourceHandler:
         assignments = loadJsonFile("data\\assignments")
 
         assignments[keyCode]["deleted"] = True
-        currentTime = datetime.now()
+        timeStamp = datetime.now()
         assignments[keyCode]["lastUpdated"] = {
-            "year": currentTime.year,
-            "month": currentTime.month,
-            "day": currentTime.day,
-            "hour": currentTime.hour,
-            "minute": currentTime.minute,
-            "second": currentTime.second
+            "year": timeStamp.year,
+            "month": timeStamp.month,
+            "day": timeStamp.day,
+            "hour": timeStamp.hour,
+            "minute": timeStamp.minute,
+            "second": timeStamp.second
         }
 
         writeJsonFile("data\\assignments", assignments)
 
+    def deleteAssignmentFromDatabase(self, assignment: Assignment, timeStamp):
+        keyCode = assignment.keyCode
+        completed = assignment.completed
+
         # Deletes from the database
         worker = Worker(self.database.changeAssignmentDeleted, userKeyCode=self.userAccountKey,
-                        assignmentKeyCode=keyCode, completed=assignment.completed, timeStamp=currentTime)
+                        assignmentKeyCode=keyCode, completed=completed, timeStamp=timeStamp)
 
         self.threadPool.start(worker)
 
-    def returnClasses(self) -> List[List[Class]]:
+    def returnClassesFromFile(self) -> List[List[Class]]:
         """
         Returns the classes from the internal database
 
@@ -265,18 +279,18 @@ class ResourceHandler:
                         timeStamp=currentTime)
         self.threadPool.start(worker)
 
-    def addEvent(self, eventName: str, notifyTime: datetime, keyCode: str):
+    def addEventToFile(self, eventName: str, notifyTime: datetime, keyCode: str):
 
         events = loadJsonFile("data\\events")
 
-        currentTime = datetime.now()
+        timeStamp = datetime.now()
         lastUpdated = {
-            "year": currentTime.year,
-            "month": currentTime.month,
-            "day": currentTime.day,
-            "hour": currentTime.hour,
-            "minute": currentTime.minute,
-            "second": currentTime.second
+            "year": timeStamp.year,
+            "month": timeStamp.month,
+            "day": timeStamp.day,
+            "hour": timeStamp.hour,
+            "minute": timeStamp.minute,
+            "second": timeStamp.second
         }
         eventData = {
             "eventName": eventName,
@@ -295,23 +309,24 @@ class ResourceHandler:
 
         writeJsonFile("data\\events", events)
 
+    def addEventToDatabase(self, eventName: str, notifyTime: datetime, keyCode: str, timeStamp: datetime):
         # Adds the event to the database
         worker = Worker(self.database.addEvent, userKeyCode=self.userAccountKey, eventKeyCode=keyCode,
                         eventName=eventName, notifyTime=notifyTime, deleted=False, notified=False,
-                        timeStamp=currentTime)
+                        timeStamp=timeStamp)
         self.threadPool.start(worker)
 
-    def deleteEvent(self, keyCode: str):
+    def deleteEventFromFile(self, keyCode: str):
         events = loadJsonFile("data\\events")
 
-        currentTime = datetime.now()
+        timeStamp = datetime.now()
         lastUpdated = {
-            "year": currentTime.year,
-            "month": currentTime.month,
-            "day": currentTime.day,
-            "hour": currentTime.hour,
-            "minute": currentTime.minute,
-            "second": currentTime.second
+            "year": timeStamp.year,
+            "month": timeStamp.month,
+            "day": timeStamp.day,
+            "hour": timeStamp.hour,
+            "minute": timeStamp.minute,
+            "second": timeStamp.second
         }
 
         events[keyCode]["lastUpdated"] = lastUpdated
@@ -319,9 +334,10 @@ class ResourceHandler:
 
         writeJsonFile("data\\events", events)
 
+    def deleteEventFromDatabase(self, keyCode: str, timeStamp: datetime):
         # Deleted the event from the database
         worker = Worker(self.database.changeEventDeleted, userKeyCode=self.userAccountKey, eventKeyCode=keyCode,
-                        timeStamp=currentTime)
+                        timeStamp=timeStamp)
         self.threadPool.start(worker)
 
     def changeEventNotified(self, keyCode: str):
@@ -342,7 +358,7 @@ class ResourceHandler:
 
         writeJsonFile("data\\events", events)
 
-    def returnEvents(self) -> List[Event]:
+    def returnEventsFromFile(self) -> List[Event]:
         """
         Returns all of the events in
 
@@ -375,7 +391,7 @@ class ResourceHandler:
 
         :return: List[Event]
         """
-        events = self.returnEvents()
+        events = self.returnEventsFromFile()
 
         eventsData = []
         for event in events:

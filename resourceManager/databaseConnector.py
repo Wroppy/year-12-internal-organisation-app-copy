@@ -376,25 +376,26 @@ class CloudDataBase:
         # Finally commits it
         self.cursor.execute("commit")
 
+    def returnTimetable(self, userKeyCode: str):
+        """
+        Returns the timetable of the user, given its keycode
+
+        :param userKeyCode: str
+        :return:
+        """
+        print(userKeyCode)
+
+        command = f"""
+            SELECT * FROM timetable
+            WHERE accountKey='{userKeyCode}'
+        """
+
+        self.cursor.execute(command)
+
+        return [i for i in self.cursor]
+
 
 if __name__ == '__main__':
     d = CloudDataBase()
     d.connectToDataBase()
-    currentTime = dt.datetime.now()
-
-    classes = [
-        [
-            Class("digi", dt.time(10, 30), dt.time(11, 30), currentTime),
-            Class("English", dt.time(11, 30), dt.time(12, 30), currentTime)
-        ], [
-
-        ], [
-            Class("Chemistry", dt.time(11, 30), dt.time(12, 30), currentTime)
-        ], [
-
-        ], [
-
-        ]
-    ]
-
-    d.changeTimetable("1234567890123456", classes, currentTime)
+    print(d.returnTimetable("5124718414712951"))

@@ -44,10 +44,10 @@ class EventPage(QWidget):
                 if dialog.exec():
                     eventKeyCode = self.eventDisplay.returnEventKeyCode(i)
                     self.notificationManger.removeNotification(self.eventDisplay.eventHolder.events[i])
-                    self.eventDisplay.eventHolder.deleteEvent(i)
+                    self.eventDisplay.eventHolder.deleteEventFromFile(i)
                     self.eventDisplay.eventHolder.addEventsToLayout()
 
-                    self.resourceManager.deleteEvent(eventKeyCode)
+                    self.resourceManager.deleteEventFromFile(eventKeyCode)
 
                 break
 
@@ -113,7 +113,7 @@ class EventPage(QWidget):
             eventKey = self.resourceManager.generateKeyCode()
 
             # Adds the event to the json file
-            self.resourceManager.addEvent(eventName, notifyTime, eventKey)
+            self.resourceManager.addEventToFile(eventName, notifyTime, eventKey)
 
             # Adds the event to the page
             self.addEvent(eventName, notifyTime, eventKey)

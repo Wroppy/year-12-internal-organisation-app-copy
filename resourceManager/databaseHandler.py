@@ -72,3 +72,7 @@ class DatabaseHandler:
 
     def changeTimetable(self, **kwargs):
         self.database.changeTimetable(kwargs["userKeyCode"], kwargs["userTimetable"], kwargs["timeStamp"])
+
+
+    def returnTimetable(self, **kwargs):
+        return self.database.returnTimetable(kwargs["userKeyCode"])

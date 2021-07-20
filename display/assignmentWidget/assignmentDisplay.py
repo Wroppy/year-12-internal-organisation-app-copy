@@ -20,7 +20,7 @@ class AssignmentDisplay(QWidget):
         layout.addWidget(header)
 
         # Gets the assignments from the resource manager
-        assignments = self.resourceManager.returnAssignments()
+        assignments = self.resourceManager.returnAssignmentsFromFile()
 
         # Creates the widget holder
         self.widgetHolder = AssignmentHolder(assignments, self.resourceManager)
