@@ -69,7 +69,7 @@ class ResourceHandler:
 
         title = assignment.title
         completed = assignment.completed
-        keyCode = assignment.assignmentKeyCode
+        keyCode = assignment.keyCode
 
         assignmentDict = {
             "assignmentName": title,
@@ -133,7 +133,7 @@ class ResourceHandler:
         :return: None
         """
 
-        keyCode = assignment.assignmentKeyCode
+        keyCode = assignment.keyCode
 
         assignments = loadJsonFile("data\\assignments")
 
