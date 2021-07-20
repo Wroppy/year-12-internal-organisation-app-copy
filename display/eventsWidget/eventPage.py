@@ -11,6 +11,7 @@ from notifications.notificationHandler import NotificationHandler
 from typing import *
 from display.eventsWidget.event import Event
 
+
 class EventPage(QWidget):
     def __init__(self, resourceManager: ResourceHandler, notificationHandler: NotificationHandler):
         super(EventPage, self).__init__()
@@ -47,7 +48,6 @@ class EventPage(QWidget):
                     self.eventDisplay.eventHolder.addEventsToLayout()
 
                     self.resourceManager.deleteEvent(eventKeyCode)
-
 
                 break
 
@@ -109,7 +109,6 @@ class EventPage(QWidget):
             except Exception:
                 self.showEventDialog("Please Input A Valid Time", eventName)
                 return
-
 
             eventKey = self.resourceManager.generateKeyCode()
 
