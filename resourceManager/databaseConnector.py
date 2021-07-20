@@ -381,7 +381,7 @@ class CloudDataBase:
         Returns the timetable of the user, given its keycode
 
         :param userKeyCode: str
-        :return:
+        :return: List[Tuple[Any]]
         """
         print(userKeyCode)
 
@@ -394,6 +394,23 @@ class CloudDataBase:
 
         return [i for i in self.cursor]
 
+    def returnTimetableTimeStamp(self, userKeyCode: str):
+        """
+        Returns the timetable timestamp, given the user's keycode
+
+        :param userKeyCode: str
+        :return: tuple[any]
+        """
+
+        command = f"""
+            SELECT * FROM timetable_last_updated
+            WHERE accountKey='{userKeyCode}'
+        """
+
+        self.cursor.execute(command)
+
+        for i in self.cursor:
+            return i
 
 if __name__ == '__main__':
     d = CloudDataBase()

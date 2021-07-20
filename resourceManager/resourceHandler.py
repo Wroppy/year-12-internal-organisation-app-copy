@@ -10,6 +10,8 @@ from PySide6.QtCore import QThreadPool
 from resourceManager.workerThread import Worker
 import time as t
 
+from display.timetableWidget.timetableDisplay import TimetableDisplay
+
 
 class ResourceHandler:
     def __init__(self, threadPool: QThreadPool):
@@ -93,7 +95,6 @@ class ResourceHandler:
         completed = assignment.completed
         keyCode = assignment.keyCode
 
-
         # Adds the assignment to the database
         worker = Worker(self.database.addAssignmentToDatabase, userKeyCode=self.userAccountKey,
                         assignmentKeyCode=keyCode, assignmentName=title, timeStamp=timeStamp, completed=completed,
@@ -126,9 +127,7 @@ class ResourceHandler:
 
         writeJsonFile("data\\assignments", assignments)
 
-
     def updateAssignmentCompletedDatabase(self, keyCode: str, checked: bool, timeStamp: datetime):
-
 
         # Updates the database
         worker = Worker(self.database.changeAssignmentCompleted, userKeyCode=self.userAccountKey,
@@ -170,11 +169,11 @@ class ResourceHandler:
 
         self.threadPool.start(worker)
 
-    def returnClassesFromFile(self) -> List[List[Class]]:
+    def returnClassesFromFile(self) -> tuple[list[list[Class]], datetime]:
         """
         Returns the classes from the internal database
 
-        :return: List[List[Class]]
+        :return: tuple[list[list[Class]], datetime]
         """
 
         data = loadJsonFile("data\\timetable")
@@ -207,7 +206,8 @@ class ResourceHandler:
             newTimetable.append(timetableDay)
 
         # returns [[Classes], [], [], [], [] ]
-        return newTimetable
+        return newTimetable, lastUpdated
+
 
     def deleteClassFromfile(self, day: int, index: int, currentTime: datetime):
         """
@@ -402,16 +402,79 @@ class ResourceHandler:
         return eventsData
 
     def loadClassFromDatabase(self):
+        worker = Worker(self.database.returnTimetable, userKeyCode=self.userAccountKey)
+        worker.signals.result.connect(self.updateTimetableDisplayDatabase)
 
-        self.createTableReturnWorker()
-        self.threadPool.start(self.worker)
+        self.threadPool.start(worker)
 
-    def returnClassesFromDatabase(self, databaseStuff):
-        print(databaseStuff)
+    def updateTimetableDisplayDatabase(self, timetableDatabase: Tuple[List[Tuple[Any]], Tuple[Any]]):
+        """
+        Updates the timetable displayed when the worker thread has finished without an error
 
-    def createTableReturnWorker(self):
-        self.worker = Worker(self.database.returnTimetable, userKeyCode=self.userAccountKey)
-        self.worker.signals.result.connect(self.returnClassesFromDatabase)
+        """
+
+        classes, timeStamp = timetableDatabase
+
+        sortedClasses, sortedTimeStamp = self.sortTimetableFromDatabase(classes, timeStamp)
+
+        print(sortedClasses)
+        print(sortedTimeStamp)
+
+        sortedTimetable = self.sortTimetable(sortedClasses, sortedTimeStamp)
+
+        TimetableDisplay().setTimetable(sortedTimetable)
+        TimetableDisplay().updateTimetable()
+
+
+    def sortTimetableFromDatabase(self, classes, timeStamp) -> Tuple[List[List[Class]], datetime]:
+
+        print(f"Classes: {classes}")
+        print(f"Time Stamp: {timeStamp}")
+
+        sortedClasses = [[] for _ in range(5)]
+
+        for _class in classes:
+            startingTime = time(_class[1], _class[2])
+            endingTime = time(_class[3], _class[4])
+            className = _class[5]
+
+            c = Class(className, startingTime, endingTime)
+
+            day = _class[6]
+
+            sortedClasses[day].append(c)
+
+        year = timeStamp[0]
+        month = timeStamp[1]
+        day = timeStamp[2]
+        hour = timeStamp[3]
+        minute = timeStamp[4]
+        second = timeStamp[5]
+
+        sortedTimeStamp = datetime(year, month, day, hour, minute, second)
+
+        return sortedClasses, sortedTimeStamp
+
+    def sortTimetable(self, timetableDatabase: List[List[Class]], timeStampDatabase: datetime) -> List[List[Class]]:
+        """
+        Given the 2 timestamps of the timetables,
+        returns the most recently updated timetable
+
+        :param timetableDatabase:  List[List[Any]]
+        :param timeStampDatabase: datetime
+        """
+        timetableFile, timeStampFile = self.returnClassesFromFile()
+
+        # Checks if the database's timetable has been updated more recently
+        if timeStampDatabase > timeStampFile:
+            #TODO: Change classes in the file system
+
+            return timetableDatabase
+        return timetableFile
+
+    # def createTableReturnWorker(self):
+    #     self.worker = Worker(self.database.returnTimetable, userKeyCode=self.userAccountKey)
+    #     self.worker.signals.result.connect(self.sortTimetableFromDatabase)
 
 
 if __name__ == '__main__':

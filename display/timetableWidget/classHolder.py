@@ -84,14 +84,20 @@ class ClassHolder(QWidget):
             else:
                 pass
 
+        print(self.widgetLayout.count())
+
     def sortTimetable(self):
         """
         Sorts the timetable by the classes beginning time.
 
         :return: None
         """
+        print(self.classes)
         self.classes.sort(key=lambda t: t.beginningTime)
 
+
+    def setClasses(self, classes: List[List[Class]]):
+        self.classes = classes
 
 if __name__ == '__main__':
     classes = [Class("Digitech", 830, 930), Class("English", 930, 1030), Class("Physics", 1130, 1230)]

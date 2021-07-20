@@ -14,20 +14,22 @@ from display.timetableWidget.classClass import Class
 from typing import *
 from resourceManager.internalDataHandler import loadJsonFile
 from display.timetableWidget.classHolder import ClassHolder
-from resourceManager.resourceHandler import ResourceHandler
+
 from datetime import time
 from display.customDecorators import singleton
 
 
 @singleton
 class TimetableDisplay(QWidget):
-    def __init__(self, resourceManger: ResourceHandler):
+    def __init__(self, resourceManger: 'ResourceHandler'):
         super().__init__()
         self.resourceManger = resourceManger
         self.layout = QVBoxLayout(self)
 
         self.createComboBox()
 
+
+        self.classes = self.resourceManger.returnClassesFromFile()[0]
         self.createTimetableDays()
 
         self.styleWidget()
@@ -54,7 +56,7 @@ class TimetableDisplay(QWidget):
         :return: None
         """
         day = self.daysSelection.currentIndex()
-        self.timetablesWidget.setCurrentIndex(day)
+        self.timetableWidget.setCurrentIndex(day)
 
     def createTimetableDays(self):
         """
@@ -64,18 +66,48 @@ class TimetableDisplay(QWidget):
         """
 
         self.timetables = []
-        self.timetablesWidget = QStackedWidget()
+        self.timetableWidget = QStackedWidget()
 
-        classes = self.resourceManger.returnClassesFromFile()
 
         for i in range(len(self.days)):
-            timetable = ClassHolder(classes[i])
-            self.timetablesWidget.addWidget(timetable)
+            timetable = ClassHolder(self.classes[i])
+            self.timetableWidget.addWidget(timetable)
 
             self.timetables.append(timetable)
 
-        self.layout.addWidget(self.timetablesWidget)
+        self.layout.addWidget(self.timetableWidget)
 
+        print("finished")
+
+    def updateTimetable(self):
+        self.deleteItemsInAllClassHolders()
+
+        for i in range(len(self.timetables)):
+            classHolder = self.timetables[i]
+            classes = self.classes[i]
+
+            classHolder.setClasses(classes)
+            classHolder.updateClasses()
+
+    def setTimetable(self, classes: List[List[Class]]):
+        self.classes = classes
+
+
+    def deleteItemsInAllClassHolders(self):
+        """
+        Deletes the items in the layout
+
+        :return: None
+        """
+        print("starting")
+
+        # Deletes each widget in the layout one by one
+        for classHolder in self.timetables:
+            classHolder.deleteItemsInLayout()
+
+
+    def deleteStackedWidget(self):
+        pass
 
     def styleWidget(self):
         """

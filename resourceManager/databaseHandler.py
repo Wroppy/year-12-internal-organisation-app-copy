@@ -75,4 +75,7 @@ class DatabaseHandler:
 
 
     def returnTimetable(self, **kwargs):
-        return self.database.returnTimetable(kwargs["userKeyCode"])
+        classes = self.database.returnTimetable(kwargs["userKeyCode"])
+        timeStamp = self.database.returnTimetableTimeStamp(kwargs["userKeyCode"])
+
+        return classes, timeStamp
