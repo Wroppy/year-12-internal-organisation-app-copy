@@ -208,7 +208,6 @@ class ResourceHandler:
         # returns [[Classes], [], [], [], [] ]
         return newTimetable, lastUpdated
 
-
     def deleteClassFromfile(self, day: int, index: int, currentTime: datetime):
         """
         Deletes a class from the file given the day and its index
@@ -425,7 +424,6 @@ class ResourceHandler:
         TimetableDisplay().setTimetable(sortedTimetable)
         TimetableDisplay().updateTimetable()
 
-
     def sortTimetableFromDatabase(self, classes, timeStamp) -> Tuple[List[List[Class]], datetime]:
 
         print(f"Classes: {classes}")
@@ -467,14 +465,71 @@ class ResourceHandler:
 
         # Checks if the database's timetable has been updated more recently
         if timeStampDatabase > timeStampFile:
-            #TODO: Change classes in the file system
+            self.writeClassesToFile(timetableDatabase, timeStampDatabase)
 
             return timetableDatabase
+
+        # Checks if the timestamps are the same
+        # If they are, then there is no need to change the data internally, and externally
+        # If there is a difference, then the database must be updated
+        if timeStampDatabase != timeStampFile:
+            print("Needs to change")
+            self.addClassToDatabase(self.returnSortedDictTimetable(timetableFile), timeStampFile)
+
         return timetableFile
 
-    # def createTableReturnWorker(self):
-    #     self.worker = Worker(self.database.returnTimetable, userKeyCode=self.userAccountKey)
-    #     self.worker.signals.result.connect(self.sortTimetableFromDatabase)
+    def writeClassesToFile(self, classes: List[List[Class]], timeStamp: datetime):
+        """
+        Writes a list of classes to a file, given the a list of classes, and a timeStamp
+
+        :param classes: List[List[Class]]
+        :param timeStamp: datetime
+        """
+
+        timetable = self.returnSortedDictTimetable(classes)
+
+        lastUpdated = self.returnDatetimeDict(timeStamp)
+
+        classData = {
+            "classes": timetable,
+            "lastUpdated": lastUpdated
+        }
+
+        print(str(classData).replace("'", '"'))
+
+        writeJsonFile("data\\timetable", classData)
+
+    def returnDatetimeDict(self, timeStamp: datetime) -> dict:
+        return {
+            "year": timeStamp.year,
+            "month": timeStamp.month,
+            "day": timeStamp.day,
+            "hour": timeStamp.hour,
+            "minute": timeStamp.minute,
+            "second": timeStamp.second
+        }
+
+    def returnSortedDictTimetable(self, classes: List[List[Class]]):
+        timetable = []
+        for day in classes:
+            classesDay = []
+            for _class in day:
+                c = {
+                    "className": _class.timetableClass,
+                    "startingTime": {
+                        "hour": _class.beginningTime.hour,
+                        "minute": _class.beginningTime.minute
+                    },
+                    "endingTime": {
+                        "hour": _class.endingTime.hour,
+                        "minute": _class.endingTime.minute
+                    }
+                }
+
+                classesDay.append(c)
+            timetable.append(classesDay)
+
+        return timetable
 
 
 if __name__ == '__main__':
