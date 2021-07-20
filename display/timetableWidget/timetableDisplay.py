@@ -16,11 +16,13 @@ from resourceManager.internalDataHandler import loadJsonFile
 from display.timetableWidget.classHolder import ClassHolder
 from resourceManager.resourceHandler import ResourceHandler
 from datetime import time
+from display.customDecorators import singleton
 
 
+@singleton
 class TimetableDisplay(QWidget):
     def __init__(self, resourceManger: ResourceHandler):
-        super(TimetableDisplay, self).__init__()
+        super().__init__()
         self.resourceManger = resourceManger
         self.layout = QVBoxLayout(self)
 
@@ -74,19 +76,6 @@ class TimetableDisplay(QWidget):
 
         self.layout.addWidget(self.timetablesWidget)
 
-    def addClass(self, day: str, title: str, startingTime: time, endingTime: time, timeUpdated: datetime.datetime):
-        """
-        Adds a class to the timetable given the day
-
-        :param day: str
-        :param title: str
-        :param startingTime: int
-        :param endingTime: int
-        :return: None
-        """
-
-
-        self.classes[day].append(Class(title, startingTime, endingTime, timeUpdated))
 
     def styleWidget(self):
         """

@@ -8,12 +8,11 @@ from display.assignmentWidget.assignmentWidget import AssignmentWidget
 from resourceManager.resourceHandler import ResourceHandler
 from display.assignmentWidget.assignment import Assignment
 from display.widgetHolders import WidgetHolder
-import sys
 
 
-class AssignmentHolder(WidgetHolder):
+class AssignmentHolder(QWidget):
     def __init__(self, assignments: List[Assignment], resourceManager: ResourceHandler):
-        super(WidgetHolder, self).__init__()
+        super().__init__()
 
         self.resourceManager = resourceManager
 
@@ -62,7 +61,7 @@ class AssignmentHolder(WidgetHolder):
                 lambda e, checkBox=self.assignmentWidgets[i].completedButton, index=i: self.changeAssignment(checkBox,
                                                                                                              index,
                                                                                                              self.assignments[
-                                                                                                                 index].assignmentKeyCode))
+                                                                                                                 index].keyCode))
 
     def addAssignmentsToLayout(self):
         """
@@ -73,6 +72,7 @@ class AssignmentHolder(WidgetHolder):
 
         # Deletes all old widgets and clears previous widgets as well
         self.deleteItemsInLayout()
+        self.sortAssignments()
         self.assignmentWidgets: List[AssignmentWidget] = []
 
         layout = self.layout()
@@ -104,6 +104,15 @@ class AssignmentHolder(WidgetHolder):
         :return: None
         """
         self.assignments.pop(index)
+
+    def sortAssignments(self):
+        """
+        First sorts the assignments by name, then by its completion status
+
+        :return: None
+        """
+        self.assignments.sort(key=lambda a: a.title)
+        self.assignments.sort(key=lambda a: a.completed)
 
 
 if __name__ == '__main__':

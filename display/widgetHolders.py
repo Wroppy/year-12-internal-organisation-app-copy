@@ -89,13 +89,13 @@ class WidgetHolder(QWidget):
                 widget.deleteLater()
             else:
                 pass
-
     @abstractmethod
     def sortInfo(self):
         """
         Sorts the list :)
 
         """
+
 
 
 if __name__ == '__main__':

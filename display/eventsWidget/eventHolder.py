@@ -13,7 +13,7 @@ import sys
 
 class EventHolder(QWidget):
     def  __init__(self, events: List[Event], resourceManager: ResourceHandler):
-        super(EventHolder, self).__init__()
+        super().__init__()
 
         self.resourceManager = resourceManager
 
