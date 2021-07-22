@@ -235,7 +235,6 @@ class CloudDataBase:
         """
         Adds an event to the database
 
-
         """
 
         deleted = int(deleted)
@@ -411,6 +410,7 @@ class CloudDataBase:
 
         for i in self.cursor:
             return i
+
 
 if __name__ == '__main__':
     d = CloudDataBase()

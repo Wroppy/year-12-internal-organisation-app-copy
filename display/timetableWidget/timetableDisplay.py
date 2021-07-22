@@ -77,7 +77,6 @@ class TimetableDisplay(QWidget):
 
         self.layout.addWidget(self.timetableWidget)
 
-        print("finished")
 
     def updateTimetable(self):
         self.deleteItemsInAllClassHolders()
@@ -99,7 +98,6 @@ class TimetableDisplay(QWidget):
 
         :return: None
         """
-        print("starting")
 
         # Deletes each widget in the layout one by one
         for classHolder in self.timetables:

@@ -84,7 +84,6 @@ class ClassHolder(QWidget):
             else:
                 pass
 
-        print(self.widgetLayout.count())
 
     def sortTimetable(self):
         """
@@ -92,7 +91,6 @@ class ClassHolder(QWidget):
 
         :return: None
         """
-        print(self.classes)
         self.classes.sort(key=lambda t: t.beginningTime)
 
 
