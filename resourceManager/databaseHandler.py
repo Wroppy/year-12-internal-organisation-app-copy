@@ -79,3 +79,7 @@ class DatabaseHandler:
         timeStamp = self.database.returnTimetableTimeStamp(kwargs["userKeyCode"])
 
         return classes, timeStamp
+
+    def returnAssignments(self, **kwargs):
+        assignments = self.database.returnAssignments(kwargs["userKeyCode"])
+        return assignments

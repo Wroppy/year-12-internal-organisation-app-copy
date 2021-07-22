@@ -411,6 +411,25 @@ class CloudDataBase:
         for i in self.cursor:
             return i
 
+    def returnAssignments(self, userKeyCode: str) -> List[Tuple[Any]]:
+        """
+        Returns a list of assignments given the user's keycode
+        :param userKeyCode: str
+        :return: List[Tuple[Any]]
+
+        """
+
+        command = f"""
+            SELECT * FROM assignments
+            WHERE userKey='{userKeyCode}'
+        """
+
+        self.cursor.execute(command)
+
+        return [assignment for assignment in self.cursor]
+
+
+
 
 if __name__ == '__main__':
     d = CloudDataBase()

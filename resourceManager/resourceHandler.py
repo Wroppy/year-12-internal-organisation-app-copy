@@ -531,6 +531,113 @@ class ResourceHandler:
 
         return timetable
 
+    def returnAssignments(self, userKeyCode: str):
+        worker = Worker(self.database.returnAssignments(userKeyCode=userKeyCode))
+        self.threadPool.start(worker)
+        worker.signals.result.connect(self.assignmentsReturnedFromDatabase)
+
+    def assignmentsReturnedFromDatabase(self, assignments: List[Tuple[Any]]):
+        internalData = loadJsonFile("data\\assignments")
+        assignmentsDict = self.sortAssignmentsReturnedFromDatabaseToDict(assignments)
+
+        mergedAssignments = self.mergeDatabaseFileData(internalData, assignmentsDict)
+
+        # Updates the file
+        writeJsonFile("data\\assignments", mergedAssignments)
+
+        assignmentList = self.sortAssignmentsDictToClass(mergedAssignments)
+
+    def sortAssignmentsReturnedFromDatabaseToDict(self, assignments: List[Tuple[Any]]) -> Dict[str, Any]:
+        """
+        Sorts the assignments from a tuple, to a dictionary
+
+        :param assignments: List[Tuple[Any]]
+        :return: Dict[str, any]
+        """
+
+        assignmentDict = {}
+        for assignment in assignments:
+            key = assignment[0]
+            name = assignments[1]
+            completed = bool(assignment[3])
+            deleted = bool(assignment[4])
+
+            lastUpdated = {
+                "year": assignments[5],
+                "month": assignments[6],
+                "day": assignments[7],
+                "hour": assignments[8],
+                "minute": assignments[9],
+                "second": assignments[10]
+            }
+
+            assignmentDict[key] = {
+                "assignmentName": name,
+                "completed": completed,
+                "deleted": deleted,
+                "lastUpdated": lastUpdated
+            }
+
+        return assignmentDict
+
+    def sortAssignmentsDictToClass(self, assignments: Dict[str, Any]) -> List[Assignment]:
+        assignmentList = []
+        for key in assignments.keys():
+            assignment = assignments[key]
+            # Checks if the assignment has been deleted first
+            if not assignment["deleted"]:
+                a = Assignment(assignment["assignmentName"], assignment["completed"], key)
+                assignmentList.append(a)
+
+        return assignmentList
+
+    def mergeDatabaseFileData(self, internalData: Dict[str, Any], databaseData: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Merges the internal and external data together into one dictionary
+
+        :param internalData: dict[str, any]
+        :param databaseData: dict[str, any]
+        :return: dict[str, any]
+        """
+
+        updatedData = {}
+
+        # Loops through each internal
+        for key in internalData:
+            # Checks if the item in the database
+            if key in databaseData.keys():
+                dataBaseTimeStamp = datetime(
+                    year=databaseData[key]["yearUpdated"],
+                    month=databaseData[key]["monthUpdated"],
+                    day=databaseData[key]["dayUpdated"],
+                    hour=databaseData[key]["hourUpdated"],
+                    minute=databaseData[key]["minuteUpdated"],
+                    second=databaseData[key]["secondUpdated"]
+
+                )
+
+                internalTimeStamp = datetime(
+                    year=internalData[key]["yearUpdated"],
+                    month=internalData[key]["monthUpdated"],
+                    day=internalData[key]["dayUpdated"],
+                    hour=internalData[key]["hourUpdated"],
+                    minute=internalData[key]["minuteUpdated"],
+                    second=internalData[key]["secondUpdated"]
+                )
+
+                # Checks if the database is more recent
+                if dataBaseTimeStamp > internalTimeStamp:
+                    updatedData[key] = databaseData[key]
+                    continue
+
+            updatedData[key] = internalData[key]
+
+        for key in databaseData.keys():
+            if key not in updatedData:
+                updatedData[key] = databaseData[key]
+
+        return updatedData
+
 
 if __name__ == '__main__':
     r = ResourceHandler()
