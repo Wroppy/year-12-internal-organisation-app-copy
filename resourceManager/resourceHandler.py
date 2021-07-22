@@ -31,6 +31,7 @@ class ResourceHandler:
 
         worker = Worker(self.database.connectToDatabase)
         self.threadPool.start(worker)
+        worker.signals.result.connect(self.updateDisplay)
 
     def generateKeyCode(self) -> str:
         """
@@ -56,6 +57,14 @@ class ResourceHandler:
                 assignments.append(a)
 
         return assignments
+
+    def updateDisplay(self, **kwargs):
+        """
+        Updates the display with data pulled from the database
+
+        """
+        print("gone")
+        self.returnAssignments(self.userAccountKey)
 
     def addAssignmentToFile(self, assignment: Assignment):
         """
@@ -532,20 +541,26 @@ class ResourceHandler:
         return timetable
 
     def returnAssignments(self, userKeyCode: str):
-        worker = Worker(self.database.returnAssignments(userKeyCode=userKeyCode))
+        worker = Worker(self.database.returnAssignments, userKeyCode=userKeyCode)
         self.threadPool.start(worker)
         worker.signals.result.connect(self.assignmentsReturnedFromDatabase)
 
     def assignmentsReturnedFromDatabase(self, assignments: List[Tuple[Any]]):
         internalData = loadJsonFile("data\\assignments")
         assignmentsDict = self.sortAssignmentsReturnedFromDatabaseToDict(assignments)
-
+        print(f"AssignmentDict {assignmentsDict}")
         mergedAssignments = self.mergeDatabaseFileData(internalData, assignmentsDict)
+
+        print(len(mergedAssignments))
+
+        print(f"Merged Assignments {mergedAssignments}")
 
         # Updates the file
         writeJsonFile("data\\assignments", mergedAssignments)
 
         assignmentList = self.sortAssignmentsDictToClass(mergedAssignments)
+
+        print(assignmentList)
 
     def sortAssignmentsReturnedFromDatabaseToDict(self, assignments: List[Tuple[Any]]) -> Dict[str, Any]:
         """
@@ -558,17 +573,18 @@ class ResourceHandler:
         assignmentDict = {}
         for assignment in assignments:
             key = assignment[0]
-            name = assignments[1]
+            print(key)
+            name = assignment[1]
             completed = bool(assignment[3])
             deleted = bool(assignment[4])
 
             lastUpdated = {
-                "year": assignments[5],
-                "month": assignments[6],
-                "day": assignments[7],
-                "hour": assignments[8],
-                "minute": assignments[9],
-                "second": assignments[10]
+                "year": assignment[5],
+                "month": assignment[6],
+                "day": assignment[7],
+                "hour": assignment[8],
+                "minute": assignment[9],
+                "second": assignment[10]
             }
 
             assignmentDict[key] = {
@@ -607,22 +623,22 @@ class ResourceHandler:
             # Checks if the item in the database
             if key in databaseData.keys():
                 dataBaseTimeStamp = datetime(
-                    year=databaseData[key]["yearUpdated"],
-                    month=databaseData[key]["monthUpdated"],
-                    day=databaseData[key]["dayUpdated"],
-                    hour=databaseData[key]["hourUpdated"],
-                    minute=databaseData[key]["minuteUpdated"],
-                    second=databaseData[key]["secondUpdated"]
+                    year=databaseData[key]["lastUpdated"]["year"],
+                    month=databaseData[key]["lastUpdated"]["month"],
+                    day=databaseData[key]["lastUpdated"]["day"],
+                    hour=databaseData[key]["lastUpdated"]["hour"],
+                    minute=databaseData[key]["lastUpdated"]["minute"],
+                    second=databaseData[key]["lastUpdated"]["second"]
 
                 )
 
                 internalTimeStamp = datetime(
-                    year=internalData[key]["yearUpdated"],
-                    month=internalData[key]["monthUpdated"],
-                    day=internalData[key]["dayUpdated"],
-                    hour=internalData[key]["hourUpdated"],
-                    minute=internalData[key]["minuteUpdated"],
-                    second=internalData[key]["secondUpdated"]
+                    year=internalData[key]["lastUpdated"]["year"],
+                    month=internalData[key]["lastUpdated"]["month"],
+                    day=internalData[key]["lastUpdated"]["day"],
+                    hour=internalData[key]["lastUpdated"]["hour"],
+                    minute=internalData[key]["lastUpdated"]["minute"],
+                    second=internalData[key]["lastUpdated"]["second"]
                 )
 
                 # Checks if the database is more recent
@@ -632,9 +648,12 @@ class ResourceHandler:
 
             updatedData[key] = internalData[key]
 
+        print(updatedData.keys())
         for key in databaseData.keys():
-            if key not in updatedData:
+            print(key)
+            if key not in updatedData.keys():
                 updatedData[key] = databaseData[key]
+                print("True")
 
         return updatedData
 
