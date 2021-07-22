@@ -231,7 +231,7 @@ class ResourceHandler:
 
         writeJsonFile("data\\timetable", timetable)
 
-        self.addClassToDatabase(timetable["classes"], currentTime)
+        self.changeTimetableDatabase(timetable["classes"], currentTime)
 
     def addClassToFile(self, day: int, className: str, startingTime: time, endingTime: time, currentTime: datetime):
         """
@@ -271,9 +271,9 @@ class ResourceHandler:
 
         writeJsonFile("data\\timetable", timetable)
 
-        self.addClassToDatabase(timetable["classes"], currentTime)
+        self.changeTimetableDatabase(timetable["classes"], currentTime)
 
-    def addClassToDatabase(self, timetable: List[List[dict]], currentTime: datetime):
+    def changeTimetableDatabase(self, timetable: List[List[dict]], currentTime: datetime):
         worker = Worker(self.database.changeTimetable, userKeyCode=self.userAccountKey, userTimetable=timetable,
                         timeStamp=currentTime)
         self.threadPool.start(worker)
@@ -474,7 +474,7 @@ class ResourceHandler:
         # If there is a difference, then the database must be updated
         if timeStampDatabase != timeStampFile:
             print("Needs to change")
-            self.addClassToDatabase(self.returnSortedDictTimetable(timetableFile), timeStampFile)
+            self.changeTimetableDatabase(self.returnSortedDictTimetable(timetableFile), timeStampFile)
 
         return timetableFile
 
